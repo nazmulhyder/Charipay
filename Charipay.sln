@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35707.178 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Charipay.API", "Charipay\Charipay.API.csproj", "{CD2A3E4D-0A0F-47EB-B444-FFDA98B57FC0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Charipay.Domain", "Charipay.Domain\Charipay.Domain.csproj", "{46E5D677-C84A-444F-B289-EC3D6BB26795}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Charipay.Tests", "Charipay.Tests\Charipay.Tests.csproj", "{2510C13F-6B04-4BDE-9E99-DABAFF539616}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Charipay.Infrastructure", "Charipay.Infrastructure\Charipay.Infrastructure.csproj", "{B6A7F377-FF8A-4DCD-9EF6-91EDD9EE08EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Charipay.Shared", "Charipay.Shared\Charipay.Shared.csproj", "{449885A6-4E0B-4E66-9EDF-2BAB1EF25BAC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Charipay.Application", "Charipay.Application\Charipay.Application.csproj", "{AD4719AF-A7DE-4BFD-8041-0B9D7C785D56}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CD2A3E4D-0A0F-47EB-B444-FFDA98B57FC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD2A3E4D-0A0F-47EB-B444-FFDA98B57FC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD2A3E4D-0A0F-47EB-B444-FFDA98B57FC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD2A3E4D-0A0F-47EB-B444-FFDA98B57FC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46E5D677-C84A-444F-B289-EC3D6BB26795}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46E5D677-C84A-444F-B289-EC3D6BB26795}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46E5D677-C84A-444F-B289-EC3D6BB26795}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46E5D677-C84A-444F-B289-EC3D6BB26795}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2510C13F-6B04-4BDE-9E99-DABAFF539616}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2510C13F-6B04-4BDE-9E99-DABAFF539616}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2510C13F-6B04-4BDE-9E99-DABAFF539616}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2510C13F-6B04-4BDE-9E99-DABAFF539616}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6A7F377-FF8A-4DCD-9EF6-91EDD9EE08EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6A7F377-FF8A-4DCD-9EF6-91EDD9EE08EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6A7F377-FF8A-4DCD-9EF6-91EDD9EE08EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6A7F377-FF8A-4DCD-9EF6-91EDD9EE08EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{449885A6-4E0B-4E66-9EDF-2BAB1EF25BAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{449885A6-4E0B-4E66-9EDF-2BAB1EF25BAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{449885A6-4E0B-4E66-9EDF-2BAB1EF25BAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{449885A6-4E0B-4E66-9EDF-2BAB1EF25BAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD4719AF-A7DE-4BFD-8041-0B9D7C785D56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD4719AF-A7DE-4BFD-8041-0B9D7C785D56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD4719AF-A7DE-4BFD-8041-0B9D7C785D56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD4719AF-A7DE-4BFD-8041-0B9D7C785D56}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
