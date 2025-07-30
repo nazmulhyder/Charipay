@@ -1,5 +1,6 @@
 ﻿using Charipay.Domain.Interfaces;
 using Charipay.Infrastructure.Data;
+using Charipay.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;

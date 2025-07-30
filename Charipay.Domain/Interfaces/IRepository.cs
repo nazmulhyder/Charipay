@@ -9,12 +9,12 @@ namespace Charipay.Domain.Interfaces
     public interface IRepository<T> where T : class
     {
         // READ
-        Task<T?> GetByIdAsync(int id);
+        Task<T?> GetByIdAsync(Guid id);
         Task<IEnumerable<T>> GetAllAsync();
         IQueryable<T> Query(); // For advanced querying (e.g., filtering, sorting)
 
         // CREATE
-        Task AddAsync(T entity);
+        Task<T> AddAsync(T entity);
         Task AddRangeAsync(IEnumerable<T> entities);
 
         // UPDATE

@@ -24,7 +24,7 @@ namespace Charipay.API.Controllers
 
         // GET: api/users/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(Guid id)
         {
             var user = await _unitOfWork.Users.GetByIdAsync(id);
             if (user == null)
@@ -55,7 +55,7 @@ namespace Charipay.API.Controllers
 
         // PUT: api/users/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] UpdateUserRequest request)
+        public async Task<IActionResult> Update(Guid id, [FromBody] UpdateUserRequest request)
         {
             var user = await _unitOfWork.Users.GetByIdAsync(id);
             if (user == null)
@@ -73,7 +73,7 @@ namespace Charipay.API.Controllers
 
         // DELETE: api/users/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             var user = await _unitOfWork.Users.GetByIdAsync(id);
             if (user == null)

@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Charipay.Infrastructure.Persistence
+namespace Charipay.Infrastructure.Repositories
 {
     public class UserRepository : Repository<User>, IUserRepository
     {
@@ -24,7 +24,7 @@ namespace Charipay.Infrastructure.Persistence
             return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
 
-        public Task<User?> GetUserWithRolesAsync(int userId)
+        public Task<User?> GetUserWithRolesAsync(Guid userId)
         {
             throw new NotImplementedException();
             //    return await _context.Users

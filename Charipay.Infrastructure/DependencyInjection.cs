@@ -1,4 +1,6 @@
-﻿using Charipay.Infrastructure.Data;
+﻿using Charipay.Domain.Interfaces;
+using Charipay.Infrastructure.Data;
+using Charipay.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +20,7 @@ namespace Charipay.Infrastructure
             {
                 options.UseSqlServer("Server=NISHATS-IDEAPAD; Database=Charipay-DB;User Id=nazmul.hyder;password=nazmul496; MultipleActiveResultSets=True; TrustServerCertificate=True");
             });
+            services.AddScoped<IUserRepository, UserRepository>();
             return services;
         }
     }
