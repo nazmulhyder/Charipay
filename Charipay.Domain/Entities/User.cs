@@ -17,9 +17,12 @@ namespace Charipay.Domain.Entities
         public string PhoneNumber { get; set; } = null!;
         public string ProfileImageUrl { get; set; } = null!;
         public DateTime CreatedAt { get; set; }
+        public string AddressLine1 { get; set; } = null!;
+        public string PostCode { get; set; } = null!;
+        public DateTime? DOB { get; set; }
 
         //// Navigation Properties
-       // public ICollection<UserRole> UserRoles { get; set; }
+        // public ICollection<UserRole> UserRoles { get; set; }
         //public ICollection<Charity> CreatedCharities { get; set; }
         //public ICollection<Donation> Donations { get; set; }
     }

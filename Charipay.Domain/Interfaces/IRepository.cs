@@ -21,7 +21,7 @@ namespace Charipay.Domain.Interfaces
         void Update(T entity);
 
         // DELETE
-        void Remove(T entity);
+        void Remove(T entity); 
         void RemoveRange(IEnumerable<T> entities);
     }
 

@@ -13,7 +13,7 @@ namespace Charipay.Infrastructure.Repositories
     {
         protected readonly AppDbContext _context;
         private readonly DbSet<T> _dbSet;
-
+   
         public Repository(AppDbContext context)
         {
             _context = context;
@@ -37,7 +37,8 @@ namespace Charipay.Infrastructure.Repositories
 
         public async Task<T?> AddAsync(T entity)
         {
-            var entry = await _dbSet.AddAsync(entity);
+            var entry = await _dbSet.AddAsync(entity);     
+            
             return entry.Entity;
         }
 

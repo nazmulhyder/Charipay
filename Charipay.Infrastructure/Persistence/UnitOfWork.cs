@@ -14,15 +14,20 @@ namespace Charipay.Infrastructure.Persistence
         private readonly AppDbContext _context;
         public IUserRepository Users { get; }
 
-        public UnitOfWork(AppDbContext context)
+        public UnitOfWork(AppDbContext context, IUserRepository userRepository)
         {
             _context = context;
-            Users = new UserRepository(_context);
+            Users = userRepository;
         }
 
         public async Task<int> SaveChangesAsync()
         {
             return await _context.SaveChangesAsync();
+        }
+
+        public void Dispose()
+        {
+            _context.Dispose();
         }
     }
 
