@@ -13,7 +13,6 @@
   <ItemGroup>
     <Folder Include="Common\Mapping\" />
     <Folder Include="Interfaces\" />
-    <Folder Include="Queries\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -19,7 +19,7 @@ namespace Charipay.Domain.Entities
         public DateTime CreatedAt { get; set; }
         public string AddressLine1 { get; set; } = null!;
         public string PostCode { get; set; } = null!;
-        public DateTime? DOB { get; set; }
+        public DateTime DOB { get; set; }
 
         //// Navigation Properties
         // public ICollection<UserRole> UserRoles { get; set; }

@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Charipay.Domain", "Charipay
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Charipay.Infrastructure", "Charipay.Infrastructure\Charipay.Infrastructure.csproj", "{B6A7F377-FF8A-4DCD-9EF6-91EDD9EE08EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Charipay.Shared", "Charipay.Shared\Charipay.Shared.csproj", "{449885A6-4E0B-4E66-9EDF-2BAB1EF25BAC}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Charipay.Application", "Charipay.Application\Charipay.Application.csproj", "{AD4719AF-A7DE-4BFD-8041-0B9D7C785D56}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Charipay.Tests", "Charipay.Tests\Charipay.Tests.csproj", "{264DF969-6CBC-4C0F-BE17-0C272A2EB25B}"
@@ -33,10 +31,6 @@ Global
 		{B6A7F377-FF8A-4DCD-9EF6-91EDD9EE08EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6A7F377-FF8A-4DCD-9EF6-91EDD9EE08EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6A7F377-FF8A-4DCD-9EF6-91EDD9EE08EA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{449885A6-4E0B-4E66-9EDF-2BAB1EF25BAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{449885A6-4E0B-4E66-9EDF-2BAB1EF25BAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{449885A6-4E0B-4E66-9EDF-2BAB1EF25BAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{449885A6-4E0B-4E66-9EDF-2BAB1EF25BAC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AD4719AF-A7DE-4BFD-8041-0B9D7C785D56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AD4719AF-A7DE-4BFD-8041-0B9D7C785D56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD4719AF-A7DE-4BFD-8041-0B9D7C785D56}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Charipay.Application.Commands;
+using Charipay.Application.Commands.Users;
+using Charipay.Application.Queries.Users;
 using Charipay.Domain.Entities;
 using Charipay.Domain.Interfaces;
 using MediatR;
@@ -24,13 +26,26 @@ namespace Charipay.API.Controllers
 
         // POST: api/users
         [HttpPost("Create")]
-        public async Task<IActionResult> Create([FromBody] RegisterUserCommand request)
+        public async Task<IActionResult> Create([FromBody] CreateUserCommand request)
         {
            var result = await _mediator.Send(request);
            return Ok(result);
           
         }
 
-  
+
+        // GET: api/users
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> GetByUserId(Guid id)
+        {
+            var result = await _mediator.Send(new GetUserByIdQuery(id));
+
+            if(result ==  null) return NotFound();
+
+            return Ok(result);
+
+        }
+
+
     }
 }
