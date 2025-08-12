@@ -20,23 +20,23 @@ namespace Charipay.Application.Commands.Users
             if (user == null)
             {
                 logger.LogWarning("User not found for this email: {Email} ", request.Email);
-                throw new Exception("User not found for this email");
+                throw new UnauthorizedAccessException("Invalid credentials.");
             }
 
-            bool isValidPassword = _passwordHasher.Verify(user.PasswordHash, request.Password);
+            if(!_passwordHasher.Verify(user.PasswordHash, request.Password))
+                throw new UnauthorizedAccessException("Invalid credentials.");
 
-            if (!isValidPassword) {
-                throw new UnauthorizedAccessException("Invalid credentials");
-            }
+            var roles = user.UserRoles.Select(x => x.Role.Name).ToList();
 
-            var token = jwtTokenService.GenerateToken(user);
+            var token = jwtTokenService.GenerateToken(user, roles);
 
             return new LoginResultDto
             {
                 Token = token,
                 Email = user.Email,
                 FullName = user.FullName,
-                ImageUrl = user.ProfileImageUrl
+                ImageUrl = user.ProfileImageUrl,
+                Roles = roles
                 
             };
         }

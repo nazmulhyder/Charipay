@@ -22,7 +22,7 @@ namespace Charipay.Domain.Entities
         public DateTime DOB { get; set; }
 
         //// Navigation Properties
-        // public ICollection<UserRole> UserRoles { get; set; }
+         public ICollection<UserRole> UserRoles { get; set; }
         //public ICollection<Charity> CreatedCharities { get; set; }
         //public ICollection<Donation> Donations { get; set; }
     }

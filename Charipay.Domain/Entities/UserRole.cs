@@ -8,7 +8,7 @@ namespace Charipay.Domain.Entities
 {
     public class UserRole
     {
-        public int UserID { get; set; }
+        public Guid UserID { get; set; }
         public int RoleID { get; set; }
 
         // Navigation

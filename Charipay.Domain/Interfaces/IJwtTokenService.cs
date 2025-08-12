@@ -9,6 +9,6 @@ namespace Charipay.Domain.Interfaces
 {
     public interface IJwtTokenService
     {
-        string GenerateToken(User user);
+        string GenerateToken(User user, IEnumerable<string> roles);
     }
 }

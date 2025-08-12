@@ -15,14 +15,17 @@ namespace Charipay.Infrastructure.Security
     public class JwtTokenService(IConfiguration _config) : IJwtTokenService
     {
         
-        public string GenerateToken(User user)
+        public string GenerateToken(User user, IEnumerable<string> roles)
         {
-            var claims = new[]
+        var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Sub, user.UserID.ToString()),
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
             new Claim("fullName", $"{user.FullName}")
         };
+
+            // add role claims
+            claims.AddRange(roles.Select(x=> new Claim(ClaimTypes.Role, x)));
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
