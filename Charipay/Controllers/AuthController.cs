@@ -17,5 +17,14 @@ namespace Charipay.API.Controllers
             return Ok(result);
 
         }
+
+        // POST: api/users
+        [HttpPost("Signup")]
+        public async Task<IActionResult> Create([FromBody] CreateUserCommand request)
+        {
+            var result = await _mediator.Send(request);
+            return Ok(result);
+
+        }
     }
 }

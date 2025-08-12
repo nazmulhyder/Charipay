@@ -1,4 +1,4 @@
-﻿
+﻿using Charipay.Application.Mapping;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ namespace Charipay.Application
     {
         public static IServiceCollection AddApplicationDI(this IServiceCollection services)
         {
-            //services.AddAutoMapper(typeof(MappingProfile));
+            services.AddAutoMapper(typeof(UserProfile).Assembly);
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
             return services;
         }

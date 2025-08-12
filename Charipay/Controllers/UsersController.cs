@@ -24,18 +24,21 @@ namespace Charipay.API.Controllers
           
         }
 
-        // POST: api/users
-        [HttpPost("Create")]
-        public async Task<IActionResult> Create([FromBody] CreateUserCommand request)
+
+        // GET: api/users/GetAllUser
+        [HttpGet("GetAllUser")]
+        public async Task<IActionResult> GetAllUser()
         {
-           var result = await _mediator.Send(request);
-           return Ok(result);
-          
+            var result = await _mediator.Send(new GetAllUserQuery());
+
+            if (result == null) return NotFound();
+
+            return Ok(result);
+
         }
 
-
-        // GET: api/users
-        [HttpGet("{id:guid}")]
+        // GET: api/users/GetByUserId/id
+        [HttpGet("GetByUserId/{id:guid}")]
         public async Task<IActionResult> GetByUserId(Guid id)
         {
             var result = await _mediator.Send(new GetUserByIdQuery(id));
@@ -45,6 +48,30 @@ namespace Charipay.API.Controllers
             return Ok(result);
 
         }
+
+        // PUT: api/users/update
+        [HttpPut("Update")]
+        public async Task<IActionResult> Update([FromBody] UpdateUserCommand user)
+        {
+            var result = await _mediator.Send(user);
+
+            if (result == null) return NotFound();
+
+            return Ok(result);
+
+        }
+
+        // PUT: api/users/update
+        [HttpDelete("Delete/{id:guid}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var result = await _mediator.Send(new DeleteUserCommand(id));
+
+            if (result == null) return NotFound();
+
+            return Ok(result);
+        }
+
 
 
     }
