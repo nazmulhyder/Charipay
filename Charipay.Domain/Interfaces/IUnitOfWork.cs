@@ -9,6 +9,7 @@ namespace Charipay.Domain.Interfaces
     public interface IUnitOfWork : IDisposable
     {
         IUserRepository Users { get; }
+        IUserRoleRepository UserRoles { get; }
         Task<int> SaveChangesAsync();
     }
 }

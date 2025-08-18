@@ -23,6 +23,11 @@ namespace Charipay.Application.Mapping
             CreateMap<UserDto, UpdateUserCommand>();
             CreateMap<UpdateUserCommand, UserDto>().ReverseMap();
 
+            CreateMap<User, CreateUserCommand>();
+            CreateMap<CreateUserCommand, User>().ReverseMap();
+
+
+
         }
     }
 }

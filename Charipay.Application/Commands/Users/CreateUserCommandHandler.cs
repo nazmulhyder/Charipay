@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace Charipay.Application.Commands.Users
 {
 
-    public class RegisterUserCommandHandler(IUnitOfWork _unitOfWork, IPasswordHasher _passwordHasher, ILogger<RegisterUserCommandHandler> logger) : IRequestHandler<CreateUserCommand, UserDto>
+    public class RegisterUserCommandHandler(IUnitOfWork _unitOfWork, IPasswordHasher _passwordHasher, ILogger<RegisterUserCommandHandler> logger, IMapper mapper) : IRequestHandler<CreateUserCommand, UserDto>
     {
         public async Task<UserDto> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
@@ -26,35 +26,28 @@ namespace Charipay.Application.Commands.Users
                 throw new Exception("User already exists!");
             }
 
-            var user = new User
-            {
-                FullName = request.FullName,
-                Email = request.Email,
-                PasswordHash = _passwordHasher.Hash(request.Password),
-                DOB = request.DOB,
-                CreatedAt = DateTime.Now,
-                AddressLine1 = request.AddressLine1,
-                PostCode = request.PostCode,
-                ProfileImageUrl = request.ProfileImageUrl,
-                PhoneNumber = request.PhoneNumber
-            };
+            var user = mapper.Map<User>(request);
+            user.PasswordHash = _passwordHasher.Hash(request.Password);
 
 
             await _unitOfWork.Users.AddAsync(user);
             await _unitOfWork.SaveChangesAsync();
 
-            logger.LogInformation("User created successfully with ID: {Id}", user.UserID);
-            return new UserDto
+
+            // Assign default role (User = 1)
+            var userRole = new UserRole
             {
-                UserId = user.UserID,
-                FullName = user.FullName,
-                Email = user.Email,
-                Phone = user.PhoneNumber,
-                AddressLine1 = user.AddressLine1,
-                PostCode = user.PostCode,
-                ProfileImageUrl = user.ProfileImageUrl,
-                DOB = user.DOB
+                UserID = user.UserID,
+                RoleID = 1 // default "User"
             };
+
+            await _unitOfWork.UserRoles.AddAsync(userRole);
+            await _unitOfWork.SaveChangesAsync();
+
+
+            logger.LogInformation("User created successfully with ID: {Id}", user.UserID);
+            
+            return mapper.Map<UserDto>(user);
 
         }
     }

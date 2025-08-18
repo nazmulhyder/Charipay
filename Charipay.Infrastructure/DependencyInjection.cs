@@ -21,9 +21,14 @@ namespace Charipay.Infrastructure
         {
             services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseSqlServer("Server=NISHATS-IDEAPAD; Database=Charipay-DB;User Id=nazmul.hyder;password=nazmul496; MultipleActiveResultSets=True; TrustServerCertificate=True");
+                //local
+                //options.UseSqlServer("Server=NISHATS-IDEAPAD; Database=Charipay-DB;User Id=nazmul.hyder;password=nazmul496; MultipleActiveResultSets=True; TrustServerCertificate=True");
+                //azure sql
+                 options.UseSqlServer("Server=tcp:charipay-dbdbserver.database.windows.net,1433;Initial Catalog=Charipay-DB;Persist Security Info=False;User ID=nazmul.hyder;Password=@Nazder496;");
+
             });
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserRoleRepository, UserRoleRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
             services.AddScoped<IJwtTokenService, JwtTokenService>();
