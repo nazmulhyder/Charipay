@@ -38,7 +38,7 @@ namespace Charipay.Application.Commands.Users
             var userRole = new UserRole
             {
                 UserID = user.UserID,
-                RoleID = 1 // default "User"
+                RoleID = 2 // default "User"
             };
 
             await _unitOfWork.UserRoles.AddAsync(userRole);
