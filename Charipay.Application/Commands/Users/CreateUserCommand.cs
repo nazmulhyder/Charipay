@@ -1,4 +1,5 @@
-﻿using Charipay.Application.DTOs.Users;
+﻿using Charipay.Application.Common.Models;
+using Charipay.Application.DTOs.Users;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -19,5 +20,5 @@ namespace Charipay.Application.Commands.Users
          string AddressLine1 ,
          string PostCode ,
          DateTime DOB 
-    ) : IRequest<UserDto>;
+    ) : IRequest<ApiResponse<UserDto>>;
 }

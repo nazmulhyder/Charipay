@@ -1,4 +1,5 @@
-﻿using Charipay.Application.DTOs.Users;
+﻿using Charipay.Application.Common.Models;
+using Charipay.Application.DTOs.Users;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,5 +9,5 @@ using System.Threading.Tasks;
 
 namespace Charipay.Application.Commands.Users
 {
-    public record LoginUserCommand(string Email, string Password) : IRequest<LoginResultDto>;
+    public record LoginUserCommand(string Email, string Password) : IRequest<ApiResponse<LoginResponseDto>>;
 }

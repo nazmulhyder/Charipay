@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Charipay.Application.Common.Models;
 using Charipay.Application.DTOs.Users;
 using Charipay.Domain.Interfaces;
 using MediatR;
@@ -10,28 +11,23 @@ using System.Threading.Tasks;
 
 namespace Charipay.Application.Queries.Users
 {
-    public class GetUserByIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper) : IRequestHandler<GetUserByIdQuery, UserDto>
+    public class GetUserByIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper) : IRequestHandler<GetUserByIdQuery,ApiResponse<UserDto>>
     {
-        public async Task<UserDto> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<UserDto>> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
         {
             var user = await unitOfWork.Users.GetByIdAsync(request.id);
 
             if (user == null) return null;
 
-            return mapper.Map<UserDto>(user);
+            var resultDto= mapper.Map<UserDto>(user);
+            return new ApiResponse<UserDto>()
+            {
+                Success = true,
+                Message = "Success",
+                Data = resultDto
 
-            //return new UserDto
-            //{
-            //    UserId = user.UserID,
-            //    FullName = user.FullName,
-            //    AddressLine1 = user.AddressLine1,
-            //    PostCode = user.PostCode,
-            //    Phone = user.PhoneNumber,
-            //    DOB = user.DOB,
-            //    Email = user.Email,
-            //    CreatedAt = user.CreatedAt,
-            //    ProfileImageUrl = user.ProfileImageUrl
-            //};
+            };
+
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Charipay.Application.Common.Models;
 using Charipay.Application.DTOs.Users;
 using Charipay.Domain.Entities;
 using Charipay.Domain.Interfaces;
@@ -13,9 +14,9 @@ using System.Threading.Tasks;
 namespace Charipay.Application.Commands.Users
 {
 
-    public class RegisterUserCommandHandler(IUnitOfWork _unitOfWork, IPasswordHasher _passwordHasher, ILogger<RegisterUserCommandHandler> logger, IMapper mapper) : IRequestHandler<CreateUserCommand, UserDto>
+    public class RegisterUserCommandHandler(IUnitOfWork _unitOfWork, IPasswordHasher _passwordHasher, ILogger<RegisterUserCommandHandler> logger, IMapper mapper) : IRequestHandler<CreateUserCommand, ApiResponse<UserDto>>
     {
-        public async Task<UserDto> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<UserDto>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
             logger.LogInformation("CreateUserCommand received for email: {Email}", request.Email);
             var existingUser = await _unitOfWork.Users.GetByEmailAsync(request.Email);
@@ -23,7 +24,15 @@ namespace Charipay.Application.Commands.Users
             if (existingUser != null)
             {
                 logger.LogWarning("User already exists with this email: {Email}", request.Email);
-                throw new Exception("User already exists!");
+               
+                return new ApiResponse<UserDto>()
+                {
+                    Success = false,
+                    Message = "User already exists with this email!",
+                    Data = null,
+                    Errors = new List<string>() { "User already exists!" }
+
+                };
             }
 
             var user = mapper.Map<User>(request);
@@ -47,8 +56,14 @@ namespace Charipay.Application.Commands.Users
 
             logger.LogInformation("User created successfully with ID: {Id}", user.UserID);
             
-            return mapper.Map<UserDto>(user);
+            var resultDto =  mapper.Map<UserDto>(user);
 
+            return new ApiResponse<UserDto>()
+            {
+                Success = true,
+                Message = "User created successfully!",
+                Data = resultDto
+            };
         }
     }
 }

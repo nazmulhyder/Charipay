@@ -1,4 +1,5 @@
-﻿using Charipay.Application.DTOs.Users;
+﻿using Charipay.Application.Common.Models;
+using Charipay.Application.DTOs.Users;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Charipay.Application.Queries.Users
 {
-    public class GetAllUserQuery : IRequest<List<UserDto>>
+    public class GetAllUserQuery : IRequest<ApiResponse< List<UserDto>>>
     {
     }
 }

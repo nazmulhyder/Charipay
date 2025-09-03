@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Charipay.Application.DTOs.Users
 {
-    public class LoginResultDto
+    public class LoginResponseDto
     {
         public string Token { get; set; }
         public string Email { get; set; }
