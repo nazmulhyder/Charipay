@@ -51,7 +51,8 @@ namespace Charipay.Infrastructure.Data
             #region Seed default roles (only IDs consistend if you want fixed ids)
             modelBuilder.Entity<Role>().HasData(
                   new Role { RoleID = 1, Name = "Admin"},
-                  new Role { RoleID = 2, Name = "User"}
+                  new Role { RoleID = 2, Name = "Donor"},
+                  new Role { RoleID = 3, Name = "Volunteer" }
                 );
             #endregion
         }

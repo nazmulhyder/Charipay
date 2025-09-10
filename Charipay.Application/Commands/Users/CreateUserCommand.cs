@@ -9,16 +9,17 @@ using System.Threading.Tasks;
 
 namespace Charipay.Application.Commands.Users
 {
-    public record  CreateUserCommand(
-    
-         string FullName,
-         string Email ,
-         string Password ,
-         string PhoneNumber ,
-         string ProfileImageUrl ,
-         DateTime CreatedAt ,
-         string AddressLine1 ,
-         string PostCode ,
-         DateTime DOB 
-    ) : IRequest<ApiResponse<UserDto>>;
+    public class CreateUserCommand : IRequest<ApiResponse<UserDto>>
+    {
+        public string FullName { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public string Phone { get; set; }
+        public string? ProfileImageUrl { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public string? AddressLine1 { get; set; }
+        public string? PostCode { get; set; }
+        public DateTime? DOB { get; set; }
+        public int RoleID {  get; set; }
+    }
 }

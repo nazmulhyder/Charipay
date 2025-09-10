@@ -14,8 +14,8 @@ namespace Charipay.Application.Mapping
     {
         public UserProfile() 
         {
-            CreateMap<User, UserDto>()
-                .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.PhoneNumber));
+            CreateMap<User, UserDto>();
+            CreateMap<UserDto, User>().ReverseMap();
 
             CreateMap<User, UpdateUserCommand>();
             CreateMap<UpdateUserCommand, User>().ReverseMap();

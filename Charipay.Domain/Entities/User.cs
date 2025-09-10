@@ -14,12 +14,12 @@ namespace Charipay.Domain.Entities
         public string FullName { get; set; } = null!;
         public string Email { get; set; } = null!;
         public string PasswordHash { get; set; } = null!;
-        public string PhoneNumber { get; set; } = null!;
-        public string ProfileImageUrl { get; set; } = null!;
+        public string Phone { get; set; } = null!;
+        public string? ProfileImageUrl { get; set; } = null!;
         public DateTime CreatedAt { get; set; }
-        public string AddressLine1 { get; set; } = null!;
-        public string PostCode { get; set; } = null!;
-        public DateTime DOB { get; set; }
+        public string? AddressLine1 { get; set; } = null!;
+        public string? PostCode { get; set; } = null!;
+        public DateTime? DOB { get; set; }
 
         //// Navigation Properties
          public ICollection<UserRole> UserRoles { get; set; }
