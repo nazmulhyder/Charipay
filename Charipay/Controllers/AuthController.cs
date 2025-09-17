@@ -14,7 +14,11 @@ namespace Charipay.API.Controllers
         public async Task<IActionResult> Login([FromBody] LoginUserCommand request)
         {
             var result = await _mediator.Send(request);
+            if(result.Success)
             return Ok(result);
+
+            return Unauthorized(result);
+
 
         }
 
@@ -23,8 +27,10 @@ namespace Charipay.API.Controllers
         public async Task<IActionResult> Create([FromBody] CreateUserCommand request)
         {
             var result = await _mediator.Send(request);
-            return Ok(result);
+            if (result.Success)
+                return Ok(result);
 
+            return Unauthorized(result);
         }
     }
 }
