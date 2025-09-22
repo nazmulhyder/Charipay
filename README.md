@@ -37,4 +37,4 @@ Charipay/
 ## 📖 API Documentation
 
 Swagger UI:
-- **Production** → [https://charipay-web-api.azurewebsites.net/swagger/index.html](https://charipay-web-api.azurewebsites.net/swagger/index.html))
+- **Production** → [https://charipay-web-api.azurewebsites.net/swagger/index.html](https://charipay-web-api.azurewebsites.net/swagger/index.html)
