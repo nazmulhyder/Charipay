@@ -16,7 +16,7 @@ namespace Charipay.Application.Commands.Users
         public string Password { get; set; }
         public string Phone { get; set; }
         public string? ProfileImageUrl { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public string? AddressLine1 { get; set; }
         public string? PostCode { get; set; }
         public DateTime? DOB { get; set; }

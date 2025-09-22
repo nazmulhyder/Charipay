@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace Charipay.Application.Commands.Users
 {
 
-    public class RegisterUserCommandHandler(IUnitOfWork _unitOfWork, IPasswordHasher _passwordHasher, ILogger<RegisterUserCommandHandler> logger, IMapper mapper) : IRequestHandler<CreateUserCommand, ApiResponse<UserDto>>
+    public class CreateUserCommandHandler(IUnitOfWork _unitOfWork, IPasswordHasher _passwordHasher, ILogger<CreateUserCommandHandler> logger, IMapper mapper) : IRequestHandler<CreateUserCommand, ApiResponse<UserDto>>
     {
         public async Task<ApiResponse<UserDto>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
