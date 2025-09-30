@@ -19,6 +19,11 @@ namespace Charipay.Infrastructure.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<Charity> Charities { get; set; }
+        public DbSet<Campaign> Campaigns { get; set; }
+        public DbSet<VolunteerTask> VolunteerTasks { get; set; }
+        public DbSet<Donation> Donations { get; set; }
+        public DbSet<VolunteerUser> VolunteerUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -39,6 +44,52 @@ namespace Charipay.Infrastructure.Data
               .HasOne(u => u.Role)
               .WithMany(u => u.UserRoles)
               .HasForeignKey(u => u.RoleID);
+
+            // charity
+            modelBuilder.Entity<Charity>()
+                .HasOne(c=>c.CreatedByUser)
+                .WithMany(c=>c.Charities)
+                .HasForeignKey(c => c.CreatedByUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            //campaign
+            modelBuilder.Entity<Campaign>()
+                .HasOne(c=>c.Charity)
+                .WithMany(c=>c.Campaigns)
+                .HasForeignKey(c => c.CharityId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            //donation
+            modelBuilder.Entity<Donation>()
+                .HasOne(c => c.User)
+                .WithMany(c => c.Donations)
+                .HasForeignKey(c => c.UserId);
+
+            modelBuilder.Entity<Donation>()
+             .HasOne(c => c.Campaign)
+             .WithMany(c => c.Donations)
+             .HasForeignKey(c => c.DonationId);
+
+            //Volunteer Task
+            modelBuilder.Entity<VolunteerTask>()
+                .HasOne(c => c.Campaign)
+                .WithMany(c => c.volunteerTasks)
+                .HasForeignKey(c => c.CampaignId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            //Volunteer User
+            modelBuilder.Entity<VolunteerUser>()
+                .HasOne(c => c.VolunteerTask)
+                .WithMany(c => c.VolunteerUsers)
+                .HasForeignKey(c => c.VolunteerTaskId);
+
+
+            modelBuilder.Entity<VolunteerUser>()
+                .HasOne(c => c.User)
+                .WithMany(c => c.VolunteerUsers)
+                .HasForeignKey(c => c.UserId);
+
+
 
             #endregion
 
