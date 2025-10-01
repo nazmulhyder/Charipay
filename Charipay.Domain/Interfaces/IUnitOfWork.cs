@@ -10,6 +10,7 @@ namespace Charipay.Domain.Interfaces
     {
         IUserRepository Users { get; }
         IUserRoleRepository UserRoles { get; }
+        ICharityRepository Charity { get; }
         Task<int> SaveChangesAsync();
     }
 }

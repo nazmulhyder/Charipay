@@ -1,27 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Charipay.Domain.Entities
+namespace Charipay.Application.DTOs.Charities
 {
-    public class Charity
+    public class CharityDto
     {
-        [Key]
-        public Guid CharityId { get; set; }
         public string Name { get; set; }
         public string RegistrationNumber { get; set; }
         public string Description { get; set; }
         public string Website { get; set; }
         public string ContactEmail { get; set; }
-        public Guid? CreatedByUserId { get; set; }
         public bool IsApproved { get; set; }
-        public DateTime CreatedAt { get; set; }
 
-        //navigationKey
-        public User CreatedByUser { get; set; }
-        public ICollection<Campaign> Campaigns { get; set; }
+        [JsonIgnore]
+        public Guid CreatedByUserId { get; set; }
     }
 }

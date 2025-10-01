@@ -28,6 +28,7 @@ namespace Charipay.Infrastructure
 
             });
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ICharityRepository, CharityRepository>();
             services.AddScoped<IUserRoleRepository, UserRoleRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
