@@ -25,8 +25,8 @@ namespace Charipay.Application.Commands.Charities
         {
             //DB Rule check (fluent validation already handles the format checks
 
-            var emailExists = await unitOfWork.Charity.GetCharityByContactEmailAsync(request.ContactEmail, cancellationToken);
-            var registrationNoExists = await unitOfWork.Charity.GetCharityByRegistrationNumberAsync(request.RegistrationNumber, cancellationToken);
+            var emailExists = await unitOfWork.Charities.GetCharityByContactEmailAsync(request.ContactEmail, cancellationToken);
+            var registrationNoExists = await unitOfWork.Charities.GetCharityByRegistrationNumberAsync(request.RegistrationNumber, cancellationToken);
 
             if (emailExists)
                 return ApiResponse<CharityDto>.FailedResponse("Charity already exists with this Email:" + request.ContactEmail);
@@ -49,7 +49,7 @@ namespace Charipay.Application.Commands.Charities
 
             };
 
-            await unitOfWork.Charity.AddAsync(charity);
+            await unitOfWork.Charities.AddAsync(charity);
             await unitOfWork.SaveChangesAsync();
 
             var responseDto = mapper.Map<CharityDto>(request);

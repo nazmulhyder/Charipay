@@ -1,16 +1,15 @@
-﻿using System;
+﻿using Charipay.Application.Common.Models;
+using MediatR;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Charipay.Domain.Entities
+namespace Charipay.Application.DTOs.Campaigns
 {
-    public class Campaign
+    public class CampaignDto 
     {
-        [Key]
-        public Guid CampaignId { get; set; }
         public string CampaignName { get; set; } = string.Empty;
         public string CampaignDescription { get; set; } = string.Empty;
         public double GoalAmount { get; set; }
@@ -20,9 +19,5 @@ namespace Charipay.Domain.Entities
         public string ImageUrl { get; set; } = string.Empty;
 
         public Guid CharityId { get; set; }
-        public Charity Charity { get; set; }
-        public ICollection<Donation> Donations { get; set; }
-        public ICollection<VolunteerTask> volunteerTasks { get; set; }
-
     }
 }

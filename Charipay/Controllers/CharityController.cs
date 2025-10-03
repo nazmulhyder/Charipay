@@ -1,4 +1,5 @@
 ﻿using Charipay.Application.Commands.Charities;
+using Charipay.Application.Queries.Charities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,7 +29,14 @@ namespace Charipay.API.Controllers
 
             return Ok(result);
             
+        }
 
+        [HttpGet("GetAllCharity")]
+        public async Task<IActionResult> GetAllCharity(CancellationToken token)
+        {
+            var result = await _mediator.Send(new GetAllCharityQuery());
+
+            return Ok(result);
         }
     }
 }

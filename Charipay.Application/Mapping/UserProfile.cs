@@ -34,6 +34,9 @@ namespace Charipay.Application.Mapping
             #region Charity
             CreateMap<CreateCharityCommand, CharityDto>();
             CreateMap<CharityDto, CreateCharityCommand>().ReverseMap();
+
+            CreateMap<Charity, CharityDto>();
+            CreateMap<CharityDto, Charity>().ReverseMap();
             #endregion Charity
 
 
