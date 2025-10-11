@@ -21,7 +21,8 @@ namespace Charipay.Infrastructure.Security
         {
             new Claim(JwtRegisteredClaimNames.Sub, user.UserID.ToString()),
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
-            new Claim("fullName", $"{user.FullName}")
+            new Claim("fullName", $"{user.FullName}"),
+            new Claim("role", $"{roles.FirstOrDefault()}")
         };
 
             // add role claims

@@ -28,7 +28,7 @@ namespace Charipay.Application.Commands.Campaigns
                 .GreaterThan(c => c.CampaignStartDate).WithMessage("End date must be greater than start date.");
 
             RuleFor(c => c.CharityId)
-                .NotEmpty().WithMessage("Charity is required for this Campaign");
+                .NotEmpty().WithMessage("Please select charity for the Campaign.");
 
 
         }

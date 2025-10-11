@@ -10,6 +10,7 @@ namespace Charipay.Application.DTOs.Campaigns
 {
     public class CampaignDto 
     {
+        public Guid CampaignId { get; set; }
         public string CampaignName { get; set; } = string.Empty;
         public string CampaignDescription { get; set; } = string.Empty;
         public double GoalAmount { get; set; }

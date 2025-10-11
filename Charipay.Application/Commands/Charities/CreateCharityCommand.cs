@@ -11,6 +11,7 @@ namespace Charipay.Application.Commands.Charities
 {
     public class CreateCharityCommand : IRequest<ApiResponse<CharityDto>>
     {
+
         public string Name { get; set; }
         public string RegistrationNumber { get; set; }
         public string Description { get; set; }

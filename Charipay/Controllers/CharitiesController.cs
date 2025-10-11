@@ -7,12 +7,12 @@ namespace Charipay.API.Controllers
 {
     [ApiController] // ✅ Tells ASP.NET Core this is an API controller
     [Route("api/[controller]")] // ✅ Base route will be api/users
-    public class CharityController : ControllerBase
+    public class CharitiesController : ControllerBase
     {
         private readonly IMediator _mediator;
         private readonly ILogger<UsersController> _logger;
 
-        public CharityController(IMediator mediator, ILogger<UsersController> logger)
+        public CharitiesController(IMediator mediator, ILogger<UsersController> logger)
         {
             _mediator = mediator;
             _logger = logger;
