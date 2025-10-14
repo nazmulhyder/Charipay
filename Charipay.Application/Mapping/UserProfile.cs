@@ -38,11 +38,16 @@ namespace Charipay.Application.Mapping
 
             CreateMap<Charity, CharityDto>();
             CreateMap<CharityDto, Charity>().ReverseMap();
+
+            CreateMap<Charity, UpdateCharityCommand>();
+            CreateMap<UpdateCharityCommand, Charity>();
+
             #endregion Charity
 
             #region Admin dashboard : User List
-            CreateMap<User, AdminUserListDto>();
-            CreateMap<AdminUserListDto, User>().ReverseMap();
+            CreateMap<User, AdminUserListDto>()
+                .ForMember(dest => dest.Role, 
+                opt => opt.MapFrom(src=>src.UserRoles.Select(x=>x.Role.Name).FirstOrDefault()));
             #endregion
 
 

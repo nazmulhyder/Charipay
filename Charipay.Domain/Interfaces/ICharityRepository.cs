@@ -11,6 +11,7 @@ namespace Charipay.Domain.Interfaces
     {
         Task<bool> GetCharityByContactEmailAsync(string email, CancellationToken token);
         Task<bool> GetCharityByRegistrationNumberAsync(string registrationNo, CancellationToken token);
+        Task<(IEnumerable<Charity>, int TotalCount)> GetPagedCharities(int pageNumber, int pageSize, string? search = null);
 
     }
 }

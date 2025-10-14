@@ -30,22 +30,23 @@ namespace Charipay.Infrastructure.Repositories
 
         public async Task<(IEnumerable<User>, int TotalCount)> GetPagedUserAsync(int pageNumber, int pageSize, string? search = null)
         {
-            var query = _context.Users.AsQueryable();
+            var query =  await _context.Users
+            .Include(u => u.UserRoles)
+                .ThenInclude(ur => ur.Role)
+            .OrderByDescending(u => u.CreatedAt)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
 
-            if(!string.IsNullOrEmpty(search))
+
+            if (!string.IsNullOrEmpty(search))
             
-            query = query.Where(q=>q.FullName.Contains(search) || q.Email.Contains(search));
+            query = query.Where(q=>q.FullName.Contains(search) || q.Email.Contains(search)).ToList();
 
-            var totalCount = await query.CountAsync();
+            var totalCount = query.Count();
             
 
-            var result = await query
-                    .OrderByDescending(c=>c.CreatedAt)
-                    .Skip((pageNumber-1)* pageSize)
-                    .Take(pageSize)
-                    .ToListAsync();
-
-            return (result, totalCount);
+            return (query, totalCount);
             
         }
 

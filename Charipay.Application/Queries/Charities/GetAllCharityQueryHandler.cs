@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Charipay.Application.Common.Models;
+using Charipay.Application.Common.Pagination;
 using Charipay.Application.DTOs.Charities;
 using Charipay.Domain.Interfaces;
 using MediatR;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Charipay.Application.Queries.Charities
 {
-    public class GetAllCharityQueryHandler : IRequestHandler<GetAllCharityQuery, ApiResponse<List<CharityDto>>>
+    public class GetAllCharityQueryHandler : IRequestHandler<GetAllCharityQuery, ApiResponse<PageResult<CharityDto>>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -21,13 +22,17 @@ namespace Charipay.Application.Queries.Charities
             _mapper = mapper;
         }
 
-        public async Task<ApiResponse<List<CharityDto>>> Handle(GetAllCharityQuery request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<PageResult<CharityDto>>> Handle(GetAllCharityQuery request, CancellationToken cancellationToken)
         {
-            var users = await _unitOfWork.Charities.GetAllAsync();
+            var (charities, totalCount) = await _unitOfWork.Charities.GetPagedCharities(request.PageNumber, request.PageSize, request.Search);
 
-            var result = _mapper.Map<List<CharityDto>>(users);
+            var mapperCharityList = _mapper.Map<List<CharityDto>>(charities);
 
-            return ApiResponse<List<CharityDto>>.SuccessResponse(result, "Successful");
+            var result = new PageResult<CharityDto>(mapperCharityList, totalCount, request.PageNumber, request.PageSize);
+
+            return ApiResponse<PageResult<CharityDto>>.SuccessResponse(result, "Fetched Successfully");
         }
+
+
     }
 }

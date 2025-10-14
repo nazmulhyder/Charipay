@@ -15,8 +15,8 @@ namespace Charipay.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost("UserList")]
-        public async Task<IActionResult> UserList([FromBody]GetUserListQuery query,CancellationToken token)
+        [HttpGet("UserList")]
+        public async Task<IActionResult> UserList([FromQuery]GetUserListQuery query,CancellationToken token)
         {
             var response = await _mediator.Send(query);
 

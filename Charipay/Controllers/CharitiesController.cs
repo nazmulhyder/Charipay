@@ -19,8 +19,8 @@ namespace Charipay.API.Controllers
 
         }
 
-        [HttpPost("CreateChairy")]
-        public async Task<IActionResult> CreateChairy([FromBody] CreateCharityCommand request, CancellationToken token)
+        [HttpPost("CreateCharity")]
+        public async Task<IActionResult> CreateCharity([FromBody] CreateCharityCommand request, CancellationToken token)
         {
             var result = await _mediator.Send(request);
 
@@ -31,10 +31,22 @@ namespace Charipay.API.Controllers
             
         }
 
-        [HttpGet("GetAllCharity")]
-        public async Task<IActionResult> GetAllCharity(CancellationToken token)
+        [HttpPost("UpdateCharity")]
+        public async Task<IActionResult> UpdateCharity([FromBody] UpdateCharityCommand request, CancellationToken token)
         {
-            var result = await _mediator.Send(new GetAllCharityQuery());
+            var result = await _mediator.Send(request);
+
+            if (result.Message.Contains("exists"))
+                return BadRequest(result);
+
+            return Ok(result);
+
+        }
+
+        [HttpGet("GetAllCharity")]
+        public async Task<IActionResult> GetAllCharity([FromQuery] GetAllCharityQuery query,CancellationToken token)
+        {
+            var result = await _mediator.Send(query);
 
             return Ok(result);
         }
