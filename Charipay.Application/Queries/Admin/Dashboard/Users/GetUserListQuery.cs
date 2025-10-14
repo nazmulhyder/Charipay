@@ -1,4 +1,5 @@
 ﻿using Charipay.Application.Common.Models;
+using Charipay.Application.Common.Pagination;
 using Charipay.Application.DTOs.Admin.Dashboard.Users;
 using MediatR;
 using System;
@@ -9,7 +10,8 @@ using System.Threading.Tasks;
 
 namespace Charipay.Application.Queries.Admin.Dashboard.Users
 {
-    public class GetUserListQuery : IRequest<ApiResponse<List<UserDto>>>
+    public class GetUserListQuery : PagedRequest, IRequest<ApiResponse<PageResult<AdminUserListDto>>>
     {
+        public string? Search {  get; set; }
     }
 }

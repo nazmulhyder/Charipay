@@ -11,5 +11,6 @@ namespace Charipay.Domain.Interfaces
     {
         Task<User?> GetByEmailAsync(string email);
         Task<User?> GetUserWithRolesAsync(Guid userId);
+        Task<(IEnumerable<User>, int TotalCount)> GetPagedUserAsync(int pageNumber, int pageSize, string? search = null);
     }
 }

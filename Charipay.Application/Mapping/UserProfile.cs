@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Charipay.Application.Commands.Charities;
 using Charipay.Application.Commands.Users;
+using Charipay.Application.DTOs.Admin.Dashboard.Users;
 using Charipay.Application.DTOs.Charities;
 using Charipay.Application.DTOs.Users;
 using Charipay.Domain.Entities;
@@ -38,6 +39,11 @@ namespace Charipay.Application.Mapping
             CreateMap<Charity, CharityDto>();
             CreateMap<CharityDto, Charity>().ReverseMap();
             #endregion Charity
+
+            #region Admin dashboard : User List
+            CreateMap<User, AdminUserListDto>();
+            CreateMap<AdminUserListDto, User>().ReverseMap();
+            #endregion
 
 
         }

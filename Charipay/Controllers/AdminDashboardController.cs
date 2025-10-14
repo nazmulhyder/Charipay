@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Charipay.Application.Queries.Admin.Dashboard.Users;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Charipay.API.Controllers
 {
@@ -6,15 +8,19 @@ namespace Charipay.API.Controllers
     [Route("api/[controller]")]
     public class AdminDashboardController : ControllerBase
     {
-        public AdminDashboardController()
+        private readonly IMediator _mediator;
+
+        public AdminDashboardController(IMediator mediator)
         {
-            
+            _mediator = mediator;
         }
 
         [HttpPost("UserList")]
-        public Task<IActionResult> UserList(CancellationToken token)
+        public async Task<IActionResult> UserList([FromBody]GetUserListQuery query,CancellationToken token)
         {
+            var response = await _mediator.Send(query);
 
+            return Ok(response);
         }
     }
 }
