@@ -1,12 +1,14 @@
 ﻿using Charipay.Application.Queries.Admin.Dashboard.Users;
 using Charipay.Application.Queries.Charities;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Charipay.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(Roles ="Admin")]
     public class AdminDashboardController : ControllerBase
     {
         private readonly IMediator _mediator;
