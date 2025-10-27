@@ -35,7 +35,10 @@ namespace Charipay.Application.InterfaceImpl
         public Guid? UserId {
             get
             {
-                var userId = _httpContextAccessor.HttpContext?.User?.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+                var user = _httpContextAccessor.HttpContext?.User;
+                var userId = user?.FindFirst(JwtRegisteredClaimNames.Sub)?.Value ??
+                user?.FindFirst("sub")?.Value ??
+                user?.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
                 return userId != null ? Guid.Parse(userId) : (Guid?) null;
             }
         }
