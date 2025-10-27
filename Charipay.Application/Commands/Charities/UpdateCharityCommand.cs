@@ -17,5 +17,7 @@ namespace Charipay.Application.Commands.Charities
         public string Website { get; set; }
         public string ContactEmail { get; set; }
         public bool IsApproved { get; set; }
+        public string RegistrationNumber { get; set; }
+
     }
 }
