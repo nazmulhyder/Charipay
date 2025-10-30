@@ -23,5 +23,25 @@ namespace Charipay.Infrastructure.Repositories
             return await _appDbContext.Campaigns
                 .AnyAsync(c => c.CharityId == CharityId && c.CampaignName.ToLower() == CampaignName.ToLower());
         }
+
+        public async Task<(IEnumerable<Campaign>, int totalCount)> GetAllPagedCampaings(int PageNumber, int PageSize, string? Search = null)
+        {
+            var query = await _appDbContext.Campaigns
+                .OrderByDescending(c=>c.CreatedAt)
+                .Skip((PageNumber -1) * PageSize)
+                .Take(PageSize)
+                .ToListAsync();
+
+            if (!string.IsNullOrEmpty(Search))
+                query = query.Where(c => c.CampaignName.Contains(Search)).ToList();
+
+            var totalCount = query.Count();
+
+            return (query, totalCount);
+
+
+        }
+                                                                                                                                                                                                                               
+
     }
 }

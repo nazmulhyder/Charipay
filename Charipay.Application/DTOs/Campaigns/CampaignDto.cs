@@ -17,8 +17,10 @@ namespace Charipay.Application.DTOs.Campaigns
         public double CurrentAmount { get; set; }
         public DateTime CampaignStartDate { get; set; }
         public DateTime CampaignEndDate { get; set; }
-        public string ImageUrl { get; set; } = string.Empty;
+        public string? ImageUrl { get; set; } = string.Empty;
 
         public Guid CharityId { get; set; }
+        public Guid CreatedById { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

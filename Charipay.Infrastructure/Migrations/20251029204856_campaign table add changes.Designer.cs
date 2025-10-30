@@ -4,6 +4,7 @@ using Charipay.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Charipay.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251029204856_campaign table add changes")]
+    partial class campaigntableaddchanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,6 +61,7 @@ namespace Charipay.Infrastructure.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("ImageUrl")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CampaignId");
@@ -372,7 +376,7 @@ namespace Charipay.Infrastructure.Migrations
             modelBuilder.Entity("Charipay.Domain.Entities.VolunteerTask", b =>
                 {
                     b.HasOne("Charipay.Domain.Entities.Campaign", "Campaign")
-                        .WithMany("VolunteerTasks")
+                        .WithMany("volunteerTasks")
                         .HasForeignKey("CampaignId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -403,7 +407,7 @@ namespace Charipay.Infrastructure.Migrations
                 {
                     b.Navigation("Donations");
 
-                    b.Navigation("VolunteerTasks");
+                    b.Navigation("volunteerTasks");
                 });
 
             modelBuilder.Entity("Charipay.Domain.Entities.Charity", b =>

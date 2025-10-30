@@ -17,12 +17,14 @@ namespace Charipay.Domain.Entities
         public double CurrentAmount { get; set; }
         public DateTime CampaignStartDate { get; set; }
         public DateTime CampaignEndDate { get; set; }
-        public string ImageUrl { get; set; } = string.Empty;
+        public string? ImageUrl { get; set; } = string.Empty;
+        public Guid CreatedById { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public Guid CharityId { get; set; }
         public Charity Charity { get; set; }
         public ICollection<Donation> Donations { get; set; }
-        public ICollection<VolunteerTask> volunteerTasks { get; set; }
+        public ICollection<VolunteerTask> VolunteerTasks { get; set; }
 
     }
 }

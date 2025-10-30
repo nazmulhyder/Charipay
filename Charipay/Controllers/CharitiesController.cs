@@ -50,5 +50,17 @@ namespace Charipay.API.Controllers
 
             return Ok(result);
         }
+
+
+        [HttpDelete("DeleteCharity")]
+        public async Task<IActionResult> DeleteCharity([FromQuery] DeleteCharityCommand query, CancellationToken token)
+        {
+            var result = await _mediator.Send(query);
+
+            if (result.Message.Contains("exists"))
+                return BadRequest(result);
+
+            return Ok(result);
+        }
     }
 }

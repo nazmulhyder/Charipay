@@ -73,7 +73,7 @@ namespace Charipay.Infrastructure.Data
             //Volunteer Task
             modelBuilder.Entity<VolunteerTask>()
                 .HasOne(c => c.Campaign)
-                .WithMany(c => c.volunteerTasks)
+                .WithMany(c => c.VolunteerTasks)
                 .HasForeignKey(c => c.CampaignId)
                 .OnDelete(DeleteBehavior.Cascade);
 

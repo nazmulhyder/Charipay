@@ -1,4 +1,5 @@
 ﻿using Charipay.Application.Commands.Campaigns;
+using Charipay.Application.Queries.Campaigns;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,6 +29,39 @@ namespace Charipay.API.Controllers
 
             return Ok(result);  
 
+        }
+
+        [HttpGet("GetAllCampaigns")]
+        public async Task<IActionResult> GetAllPagedCampaigns([FromQuery] GetAllPagedCampaignsQuery query, CancellationToken token)
+        {
+            var result = await _mediator.Send(query);
+
+            if (result.Message.Contains("exists"))
+                return BadRequest(result);
+
+            return Ok(result);
+        }
+
+        [HttpDelete("DeleteCampains")]
+        public async Task<IActionResult> DeleteCampains([FromQuery] DeleteCampaignCommand query, CancellationToken token)
+        {
+            var result = await _mediator.Send(query);
+
+            if (result.Message.Contains("exists"))
+                return BadRequest(result);
+
+            return Ok(result);
+        }
+
+        [HttpGet("GetById")]
+        public async Task<IActionResult> GetById([FromQuery] GetByIdCampaignQuery query, CancellationToken token)
+        {
+            var result = await _mediator.Send(query);
+
+            if (result.Message.Contains("exists"))
+                return BadRequest(result);
+
+            return Ok(result);
         }
     }
 }

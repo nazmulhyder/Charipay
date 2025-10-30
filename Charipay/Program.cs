@@ -68,9 +68,18 @@ builder.Services.AddSwaggerGen(c=>
     });
 });
 
-builder.Services.AddCors(c => c.AddPolicy("AllowAngular", options => options.WithOrigins("http://localhost:4200")
-.AllowAnyOrigin().AllowAnyHeader()));
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngular", policy =>
+    {
+        policy
+        .AllowAnyOrigin()
+        .AllowAnyHeader()
+        .AllowAnyMethod();
 
+
+    });
+});
 
 var app = builder.Build();
     

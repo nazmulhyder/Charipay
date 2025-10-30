@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Charipay.Application.Common.Models;
 using Charipay.Application.DTOs.Campaigns;
+using Charipay.Application.Interfaces;
 using Charipay.Domain.Entities;
 using Charipay.Domain.Interfaces;
 using MediatR;
@@ -16,9 +17,11 @@ namespace Charipay.Application.Commands.Campaigns
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public CreateCampaignCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        private readonly ICurrentUserService _currentUser;
+        public CreateCampaignCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ICurrentUserService currentUser)
         {
             _mapper = mapper;
+            _currentUser = currentUser;
             _unitOfWork = unitOfWork;
         }
 
@@ -30,6 +33,7 @@ namespace Charipay.Application.Commands.Campaigns
             if (exists)
                 return ApiResponse<CampaignDto>.FailedResponse("Campain already exists with this Charity", new List<string> { "Campain already exists with this Charity" });
 
+            request.CreatedById = _currentUser.UserId;
             var data = _mapper.Map<Campaign>(request);
 
             await _unitOfWork.Campaigns.AddAsync(data);
