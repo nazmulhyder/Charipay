@@ -62,5 +62,13 @@ namespace Charipay.API.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("GetLookupCharity")]
+        public async Task<IActionResult> GetLookupCharity([FromQuery]GetCharityLookupQuery query, CancellationToken token)
+        {
+            var result = await _mediator.Send(query);
+
+            return Ok(result);
+        }
     }
 }

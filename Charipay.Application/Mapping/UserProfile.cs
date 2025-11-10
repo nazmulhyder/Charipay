@@ -43,6 +43,9 @@ namespace Charipay.Application.Mapping
 
             CreateMap<Charity, UpdateCharityCommand>();
             CreateMap<UpdateCharityCommand, Charity>();
+            
+
+             CreateMap<Charity, CharityLookupDto>();
 
             #endregion Charity
 
