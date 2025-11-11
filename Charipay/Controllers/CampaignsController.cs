@@ -31,6 +31,18 @@ namespace Charipay.API.Controllers
 
         }
 
+        [HttpPost("UpdateCampaign")]
+        public async Task<IActionResult> UpdateCampaign([FromBody] UpdateCampaignCommand request, CancellationToken token)
+        {
+            var result = await _mediator.Send(request);
+
+            if (result.Message.Contains("exists"))
+                return BadRequest(result);
+
+            return Ok(result);
+
+        }
+
         [HttpGet("GetAllCampaigns")]
         public async Task<IActionResult> GetAllPagedCampaigns([FromQuery] GetAllPagedCampaignsQuery query, CancellationToken token)
         {
