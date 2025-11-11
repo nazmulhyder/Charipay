@@ -27,9 +27,11 @@ namespace Charipay.Infrastructure.Repositories
         public async Task<(IEnumerable<Campaign>, int totalCount)> GetAllPagedCampaings(int PageNumber, int PageSize, string? Search = null)
         {
             var query = await _appDbContext.Campaigns
+                .Include(x=>x.Charity)
                 .OrderByDescending(c=>c.CreatedAt)
                 .Skip((PageNumber -1) * PageSize)
                 .Take(PageSize)
+                .AsNoTracking()
                 .ToListAsync();
 
             if (!string.IsNullOrEmpty(Search))

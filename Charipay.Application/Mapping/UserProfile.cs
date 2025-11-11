@@ -52,7 +52,8 @@ namespace Charipay.Application.Mapping
             #region Campaign
             CreateMap<CreateCampaignCommand, CampaignDto>();
             CreateMap<CampaignDto, CreateCampaignCommand>().ReverseMap();
-            CreateMap<Campaign, CampaignDto>();
+            CreateMap<Campaign, CampaignDto>()
+                .ForMember(dest => dest.CharityName, opt=> opt.MapFrom(src=>src.Charity.Name));
             CreateMap<CampaignDto, Campaign>().ReverseMap();
             CreateMap<CreateCampaignCommand, Campaign>();
             CreateMap<Campaign, CreateCampaignCommand>().ReverseMap();
