@@ -20,6 +20,9 @@ namespace Charipay.Domain.Entities
         public string? ImageUrl { get; set; } = string.Empty;
         public Guid CreatedById { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public bool IsFeatured { get; set; }
+        public bool IsActive { get; set; } = true;
+        public string CurrencyCode { get; set; } = "GBP"; //default
 
         public Guid CharityId { get; set; }
         public Charity Charity { get; set; }

@@ -54,8 +54,8 @@ namespace Charipay.API.Controllers
             return Ok(result);
         }
 
-        [HttpDelete("DeleteCampains")]
-        public async Task<IActionResult> DeleteCampains([FromQuery] DeleteCampaignCommand query, CancellationToken token)
+        [HttpDelete("DeleteCampaigns")]
+        public async Task<IActionResult> DeleteCampaigns([FromQuery] DeleteCampaignCommand query, CancellationToken token)
         {
             var result = await _mediator.Send(query);
 

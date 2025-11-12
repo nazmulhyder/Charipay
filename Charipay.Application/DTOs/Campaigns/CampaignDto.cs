@@ -23,5 +23,8 @@ namespace Charipay.Application.DTOs.Campaigns
         public Guid CharityId { get; set; }
         public Guid CreatedById { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public bool IsFeatured { get; set; }
+        public bool IsActive { get; set; } = true;
+        public string CurrencyCode { get; set; } = "GBP"; //default
     }
 }
