@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Charipay.Domain.Interfaces;
+using Charipay.Application.Interfaces.Repositories;
 using MediatR;
 using System;
 using System.Collections.Generic;

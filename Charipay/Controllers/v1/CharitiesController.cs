@@ -1,12 +1,14 @@
-﻿using Charipay.Application.Commands.Charities;
+﻿using Asp.Versioning;
+using Charipay.Application.Commands.Charities;
 using Charipay.Application.Queries.Charities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Charipay.API.Controllers
+namespace Charipay.API.Controllers.v1
 {
     [ApiController] // ✅ Tells ASP.NET Core this is an API controller
-    [Route("api/[controller]")] // ✅ Base route will be api/users
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")] // ✅ Base route will be api/users
     public class CharitiesController : ControllerBase
     {
         private readonly IMediator _mediator;

@@ -1,4 +1,4 @@
-﻿using Charipay.Application.Interfaces;
+﻿using Charipay.Application.Interfaces.Common;
 using Charipay.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.JsonWebTokens;

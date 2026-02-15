@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Charipay.Application.DTOs.Users;
+using Charipay.Application.Interfaces.Repositories;
 using Charipay.Domain.Entities;
-using Charipay.Domain.Interfaces;
 using MediatR;
 using System;
 using System.Collections.Generic;

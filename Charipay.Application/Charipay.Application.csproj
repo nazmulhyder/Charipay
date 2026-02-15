@@ -12,6 +12,8 @@
 
   <ItemGroup>
     <Folder Include="Common\Mapping\" />
+    <Folder Include="Interfaces\Email\" />
+    <Folder Include="Interfaces\SMS\" />
   </ItemGroup>
 
   <ItemGroup>

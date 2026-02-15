@@ -2,7 +2,7 @@
 using Charipay.Application.Common.Models;
 using Charipay.Application.Common.Pagination;
 using Charipay.Application.DTOs.Admin.Dashboard.Users;
-using Charipay.Domain.Interfaces;
+using Charipay.Application.Interfaces.Repositories;
 using MediatR;
 using System;
 using System.Collections.Generic;

@@ -1,6 +1,6 @@
 ﻿using Charipay.Application.Common.Behaviors;
 using Charipay.Application.InterfaceImpl;
-using Charipay.Application.Interfaces;
+using Charipay.Application.Interfaces.Common;
 using Charipay.Application.Mapping;
 using FluentValidation;
 using MediatR;

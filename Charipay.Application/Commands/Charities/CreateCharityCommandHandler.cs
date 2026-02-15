@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Charipay.Application.Common.Models;
 using Charipay.Application.DTOs.Charities;
-using Charipay.Application.Interfaces;
+using Charipay.Application.Interfaces.Common;
+using Charipay.Application.Interfaces.Repositories;
 using Charipay.Domain.Entities;
-using Charipay.Domain.Interfaces;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using System;

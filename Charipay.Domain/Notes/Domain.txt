@@ -1,0 +1,33 @@
+﻿🔹 1. Domain Layer (Core business rules)
+
+Purpose:
+
+Represents what the business is, not how it’s implemented
+
+Contains:
+
+Entities (core business objects)
+
+Value Objects
+
+Domain rules & invariants
+
+Domain interfaces (e.g. repository interfaces)
+
+Does NOT know about:
+
+Databases
+
+Frameworks
+
+APIs
+
+UI
+
+Azure
+
+EF Core
+
+So the summary is:
+
+“The Domain layer holds the pure business rules. It has no dependency on infrastructure or frameworks, so the core logic remains stable even if the technology changes.”

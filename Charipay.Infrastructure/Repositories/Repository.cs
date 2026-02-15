@@ -1,4 +1,4 @@
-﻿using Charipay.Domain.Interfaces;
+﻿using Charipay.Application.Interfaces.Repositories;
 using Charipay.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System;

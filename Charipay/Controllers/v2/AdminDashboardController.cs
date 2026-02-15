@@ -1,13 +1,15 @@
-﻿using Charipay.Application.Queries.Admin.Dashboard.Users;
+﻿using Asp.Versioning;
+using Charipay.Application.Queries.Admin.Dashboard.Users;
 using Charipay.Application.Queries.Charities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Charipay.API.Controllers
+namespace Charipay.API.Controllers.v2
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [ApiVersion("2.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [Authorize(Roles ="Admin")]
     public class AdminDashboardController : ControllerBase
     {

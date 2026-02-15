@@ -1,5 +1,5 @@
-﻿using Charipay.Domain.Entities;
-using Charipay.Domain.Interfaces;
+﻿using Charipay.Application.Interfaces.Repositories;
+using Charipay.Domain.Entities;
 using Charipay.Infrastructure.Data;
 using System;
 using System.Collections.Generic;

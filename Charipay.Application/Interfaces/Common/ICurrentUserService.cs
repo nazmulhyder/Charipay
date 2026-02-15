@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Charipay.Application.Interfaces
+namespace Charipay.Application.Interfaces.Common
 {
     /// <summary>
     /// Provide the imformation about the current authenticated user.

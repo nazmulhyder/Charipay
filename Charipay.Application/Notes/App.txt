@@ -1,0 +1,27 @@
+﻿Purpose:
+
+Orchestrates how the business rules are used
+
+Defines what the system can do
+
+Contains:
+
+Use cases / services
+
+Application logic
+
+DTOs
+
+Validation
+
+Interfaces to external concerns (e.g. repositories)
+
+Does NOT:
+
+Talk directly to databases
+
+Know about HTTP, controllers, UI
+
+Summary:
+
+“The Application layer coordinates business workflows. It defines use cases and relies on abstractions, not concrete implementations.”

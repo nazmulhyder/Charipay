@@ -3,7 +3,6 @@ using Charipay.Application.Commands.Users;
 using Charipay.Application.DTOs.Users;
 using Charipay.Application.Common.Models;
 using Charipay.Domain.Entities;
-using Charipay.Domain.Interfaces;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -11,6 +10,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
+using Charipay.Application.Interfaces.Repositories;
 
 namespace Charipay.Tests.Application.Commands
 {

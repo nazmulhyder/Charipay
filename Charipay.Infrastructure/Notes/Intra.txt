@@ -1,0 +1,27 @@
+﻿🔹 3. Infrastructure Layer (Technical details)
+
+Purpose:
+
+Implements how things actually work
+
+Contains:
+
+Repository implementations
+
+EF Core / Dapper
+
+Database context
+
+External services (email, payment, file storage)
+
+Azure / cloud integrations
+
+Knows about:
+
+Application layer
+
+Domain layer
+
+Summary:
+
+“Infrastructure is where technical details live. It implements interfaces defined in the core layers, allowing us to change technologies without touching business logic.”

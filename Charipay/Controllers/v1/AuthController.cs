@@ -1,12 +1,14 @@
-﻿using Charipay.Application.Commands.Users;
+﻿using Asp.Versioning;
+using Charipay.Application.Commands.Users;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Charipay.API.Controllers
+namespace Charipay.API.Controllers.v1
 {
 
     [ApiController]
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class AuthController(IMediator _mediator, ILogger<AuthController> _logger) : ControllerBase
     {
         // POST: api/auth/login

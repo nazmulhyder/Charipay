@@ -1,0 +1,25 @@
+﻿🔹 4. API/Presentation Layer (Delivery mechanism)
+
+Purpose:
+
+Handles how users interact with the system
+
+Contains:
+
+Controllers / API endpoints
+
+UI logic
+
+Request / response mapping
+
+Authentication middleware
+
+Does NOT contain:
+
+Business rules
+
+Data access logic
+
+Summary:
+
+“The Presentation layer handles input and output — translating user requests into application commands and returning results.”

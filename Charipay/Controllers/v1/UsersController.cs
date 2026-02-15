@@ -1,17 +1,15 @@
-﻿using AutoMapper;
-using Charipay.Application.Commands;
+﻿using Asp.Versioning;
 using Charipay.Application.Commands.Users;
 using Charipay.Application.Queries.Users;
-using Charipay.Domain.Entities;
-using Charipay.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Charipay.API.Controllers
+namespace Charipay.API.Controllers.v1
 {
 
     [ApiController] // ✅ Tells ASP.NET Core this is an API controller
-    [Route("api/[controller]")] // ✅ Base route will be api/users
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")] // ✅ Base route will be api/users
     public class UsersController : ControllerBase
     {
         private readonly IMediator _mediator;       

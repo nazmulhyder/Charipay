@@ -1,10 +1,13 @@
+using Asp.Versioning;
 using Charipay.API;
+using Charipay.API.Middlewares;
 using Charipay.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Text;
+using Asp.Versioning.ApiExplorer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,7 +37,22 @@ builder.Services.AddAuthentication("Bearer")
                };
            });
 
+//builder.Services.AddApiVersioning();
+
 //  swagger confiquration //
+builder.Services
+    .AddApiVersioning(options =>
+    {
+        options.DefaultApiVersion = new ApiVersion(1, 0);
+        options.AssumeDefaultVersionWhenUnspecified = true;
+        options.ReportApiVersions = true;
+    })
+    .AddApiExplorer(options =>
+    {
+        options.GroupNameFormat = "'v'VVV";
+        options.SubstituteApiVersionInUrl = true;
+    });
+
 builder.Services.AddSwaggerGen(c=>
 {
     c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Charipay API", Version = "v1" });
@@ -82,7 +100,9 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
-    
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment() || true)
 {

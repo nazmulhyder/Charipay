@@ -1,13 +1,15 @@
-﻿using Charipay.Application.Commands.Campaigns;
+﻿using Asp.Versioning;
+using Charipay.Application.Commands.Campaigns;
 using Charipay.Application.Queries.Campaigns;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Charipay.API.Controllers
+namespace Charipay.API.Controllers.v1
 {
     
     [ApiController]
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     /// <summary>
     /// 
     /// </summary>
