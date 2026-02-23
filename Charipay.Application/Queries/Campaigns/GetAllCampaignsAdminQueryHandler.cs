@@ -12,20 +12,20 @@ using System.Threading.Tasks;
 
 namespace Charipay.Application.Queries.Campaigns
 {
-    public class GetAllPagedCampaignsQueryHandler : IRequestHandler<GetAllPagedCampaignsQuery, ApiResponse<PageResult<CampaignDto>>>
+    public class GetAllCampaignsAdminQueryHandler : IRequestHandler<GetAllCampaignsAdminQuery, ApiResponse<PageResult<CampaignDto>>>
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
-        public GetAllPagedCampaignsQueryHandler(IMapper mapper, IUnitOfWork unitOfWork)
+        public GetAllCampaignsAdminQueryHandler(IMapper mapper, IUnitOfWork unitOfWork)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ApiResponse<PageResult<CampaignDto>>> Handle(GetAllPagedCampaignsQuery request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<PageResult<CampaignDto>>> Handle(GetAllCampaignsAdminQuery request, CancellationToken cancellationToken)
         {
-            var (campaignList, totalCount) = await 
-                _unitOfWork.Campaigns.GetPublicPagedCampaings(request.PageNumber, request.PageSize, request.IsFeatured, cancellationToken, request.Search);
+            var (campaignList, totalCount) = await
+                _unitOfWork.Campaigns.GetAdminPagedCampaings(request.PageNumber, request.PageSize, request.IsFeatured,request.IsActive ,cancellationToken, request.Search);
 
             var resCampaignList = _mapper.Map<List<CampaignDto>>(campaignList);
 

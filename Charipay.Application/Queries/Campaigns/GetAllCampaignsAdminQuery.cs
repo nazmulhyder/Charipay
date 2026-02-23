@@ -10,9 +10,10 @@ using System.Threading.Tasks;
 
 namespace Charipay.Application.Queries.Campaigns
 {
-    public class GetAllPagedCampaignsQuery : PagedRequest, IRequest<ApiResponse<PageResult<CampaignDto>>>
+    public class GetAllCampaignsAdminQuery : PagedRequest, IRequest<ApiResponse<PageResult<CampaignDto>>>
     {
         public string? Search { get; set; }
         public bool? IsFeatured { get; set; } = null;
+        public bool? IsActive { get; set; } = null;
     }
 }

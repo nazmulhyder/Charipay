@@ -18,32 +18,86 @@ namespace Charipay.Infrastructure.Repositories
             _appDbContext = context;
         }
 
+      
         public async Task<bool> GetCampaignByCharityId(Guid CharityId,string CampaignName, CancellationToken token)
         {
             return await _appDbContext.Campaigns
                 .AnyAsync(c => c.CharityId == CharityId && c.CampaignName.ToLower() == CampaignName.ToLower());
         }
 
-        public async Task<(IEnumerable<Campaign>, int totalCount)> GetAllPagedCampaings(int PageNumber, int PageSize, string? Search = null)
+        public async Task<(IEnumerable<Campaign>, int totalCount)> GetPublicPagedCampaings(int PageNumber, int PageSize, bool? IsFeatured,CancellationToken token, string? Search = null)
         {
-            var query = await _appDbContext.Campaigns
-                .Include(x=>x.Charity)
-                .OrderByDescending(c=>c.CreatedAt)
+
+            var query = _appDbContext.Campaigns.AsQueryable();
+
+            // IsFeatured = true means all featured campaigns
+            if(IsFeatured == true)
+            {
+                query =  query
+                    .Include(x=>x.Charity)
+                    .Where(
+                    c => c.CampaignStartDate <= DateTime.UtcNow &&
+                    c.CampaignEndDate >= DateTime.UtcNow &&  c.IsFeatured == true
+                    ).OrderByDescending(x=>x.CreatedAt);
+            }
+
+            // IsFeatured = null // means all active (featured + non featured) campaigns
+            var  campaigns = await query
+                .Include(x => x.Charity)
+                    .Where(
+                    c => c.CampaignStartDate <= DateTime.UtcNow &&
+                    c.CampaignEndDate >= DateTime.UtcNow && c.IsActive == true)
                 .Skip((PageNumber -1) * PageSize)
                 .Take(PageSize)
                 .AsNoTracking()
-                .ToListAsync();
+                .ToListAsync(token);
 
             if (!string.IsNullOrEmpty(Search))
-                query = query.Where(c => c.CampaignName.Contains(Search)).ToList();
+                campaigns = campaigns.Where(c => c.CampaignName.Contains(Search)).ToList();
 
-            var totalCount = query.Count();
+            var totalCount = campaigns.Count();
 
-            return (query, totalCount);
+            return (campaigns, totalCount);
 
 
         }
-                                                                                                                                                                                                                               
 
+        public async Task<(IEnumerable<Campaign>, int totalCount)> GetAdminPagedCampaings(int PageNumber, int PageSize, bool? IsFeatured, bool? IsActive, CancellationToken token, string? Search = null)
+        {
+            var query = _appDbContext.Campaigns.AsQueryable();
+
+            // IsFeatured = true means all featured campaigns
+            if (IsActive == true)
+            {
+                query = query
+                    .Include(x => x.Charity)
+                    .Where(
+                    c => c.CampaignStartDate <= DateTime.UtcNow &&
+                    c.CampaignEndDate >= DateTime.UtcNow && c.IsActive == true
+                    ).OrderByDescending(x => x.CreatedAt);
+            }
+
+            // IsFeatured = null // means all active (featured + non featured) campaigns
+            var campaigns = await query
+                .Include(x => x.Charity)
+                .Skip((PageNumber - 1) * PageSize)
+                .Take(PageSize)
+                .AsNoTracking()
+                .OrderByDescending(x => x.IsActive)
+                .ToListAsync(token);
+
+            if (!string.IsNullOrEmpty(Search))
+                campaigns = campaigns.Where(c => c.CampaignName.Contains(Search)).ToList();
+
+            var totalCount = campaigns.Count();
+
+            return (campaigns, totalCount);
+        }
+
+
+        //public async Task<(IEnumerable<Campaign>, int totalCount)> GetAllPagedCampaings(int PageNumber, int PageSize, bool IsPublic, string? Search = null)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

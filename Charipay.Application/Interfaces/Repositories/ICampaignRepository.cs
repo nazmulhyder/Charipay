@@ -10,6 +10,8 @@ namespace Charipay.Application.Interfaces.Repositories
     public interface ICampaignRepository : IRepository<Campaign>
     {
         public Task<bool> GetCampaignByCharityId(Guid CharityId,string CampaignName, CancellationToken token);
-        public Task<(IEnumerable<Campaign>, int totalCount)> GetAllPagedCampaings(int PageNumber, int PageSize, string? Search = null);
+        public Task<(IEnumerable<Campaign>, int totalCount)> GetPublicPagedCampaings(int PageNumber, int PageSize, bool? IsFeatured, CancellationToken token, string? Search = null);
+        public Task<(IEnumerable<Campaign>, int totalCount)> GetAdminPagedCampaings(int PageNumber, int PageSize, bool? IsFeatured, bool? IsActive, CancellationToken token, string? Search = null);
+
     }
 }

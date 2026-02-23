@@ -2,6 +2,7 @@
 using Charipay.Application.Commands.Campaigns;
 using Charipay.Application.Queries.Campaigns;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Charipay.API.Controllers.v1
@@ -21,6 +22,7 @@ namespace Charipay.API.Controllers.v1
             _mediator = mediator;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("CreateCampaign")]
         public async Task<IActionResult> CreateCampaign([FromBody] CreateCampaignCommand request, CancellationToken token)
         {
@@ -33,6 +35,7 @@ namespace Charipay.API.Controllers.v1
 
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("UpdateCampaign")]
         public async Task<IActionResult> UpdateCampaign([FromBody] UpdateCampaignCommand request, CancellationToken token)
         {
@@ -45,8 +48,8 @@ namespace Charipay.API.Controllers.v1
 
         }
 
-        [HttpGet("GetAllCampaigns")]
-        public async Task<IActionResult> GetAllPagedCampaigns([FromQuery] GetAllPagedCampaignsQuery query, CancellationToken token)
+        [HttpGet("Public/AllCampaigns")]
+        public async Task<IActionResult> GetPagedCampaigns([FromQuery] GetAllPagedCampaignsQuery query, CancellationToken token)
         {
             var result = await _mediator.Send(query);
 
@@ -56,6 +59,19 @@ namespace Charipay.API.Controllers.v1
             return Ok(result);
         }
 
+        [Authorize(Roles ="Admin")]
+        [HttpGet("Admin/AllCampaigns")]
+        public async Task<IActionResult> GetAllCampaigns([FromQuery] GetAllCampaignsAdminQuery query, CancellationToken token)
+        {
+            var result = await _mediator.Send(query);
+
+            if (result.Message.Contains("exists"))
+                return BadRequest(result);
+
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "Admin")]
         [HttpDelete("DeleteCampaigns")]
         public async Task<IActionResult> DeleteCampaigns([FromQuery] DeleteCampaignCommand query, CancellationToken token)
         {
