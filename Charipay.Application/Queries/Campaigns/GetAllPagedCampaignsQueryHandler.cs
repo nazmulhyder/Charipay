@@ -25,7 +25,7 @@ namespace Charipay.Application.Queries.Campaigns
         public async Task<ApiResponse<PageResult<CampaignDto>>> Handle(GetAllPagedCampaignsQuery request, CancellationToken cancellationToken)
         {
             var (campaignList, totalCount) = await 
-                _unitOfWork.Campaigns.GetPublicPagedCampaings(request.PageNumber, request.PageSize, request.IsFeatured, cancellationToken, request.Search);
+                _unitOfWork.Campaigns.GetPublicPagedCampaigns(request.PageNumber, request.PageSize, request.IsFeatured, cancellationToken, request.Search);
 
             var resCampaignList = _mapper.Map<List<CampaignDto>>(campaignList);
 

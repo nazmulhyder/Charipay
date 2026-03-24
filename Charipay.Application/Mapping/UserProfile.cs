@@ -5,6 +5,7 @@ using Charipay.Application.Commands.Users;
 using Charipay.Application.DTOs.Admin.Dashboard.Users;
 using Charipay.Application.DTOs.Campaigns;
 using Charipay.Application.DTOs.Charities;
+using Charipay.Application.DTOs.Donation;
 using Charipay.Application.DTOs.Users;
 using Charipay.Domain.Entities;
 using System;
@@ -65,6 +66,11 @@ namespace Charipay.Application.Mapping
             CreateMap<User, AdminUserListDto>()
                 .ForMember(dest => dest.Role, 
                 opt => opt.MapFrom(src=>src.UserRoles.Select(x=>x.Role.Name).FirstOrDefault()));
+            #endregion
+
+            #region Donations
+            CreateMap<Donation, DonationResponseDto>();
+            CreateMap<DonationResponseDto, Donation>().ReverseMap();
             #endregion
 
 

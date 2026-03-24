@@ -19,9 +19,10 @@ namespace Charipay.Infrastructure.Persistence
         public ICharityRepository Charities { get; }
 
         public ICampaignRepository Campaigns { get; }
+        public IDonationRepository Donations { get; }
 
         public UnitOfWork(AppDbContext context, IUserRepository userRepository, IUserRoleRepository userRoles,
-            ICharityRepository _charities, ICampaignRepository _Campains
+            ICharityRepository _charities, ICampaignRepository _Campains, IDonationRepository _donations
             )
         {
             _context = context;
@@ -29,6 +30,7 @@ namespace Charipay.Infrastructure.Persistence
             UserRoles = userRoles;
             Charities = _charities;
             Campaigns = _Campains;
+            Donations = _donations;
         }
 
         public async Task<int> SaveChangesAsync()

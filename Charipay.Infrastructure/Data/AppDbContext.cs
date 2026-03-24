@@ -68,7 +68,7 @@ namespace Charipay.Infrastructure.Data
             modelBuilder.Entity<Donation>()
              .HasOne(c => c.Campaign)
              .WithMany(c => c.Donations)
-             .HasForeignKey(c => c.DonationId);
+             .HasForeignKey(c => c.CampaignId);
 
             //Volunteer Task
             modelBuilder.Entity<VolunteerTask>()

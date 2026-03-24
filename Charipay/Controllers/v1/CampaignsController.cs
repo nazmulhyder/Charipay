@@ -93,5 +93,17 @@ namespace Charipay.API.Controllers.v1
 
             return Ok(result);
         }
+
+        [HttpPost("upload-image")]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> UploadImage(UploadCampaignImageCommand command, CancellationToken token)
+        {
+            var result = await _mediator.Send(command);
+
+            if (!result.Success)
+                return BadRequest(result);
+
+            return Ok(result);
+        }
     }
 }

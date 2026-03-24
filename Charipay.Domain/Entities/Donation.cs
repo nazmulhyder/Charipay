@@ -15,8 +15,8 @@ namespace Charipay.Domain.Entities
         [Key]
         public Guid DonationId { get; set; }
 
-        public Guid UserId { get; set; }
-        public User User { get; set; }
+        public Guid? UserId { get; set; }
+        public User? User { get; set; }
 
        
         //payment info
@@ -28,7 +28,7 @@ namespace Charipay.Domain.Entities
         public string PaymentMethod { get; set; }
         public string TransactionId { get; set; }
         public string PaymentStatus { get; set; }
-        public string ReceiptUrl { get; set; }
+        public string? ReceiptUrl { get; set; }
 
         // navigation property
         public Guid CampaignId { get; set; }

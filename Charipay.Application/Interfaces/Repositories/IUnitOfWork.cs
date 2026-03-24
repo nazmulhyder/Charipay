@@ -12,6 +12,7 @@ namespace Charipay.Application.Interfaces.Repositories
         IUserRoleRepository UserRoles { get; }
         ICharityRepository Charities { get; }
         ICampaignRepository Campaigns { get; }
+        IDonationRepository Donations { get; }
         Task<int> SaveChangesAsync();
     }
 }

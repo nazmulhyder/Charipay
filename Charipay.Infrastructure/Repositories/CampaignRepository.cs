@@ -25,7 +25,7 @@ namespace Charipay.Infrastructure.Repositories
                 .AnyAsync(c => c.CharityId == CharityId && c.CampaignName.ToLower() == CampaignName.ToLower());
         }
 
-        public async Task<(IEnumerable<Campaign>, int totalCount)> GetPublicPagedCampaings(int PageNumber, int PageSize, bool? IsFeatured,CancellationToken token, string? Search = null)
+        public async Task<(IEnumerable<Campaign>, int totalCount)> GetPublicPagedCampaigns(int PageNumber, int PageSize, bool? IsFeatured,CancellationToken token, string? Search = null)
         {
 
             var query = _appDbContext.Campaigns.AsQueryable();
@@ -62,7 +62,7 @@ namespace Charipay.Infrastructure.Repositories
 
         }
 
-        public async Task<(IEnumerable<Campaign>, int totalCount)> GetAdminPagedCampaings(int PageNumber, int PageSize, bool? IsFeatured, bool? IsActive, CancellationToken token, string? Search = null)
+        public async Task<(IEnumerable<Campaign>, int totalCount)> GetAdminPagedCampaigns(int PageNumber, int PageSize, bool? IsFeatured, bool? IsActive, CancellationToken token, string? Search = null)
         {
             var query = _appDbContext.Campaigns.AsQueryable();
 

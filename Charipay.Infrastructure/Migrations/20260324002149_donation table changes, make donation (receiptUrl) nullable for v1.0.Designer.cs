@@ -4,6 +4,7 @@ using Charipay.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Charipay.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260324002149_donation table changes, make donation (receiptUrl) nullable for v1.0")]
+    partial class donationtablechangesmakedonationreceiptUrlnullableforv10
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -122,7 +125,6 @@ namespace Charipay.Infrastructure.Migrations
             modelBuilder.Entity("Charipay.Domain.Entities.Donation", b =>
                 {
                     b.Property<Guid>("DonationId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<double>("Amount")
@@ -156,8 +158,6 @@ namespace Charipay.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("DonationId");
-
-                    b.HasIndex("CampaignId");
 
                     b.HasIndex("UserId");
 
@@ -347,7 +347,7 @@ namespace Charipay.Infrastructure.Migrations
                 {
                     b.HasOne("Charipay.Domain.Entities.Campaign", "Campaign")
                         .WithMany("Donations")
-                        .HasForeignKey("CampaignId")
+                        .HasForeignKey("DonationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -1,8 +1,10 @@
 ﻿using Charipay.Application.Interfaces.Repositories;
+using Charipay.Application.Interfaces.Storage;
 using Charipay.Infrastructure.Data;
 using Charipay.Infrastructure.Persistence;
 using Charipay.Infrastructure.Repositories;
 using Charipay.Infrastructure.Security;
+using Charipay.Infrastructure.Storage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,16 +19,27 @@ namespace Charipay.Infrastructure
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddInfrastructureDI(this IServiceCollection services)
+        public static IServiceCollection AddInfrastructureDI(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<AppDbContext>(options =>
-            {
-                //local
-                //options.UseSqlServer("Server=NISHATS-IDEAPAD; Database=Charipay-DB;User Id=nazmul.hyder;password=nazmul496; MultipleActiveResultSets=True; TrustServerCertificate=True");
-                //azure sql
-                 options.UseSqlServer("Server=tcp:charipay-dbdbserver.database.windows.net,1433;Initial Catalog=Charipay-DB;Persist Security Info=False;User ID=nazmul.hyder;Password=@Nazder496;");
+            var conn = configuration.GetConnectionString("DefaultConnection");
 
+            // DB Connection string
+            services.AddDbContext<AppDbContext>(option => { 
+             option.UseSqlServer(conn);
             });
+
+            //Blob (read from configuration)
+            services.AddScoped<IFileStorageService>(sp =>
+            {
+                var blobConn = configuration["AzureBlob:ConnectionString"]
+                ?? throw new Exception("AzureBlob:ConnectionString is missing");
+                
+                var container = configuration["AzureBlob:ContainerName"]
+                ?? throw new Exception("AzureBlob:ContainerName is missing");
+
+                return new AzureBlobStorageService(blobConn!, container!);
+            });
+
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ICharityRepository, CharityRepository>();
             services.AddScoped<ICampaignRepository, CampaignRepository>();
@@ -34,7 +47,9 @@ namespace Charipay.Infrastructure
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
             services.AddScoped<IJwtTokenService, JwtTokenService>();
-          
+            services.AddScoped<IDonationRepository, DonationRepository>();
+            //services.AddScoped<IFileStorageService, AzureBlobStorageService>();
+
 
             return services;
         }

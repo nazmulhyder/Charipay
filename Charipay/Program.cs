@@ -19,7 +19,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddAppDI();
+builder.Services.AddAppDI(builder.Configuration);
 
 builder.Services.AddAuthentication("Bearer")
            .AddJwtBearer(options =>

@@ -1,40 +1,37 @@
 # 🌍 Charipay – Charity Donation Platform  
 
-_A .NET Web API application for managing charity donations, built with Clean Architecture, MediatR, Repository Pattern, and Unit of Work._  
+A backend-focused .NET Web API for managing charity campaigns, donations, and user roles. The system is designed to support real-world workflows such as secure donation processing, campaign lifecycle management, and role-based access control.
 
 ---
 
 ## 🚀 Features  
 - 🔐 Role-based registration & login (JWT authentication)  
-- 🏛️ Clean Architecture with MediatR, Repository, and Unit of Work  
-- 🗂️ Domain-driven design (DDD) principles  
-- 🛡️ Secure password hashing  
-- 📦 Unit tests with xUnit, Moq, FluentAssertions  
-- 🌍 RESTful API endpoints  
+- 📊 Campaign and donation management workflows  
+- 🛡️ Secure authentication and password hashing
+- 🖼️ Media upload and storage using Azure Blob Storage
+- 🌍 RESTful API endpoints for frontend integration  
+- 🧪 Unit testing with xUnit, Moq, and FluentAssertions
+
 
 ---
 
 ## 🏗️ Tech Stack  
-- **Backend:** .NET 8 Web API, C#, MediatR  
-- **Database:** Azure SQL 
-- **Authentication:** JWT, Role-based  
-- **ORM/Data Access:** EF Core (Repository & Unit of Work), Dapper (optional)  
+- **Backend:** .NET 8 Web API, C#  
+- **Database:** Azure SQL
+- **Cloud:** Azure App Service, Azure Blob Storage  
+- **Authentication:** JWT, Role-based access  
+- **Data Access:** EF Core (Repository & Unit of Work)  
+- **Architecture:** Layered architecture with MediatR for request handling  
 - **Testing:** xUnit, Moq, FluentAssertions  
-- **Other:** AutoMapper, ILogger
-- **Deployment & Hosting:** Azure Web App
+- **Deployment:** Azure App Service  
 
 ---
 
 ## 📂 Project Structure  
 ```bash
 Charipay/
-├── Charipay.API              # Presentation layer (Controllers, Middlewares, Startup)
-├── Charipay.Application      # Application layer (Commands, Queries, DTOs, Handlers)
+├── Charipay.API              # Controllers, Middleware, Configuration
+├── Charipay.Application      # Commands, Queries, DTOs, Handlers
 ├── Charipay.Domain           # Entities, Interfaces, Business rules
 ├── Charipay.Infrastructure   # Database, Repositories, EF Core
 ├── Charipay.Tests            # Unit & integration tests
-```
-## 📖 API Documentation
-
-Swagger UI:
-- **Production** → [https://charipay-web-api.azurewebsites.net/swagger/index.html](https://charipay-web-api.azurewebsites.net/swagger/index.html)
