@@ -15,5 +15,6 @@ namespace Charipay.Application.Commands.Donations
         public double Amount { get; set; }
         public string? Message { get; set; }
         public bool IsAnonymous { get; set; }
+        public string PaymentMethod { get; set; } = string.Empty;
     }
 }

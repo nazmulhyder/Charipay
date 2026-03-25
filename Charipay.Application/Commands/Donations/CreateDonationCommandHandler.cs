@@ -56,7 +56,7 @@ namespace Charipay.Application.Commands.Donations
                 Amount = request.Amount,
                 DonationDate = DateTime.UtcNow,
                 IsAnonymous = request.IsAnonymous,
-                PaymentMethod = "Demo",
+                PaymentMethod = request.PaymentMethod,
                 TransactionId = Guid.NewGuid().ToString(),
                 PaymentStatus = "Succeeded",
                 ReceiptUrl = null,
