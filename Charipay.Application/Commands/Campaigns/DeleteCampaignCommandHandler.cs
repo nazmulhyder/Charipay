@@ -23,12 +23,12 @@ namespace Charipay.Application.Commands.Campaigns
 
         public async Task<ApiResponse<string>> Handle(DeleteCampaignCommand request, CancellationToken cancellationToken)
         {
-            var existingData = await _unitofWork.Campaigns.GetByIdAsync(request.CampaignId);
+            var existingData = await _unitofWork.Campaigns.GetByIdAsync(request.CampaignId, cancellationToken);
 
             if (existingData == null)
                 return ApiResponse<string>.FailedResponse("Data not exists.");
 
-            _unitofWork.Campaigns.Remove(existingData);
+            _unitofWork.Campaigns.Remove(existingData, cancellationToken);
             await _unitofWork.SaveChangesAsync();
 
             return ApiResponse<string>.SuccessResponse("Deleted successfully", "Deleted successfully");

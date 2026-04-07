@@ -23,7 +23,7 @@ namespace Charipay.Application.Queries.Charities
         }
         public async Task<ApiResponse<IEnumerable<CharityLookupDto>>> Handle(GetCharityLookupQuery request, CancellationToken cancellationToken)
         {
-            var data = await _unitOfWork.Charities.GetAllAsync();
+            var data = await _unitOfWork.Charities.GetAllAsync(cancellationToken);
 
             var finalResult = _mapper.Map<IEnumerable<CharityLookupDto>>(data);
 

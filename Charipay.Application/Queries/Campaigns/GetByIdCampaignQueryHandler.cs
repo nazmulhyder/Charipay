@@ -25,7 +25,7 @@ namespace Charipay.Application.Queries.Campaigns
 
         public async Task<ApiResponse<CampaignDto>> Handle(GetByIdCampaignQuery request, CancellationToken cancellationToken)
         {
-            var result = await _unitofWork.Campaigns.GetByIdAsync(request.CampaignId);
+            var result = await _unitofWork.Campaigns.GetByIdAsync(request.CampaignId, cancellationToken);
 
             if (result == null)
                 return ApiResponse<CampaignDto>.FailedResponse("Data not exists!");

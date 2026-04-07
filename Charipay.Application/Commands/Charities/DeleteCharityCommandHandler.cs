@@ -22,14 +22,14 @@ namespace Charipay.Application.Commands.Charities
         }
         public async Task<ApiResponse<string>> Handle(DeleteCharityCommand request, CancellationToken cancellationToken)
         {
-            var existingCharity = await _unitOfWork.Charities.GetByIdAsync(request.CharityId);
+            var existingCharity = await _unitOfWork.Charities.GetByIdAsync(request.CharityId, cancellationToken);
 
             if (existingCharity == null)
                 return ApiResponse<string>.FailedResponse("Data not exists");
 
             var data = _mapper.Map<Charity>(existingCharity);
 
-            _unitOfWork.Charities.Remove(data);
+            _unitOfWork.Charities.Remove(data, cancellationToken);
             await _unitOfWork.SaveChangesAsync();
 
             return ApiResponse<string>.SuccessResponse("Data deleted successfully", "Data deleted successfully");

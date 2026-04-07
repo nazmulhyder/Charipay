@@ -38,7 +38,6 @@ namespace Charipay.Application.Commands.Users
             var user = mapper.Map<User>(request);
             user.PasswordHash = _passwordHasher.Hash(request.Password);
 
-
             await _unitOfWork.Users.AddAsync(user);
             await _unitOfWork.SaveChangesAsync();
 

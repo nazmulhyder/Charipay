@@ -15,7 +15,7 @@ namespace Charipay.Application.Queries.Users
     {
         public async Task<ApiResponse<UserDto>> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
         {
-            var user = await unitOfWork.Users.GetByIdAsync(request.id);
+            var user = await unitOfWork.Users.GetByIdAsync(request.id, cancellationToken);
 
             if (user == null) return null;
 

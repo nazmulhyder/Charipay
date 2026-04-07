@@ -20,17 +20,17 @@ namespace Charipay.Infrastructure.Repositories
             _dbSet = _context.Set<T>();
         }
 
-        public async Task<T?> GetByIdAsync(Guid id)
+        public async Task<T?> GetByIdAsync(Guid id, CancellationToken token)
         {
-            return await _dbSet.FindAsync(id);
+            return await _dbSet.FindAsync(id, token);
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public async Task<IEnumerable<T>> GetAllAsync(CancellationToken token)
         { 
-            return await _dbSet.ToListAsync();
+            return await _dbSet.ToListAsync(token);
         }
 
-        public IQueryable<T> Query()
+        public IQueryable<T> Query(CancellationToken token)
         {
             return _dbSet.AsQueryable();
         }
@@ -42,22 +42,22 @@ namespace Charipay.Infrastructure.Repositories
             return entry.Entity;
         }
 
-        public async Task AddRangeAsync(IEnumerable<T> entities)
+        public async Task AddRangeAsync(IEnumerable<T> entities, CancellationToken token)
         {
-            await _dbSet.AddRangeAsync(entities);
+            await _dbSet.AddRangeAsync(entities, token);
         }
 
-        public void Update(T entity)
+        public void Update(T entity, CancellationToken token)
         {
             _dbSet.Update(entity);
         }
 
-        public void Remove(T entity)
+        public void Remove(T entity, CancellationToken token)
         {
             _dbSet.Remove(entity);
         }
 
-        public void RemoveRange(IEnumerable<T> entities)
+        public void RemoveRange(IEnumerable<T> entities, CancellationToken token)
         {
             _dbSet.RemoveRange(entities);
         }

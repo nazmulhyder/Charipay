@@ -41,7 +41,7 @@ namespace Charipay.Application.Commands.Campaigns
 
             // adjust this line to match your repository method name
 
-            var campaign = await _unitofWork.Campaigns.GetByIdAsync(request.CampaignId);
+            var campaign = await _unitofWork.Campaigns.GetByIdAsync(request.CampaignId, cancellationToken);
 
             if(campaign == null)
                 return ApiResponse<string>.FailedResponse("Campaign not fould.");

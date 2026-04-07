@@ -25,7 +25,7 @@ namespace Charipay.Application.Commands.Charities
 
         public async Task<ApiResponse<CharityDto>> Handle(UpdateCharityCommand request, CancellationToken cancellationToken)
         {
-            var existingCharity = await _unitOfWork.Charities.GetByIdAsync(request.CharityId);
+            var existingCharity = await _unitOfWork.Charities.GetByIdAsync(request.CharityId, cancellationToken);
 
             if (existingCharity == null)
                 return ApiResponse<CharityDto>.FailedResponse("Charity does not exists");
@@ -35,7 +35,7 @@ namespace Charipay.Application.Commands.Charities
            // _unitOfWork.Charities.Update(charity);
             await _unitOfWork.SaveChangesAsync();
 
-            var getUpdaetdCharity = await _unitOfWork.Charities.GetByIdAsync(request.CharityId);
+            var getUpdaetdCharity = await _unitOfWork.Charities.GetByIdAsync(request.CharityId, cancellationToken);
 
             var result = _mapper.Map<CharityDto>(getUpdaetdCharity);
 

@@ -15,7 +15,7 @@ namespace Charipay.Application.Commands.Users
     {
         public async Task<UserDto> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
-            var existingUser = await unitOfWork.Users.GetByIdAsync(request.UserId);
+            var existingUser = await unitOfWork.Users.GetByIdAsync(request.UserId, cancellationToken);
             if (existingUser == null) {
 
                 throw new Exception("User not found!");
@@ -24,10 +24,10 @@ namespace Charipay.Application.Commands.Users
 
             var user = mapper.Map<User>(request);
 
-            unitOfWork.Users.Update(user);
+            unitOfWork.Users.Update(user, cancellationToken);
             await unitOfWork.SaveChangesAsync();
 
-            var updateUser = await unitOfWork.Users.GetByIdAsync(user.UserID);
+            var updateUser = await unitOfWork.Users.GetByIdAsync(user.UserID, cancellationToken);
 
             return mapper.Map<UserDto>(updateUser);
 

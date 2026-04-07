@@ -13,13 +13,13 @@ namespace Charipay.Application.Commands.Users
     {
         public async Task<string> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await unitOfWork.Users.GetByIdAsync(request.UserId);
+            var user = await unitOfWork.Users.GetByIdAsync(request.UserId, cancellationToken);
 
             if (user == null) {
                 throw new Exception("User not found!");
             }
 
-           unitOfWork.Users.Remove(user);
+           unitOfWork.Users.Remove(user, cancellationToken);
            await  unitOfWork.SaveChangesAsync();
            
            return "User deleted successfully.";

@@ -27,7 +27,7 @@ namespace Charipay.Application.Commands.Donations
 
         public async Task<ApiResponse<DonationResponseDto>> Handle(CreateDonationCommand request, CancellationToken cancellationToken)
         {
-            var campaign = await _unitOfWork.Campaigns.GetByIdAsync(request.CampaignId);
+            var campaign = await _unitOfWork.Campaigns.GetByIdAsync(request.CampaignId, cancellationToken);
 
             if (campaign == null) 
             {
@@ -70,7 +70,7 @@ namespace Charipay.Application.Commands.Donations
                 if (donation.PaymentStatus == "Succeeded")
                 {
                     campaign.CurrentAmount += donation.Amount;
-                    _unitOfWork.Campaigns.Update(campaign);
+                    _unitOfWork.Campaigns.Update(campaign, cancellationToken);
                 }
 
                 await _unitOfWork.SaveChangesAsync();
