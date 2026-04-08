@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using Charipay.Application.Queries.Admin.Dashboard.Users;
 using Charipay.Application.Queries.Charities;
+using Charipay.Application.Queries.Dashboard;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -32,6 +33,14 @@ namespace Charipay.API.Controllers.v1
         public async Task<IActionResult> GetAllCharity([FromQuery] GetAllCharityQuery query, CancellationToken token)
         {
             var result = await _mediator.Send(query);
+
+            return Ok(result);
+        }
+
+        [HttpGet("Dashboard")]
+        public async Task<IActionResult> GetAllCharity()
+        {
+            var result = await _mediator.Send(new GetDashboardQuery());
 
             return Ok(result);
         }
