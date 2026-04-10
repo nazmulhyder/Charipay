@@ -24,6 +24,7 @@ namespace Charipay.Infrastructure.Data
         public DbSet<VolunteerTask> VolunteerTasks { get; set; }
         public DbSet<Donation> Donations { get; set; }
         public DbSet<VolunteerUser> VolunteerUsers { get; set; }
+        public DbSet<VolunteerProgressUpdate> VolunteerProgressUpdates { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -75,7 +76,13 @@ namespace Charipay.Infrastructure.Data
                 .HasOne(c => c.Campaign)
                 .WithMany(c => c.VolunteerTasks)
                 .HasForeignKey(c => c.CampaignId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<VolunteerTask>()
+                .HasMany(c=>c.VolunteerUsers)
+                .WithOne(d => d.VolunteerTask)
+                .HasForeignKey(d=>d.VolunteerTaskId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             //Volunteer User
             modelBuilder.Entity<VolunteerUser>()
@@ -87,7 +94,17 @@ namespace Charipay.Infrastructure.Data
             modelBuilder.Entity<VolunteerUser>()
                 .HasOne(c => c.User)
                 .WithMany(c => c.VolunteerUsers)
-                .HasForeignKey(c => c.UserId);
+                .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+                 
+
+            modelBuilder.Entity<VolunteerUser>()
+                .HasMany(c=>c.volunteerProgressUpdates)
+                .WithOne(d=>d.VolunteerUser)
+                .HasForeignKey(d=>d.VolunteerUserId)
+                .OnDelete(DeleteBehavior.Cascade);
+            
+
 
 
 

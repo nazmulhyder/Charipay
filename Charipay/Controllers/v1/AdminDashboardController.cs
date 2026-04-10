@@ -1,4 +1,7 @@
 ﻿using Asp.Versioning;
+using Charipay.Application.Commands.Admin.Volunteer;
+using Charipay.Application.Common.Models;
+using Charipay.Application.DTOs.Admin.Volunteer;
 using Charipay.Application.Queries.Admin.Dashboard.Users;
 using Charipay.Application.Queries.Charities;
 using Charipay.Application.Queries.Dashboard;
@@ -41,6 +44,15 @@ namespace Charipay.API.Controllers.v1
         public async Task<IActionResult> GetAllCharity()
         {
             var result = await _mediator.Send(new GetDashboardQuery());
+
+            return Ok(result);
+        }
+
+        [HttpPost("campaigns/volunteer-tasks")]
+        public async Task<IActionResult> CreateVolunteerTask([FromBody] CreateVolunteerTaskCommand cmd)
+        {
+
+            var result = await _mediator.Send(cmd);
 
             return Ok(result);
         }

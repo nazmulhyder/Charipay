@@ -4,6 +4,7 @@ using Charipay.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Charipay.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260409105005_added volunteerprogressupdates table, new property added on volunteertasks and volunteerUsers")]
+    partial class addedvolunteerprogressupdatestablenewpropertyaddedonvolunteertasksandvolunteerUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -279,7 +282,7 @@ namespace Charipay.Infrastructure.Migrations
 
                     b.HasIndex("VolunteerUserId");
 
-                    b.ToTable("VolunteerProgressUpdates");
+                    b.ToTable("volunteerProgressUpdates");
                 });
 
             modelBuilder.Entity("Charipay.Domain.Entities.VolunteerTask", b =>

@@ -22,6 +22,10 @@ namespace Charipay.Domain.Entities
 
         public Guid CampaignId { get; set; }
         public Campaign Campaign { get; set; }
+        public bool IsActive { get; set; }
+        public string? SupportType { get; set; } // Field Support, Promotion, Coordination
+        public string? Requirements { get; set; }
+        public string? Instructions { get; set; }
 
         public ICollection<VolunteerUser> VolunteerUsers { get; set; }
     }
