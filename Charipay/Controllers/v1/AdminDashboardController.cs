@@ -55,6 +55,8 @@ namespace Charipay.API.Controllers.v1
             var result = await _mediator.Send(cmd);
 
             return Ok(result);
+
+            
         }
     }
 }

@@ -34,12 +34,13 @@ namespace Charipay.API.Middlewares
 
             // Example: map specific exception types to proper status codes
             // (replace with your own custom exceptions if you have them)
-            if (ex is ValidationException validationEx)
+            if (ex is FluentValidation.ValidationException validationEx)
             {
                 statusCode = StatusCodes.Status400BadRequest;
                 message = "Validation failed.";
                 errors = validationEx.Errors
                                      .Select(e => e.ErrorMessage)
+                                     .Distinct()
                                      .ToList();
             }
             else if (ex is NotFoundException notFoundEx)

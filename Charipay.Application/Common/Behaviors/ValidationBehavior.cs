@@ -69,7 +69,7 @@ namespace Charipay.Application.Common.Behaviors
         {
             var tRes = typeof(TResponse);
 
-            if(tRes.IsGenericType || tRes.GetGenericTypeDefinition() != typeof(ApiResponse<>))
+            if(!tRes.IsGenericType || tRes.GetGenericTypeDefinition() != typeof(ApiResponse<>))
             {
                 throw new InvalidOperationException("InvalidBehavior expects all responses to be ApiResponse<T>.");
             }
@@ -77,7 +77,7 @@ namespace Charipay.Application.Common.Behaviors
             var payloadType = tRes.GetGenericArguments()[0];
             var apiResponseType = typeof(ApiResponse<>).MakeGenericType(payloadType);
 
-            var failMethod = apiResponseType.GetMethod("FailResponse", new[] { typeof(string), typeof(List<string>) });
+            var failMethod = apiResponseType.GetMethod("FailedResponse", new[] { typeof(string), typeof(List<string>) });
             return (TResponse)failMethod.Invoke(null, new object[] { "validation failed", errors })!; 
         }
     }
