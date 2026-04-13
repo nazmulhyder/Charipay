@@ -61,6 +61,8 @@ namespace Charipay.Application.Mapping
             CreateMap<Campaign, CreateCampaignCommand>().ReverseMap();
             CreateMap<UpdateCampaignCommand, Campaign>();
             CreateMap<Campaign, UpdateCampaignCommand>().ReverseMap();
+
+            CreateMap<Campaign, CampaignDropdownDto>();
             #endregion
 
             #region Admin dashboard : User List

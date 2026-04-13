@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using Charipay.Application.Commands.Campaigns;
 using Charipay.Application.Queries.Campaigns;
+using Charipay.Application.Queries.Charities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -102,6 +103,15 @@ namespace Charipay.API.Controllers.v1
 
             if (!result.Success)
                 return BadRequest(result);
+
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("dropdown/getcampaignsbycharity")]
+        public async Task<IActionResult> getcampaignsbycharity([FromQuery] GetCampaignsByCharityQuery query, CancellationToken token)
+        {
+            var result = await _mediator.Send(query);
 
             return Ok(result);
         }

@@ -94,6 +94,14 @@ namespace Charipay.Infrastructure.Repositories
             return (campaigns, totalCount);
         }
 
+        public async Task<List<Campaign>> GetCampaignsByCharityAsync(Guid CharityId)
+        {
+            var data = await _appDbContext.Campaigns.Where(c=>c.CharityId == CharityId && c.IsActive && c.CampaignStartDate <= DateTime.UtcNow && c.CampaignEndDate >= DateTime.UtcNow)
+                .OrderBy(c=>c.CampaignName).ToListAsync();
+
+            return data;
+        }
+
 
         //public async Task<(IEnumerable<Campaign>, int totalCount)> GetAllPagedCampaings(int PageNumber, int PageSize, bool IsPublic, string? Search = null)
         //{

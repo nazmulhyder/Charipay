@@ -2,6 +2,7 @@
 using Charipay.Application.Commands.Charities;
 using Charipay.Application.Queries.Charities;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Charipay.API.Controllers.v1
@@ -9,6 +10,7 @@ namespace Charipay.API.Controllers.v1
     [ApiController] // ✅ Tells ASP.NET Core this is an API controller
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")] // ✅ Base route will be api/users
+    [Authorize(Roles ="Admin")]
     public class CharitiesController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -65,7 +67,7 @@ namespace Charipay.API.Controllers.v1
             return Ok(result);
         }
 
-        [HttpGet("GetLookupCharity")]
+        [HttpGet("dropdown/getlookupcharity")]
         public async Task<IActionResult> GetLookupCharity([FromQuery]GetCharityLookupQuery query, CancellationToken token)
         {
             var result = await _mediator.Send(query);
