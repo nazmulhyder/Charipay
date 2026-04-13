@@ -59,7 +59,7 @@ namespace Charipay.API.Controllers.v1
             return Ok(result);  
         }
 
-        [HttpGet("volunteer/voluntter-task-list")]
+        [HttpGet("volunteer/volunteer-task-list")]
         public async Task<IActionResult> GetPagedVolunteerTasks([FromQuery] GetPagedVolunteerTasksQuery query, CancellationToken token)
         {
             var result = await _mediator.Send(query);
