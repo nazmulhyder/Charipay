@@ -3,6 +3,7 @@ using Charipay.Application.Commands.Campaigns;
 using Charipay.Application.Commands.Charities;
 using Charipay.Application.Commands.Users;
 using Charipay.Application.DTOs.Admin.Dashboard.Users;
+using Charipay.Application.DTOs.Admin.Volunteer;
 using Charipay.Application.DTOs.Campaigns;
 using Charipay.Application.DTOs.Charities;
 using Charipay.Application.DTOs.Donation;
@@ -73,6 +74,17 @@ namespace Charipay.Application.Mapping
             CreateMap<DonationResponseDto, Donation>().ReverseMap();
             #endregion
 
+            #region admin > volunteer task
+            CreateMap<VolunteerTask, VolunteerTaskListDto>()
+                .ForMember(dest => dest.CampaignName,
+                opt => opt.MapFrom(src => src.Campaign != null ? src.Campaign.CampaignName : string.Empty))
+                .ForMember(dest => dest.CharityId,
+                opt => opt.MapFrom(src => src.Campaign != null ? src.Campaign.CharityId : Guid.Empty))
+                .ForMember(dest => dest.CharityName,
+                opt => opt.MapFrom(src => src.Campaign != null && src.Campaign.Charity != null ? src.Campaign.Charity.Name : string.Empty));
+
+
+            #endregion
 
         }
     }

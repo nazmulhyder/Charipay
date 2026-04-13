@@ -1,25 +1,21 @@
 ﻿using Asp.Versioning;
-using Charipay.Application.Commands.Admin.Volunteer;
-using Charipay.Application.Common.Models;
-using Charipay.Application.DTOs.Admin.Volunteer;
 using Charipay.Application.Queries.Admin.Dashboard.Users;
 using Charipay.Application.Queries.Charities;
-using Charipay.Application.Queries.Dashboard;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Charipay.API.Controllers.v1
+namespace Charipay.API.Controllers.v2
 {
     [ApiController]
-    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [Authorize(Roles ="Admin")]
-    public class AdminDashboardController : ControllerBase
+    public class AdminController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public AdminDashboardController(IMediator mediator)
+        public AdminController(IMediator mediator)
         {
             _mediator = mediator;
         }
@@ -38,25 +34,6 @@ namespace Charipay.API.Controllers.v1
             var result = await _mediator.Send(query);
 
             return Ok(result);
-        }
-
-        [HttpGet("Dashboard")]
-        public async Task<IActionResult> GetAllCharity()
-        {
-            var result = await _mediator.Send(new GetDashboardQuery());
-
-            return Ok(result);
-        }
-
-        [HttpPost("campaigns/volunteer-tasks")]
-        public async Task<IActionResult> CreateVolunteerTask([FromBody] CreateVolunteerTaskCommand cmd)
-        {
-
-            var result = await _mediator.Send(cmd);
-
-            return Ok(result);
-
-            
         }
     }
 }
