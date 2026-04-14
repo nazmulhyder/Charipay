@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Charipay.Application.Queries.Admin.Volunteer
 {
-    public class GetPagedVolunteerTasksQueryHandler : IRequestHandler<GetPagedVolunteerTasksQuery, ApiResponse<PageResult<VolunteerTaskListDto>>>
+    public class GetPagedVolunteerTasksQueryHandler : IRequestHandler<GetPagedVolunteerTasksQuery, ApiResponse<PageResult<VolunteerTaskDto>>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -23,14 +23,14 @@ namespace Charipay.Application.Queries.Admin.Volunteer
             _mapper = mapper;
         }
 
-        public async Task<ApiResponse<PageResult<VolunteerTaskListDto>>> Handle(GetPagedVolunteerTasksQuery request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<PageResult<VolunteerTaskDto>>> Handle(GetPagedVolunteerTasksQuery request, CancellationToken cancellationToken)
         {
             var (volunteerTasks, totalCount) = await _unitOfWork.VolunteerTask.GetPagedVolunteerTaskAsync(request.PageNumber, request.PageSize, request.Search);
 
-            var items = _mapper.Map<List<VolunteerTaskListDto>>(volunteerTasks);
+            var items = _mapper.Map<List<VolunteerTaskDto>>(volunteerTasks);
 
 
-            var result = new PageResult<VolunteerTaskListDto>(
+            var result = new PageResult<VolunteerTaskDto>(
                  items,
                  totalCount,
                  request.PageNumber,
@@ -38,7 +38,7 @@ namespace Charipay.Application.Queries.Admin.Volunteer
              );
 
 
-            return ApiResponse<PageResult<VolunteerTaskListDto>>.SuccessResponse( result, "Success");
+            return ApiResponse<PageResult<VolunteerTaskDto>>.SuccessResponse( result, "Success");
 
         }
     }

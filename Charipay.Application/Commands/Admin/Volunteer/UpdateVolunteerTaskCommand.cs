@@ -1,4 +1,5 @@
 ﻿using Charipay.Application.Common.Models;
+using Charipay.Application.DTOs.Admin.Volunteer;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Charipay.Application.Commands.Admin.Volunteer
 {
-    public class CreateVolunteerTaskCommand : IRequest<ApiResponse<Guid>>
+    public class UpdateVolunteerTaskCommand : IRequest<ApiResponse<VolunteerTaskDto>>
     {
-        public Guid CampaignId { get; set; }
+        public Guid VolunteerTaskId { get; set; }
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public string Location { get; set; } = string.Empty;

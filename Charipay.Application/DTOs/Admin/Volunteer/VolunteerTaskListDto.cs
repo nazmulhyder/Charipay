@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Charipay.Application.DTOs.Admin.Volunteer
 {
-    public class VolunteerTaskListDto : CreateVolunteerTaskDto
+    public class VolunteerTaskDto : CreateVolunteerTaskDto
     {
         public Guid VolunteerTaskId { get; set; }
         public Guid CampaignId { get; set; }

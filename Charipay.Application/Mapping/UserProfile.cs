@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Charipay.Application.Commands.Admin.Volunteer;
 using Charipay.Application.Commands.Campaigns;
 using Charipay.Application.Commands.Charities;
 using Charipay.Application.Commands.Users;
@@ -8,6 +9,7 @@ using Charipay.Application.DTOs.Campaigns;
 using Charipay.Application.DTOs.Charities;
 using Charipay.Application.DTOs.Donation;
 using Charipay.Application.DTOs.Users;
+using Charipay.Application.DTOs.Volunteer;
 using Charipay.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -77,7 +79,7 @@ namespace Charipay.Application.Mapping
             #endregion
 
             #region admin > volunteer task
-            CreateMap<VolunteerTask, VolunteerTaskListDto>()
+            CreateMap<VolunteerTask, VolunteerTaskDto>()
                 .ForMember(dest => dest.CampaignName,
                 opt => opt.MapFrom(src => src.Campaign != null ? src.Campaign.CampaignName : string.Empty))
                 .ForMember(dest => dest.CharityId,
@@ -86,6 +88,18 @@ namespace Charipay.Application.Mapping
                 opt => opt.MapFrom(src => src.Campaign != null && src.Campaign.Charity != null ? src.Campaign.Charity.Name : string.Empty));
 
 
+            CreateMap<UpdateVolunteerTaskCommand, VolunteerTask>();
+            CreateMap<VolunteerTask, UpdateVolunteerTaskCommand>().ReverseMap();
+            #endregion
+
+            #region volunteer > volunteer opportunities
+            CreateMap<VolunteerTask, VolunteerOpportunityDto>()
+             .ForMember(dest => dest.CampaignName,
+             opt => opt.MapFrom(src => src.Campaign != null ? src.Campaign.CampaignName : string.Empty))
+             .ForMember(dest => dest.CharityId,
+             opt => opt.MapFrom(src => src.Campaign != null ? src.Campaign.CharityId : Guid.Empty))
+             .ForMember(dest => dest.CharityName,
+             opt => opt.MapFrom(src => src.Campaign != null && src.Campaign.Charity != null ? src.Campaign.Charity.Name : string.Empty));
             #endregion
 
         }
