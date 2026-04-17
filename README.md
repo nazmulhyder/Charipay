@@ -1,19 +1,18 @@
-# 🌍 Charipay – Full-Stack Charity Platform  
+# 🌍 Charipay API – Backend (.NET 8)
 
-A **full-stack charity donation platform** built with **.NET 8 and Angular**, designed to support real-world workflows such as campaign management, secure donation processing, and role-based access control.
+The backend service for **Charipay**, a full-stack charity donation platform.  
+This API is designed to support real-world workflows such as campaign management, secure donation processing, and role-based access control.
 
-The system demonstrates **scalable architecture, clean design patterns, and cloud deployment on Azure**, making it suitable for production-grade applications.
-
----
-
-## 🌐 Live Demo  
-- 🔗 Web App: https://charipay.azurewebsites.net/  
-- 🔗 API Swagger: https://charipay-web-api.azurewebsites.net/swagger  
+Built with **.NET 8, Clean Architecture, and CQRS**, the system emphasizes scalability, maintainability, and production-ready design.
 
 ---
 
+## 🌐 Live API  
+- 🔗 Swagger: https://charipay-web-api.azurewebsites.net/swagger  
 
-## 🚀 Features  
+---
+
+## 🚀 Core Features  
 
 ### 🔐 Authentication & Authorization  
 - JWT-based authentication  
@@ -22,70 +21,62 @@ The system demonstrates **scalable architecture, clean design patterns, and clou
 
 ### 🎯 Campaign Management  
 - Create, update, and manage charity campaigns  
-- Featured and active campaign listings  
-- Real-time campaign progress tracking  
+- Featured and active campaign filtering  
+- Campaign progress tracking  
 
-### 💳 Donation Workflow  
-- Support for **authenticated and anonymous donations**  
-- Transaction tracking and history  
-- Secure backend validation  
-
-### 🧑‍💼 Admin Dashboard  
-- Manage users, charities, and campaigns  
-- View system-wide data and activities  
-
-### 🙋 Volunteer Module *(In Progress)*  
-- Volunteer opportunity listing  
-- Application and tracking system  
+### 💳 Donation Processing  
+- Support for authenticated and anonymous donations  
+- Transaction tracking and validation  
+- Extensible for payment gateway integration  
 
 ### 🖼️ Media Handling  
 - Image upload and storage using **Azure Blob Storage**  
+- Public URL generation for frontend consumption  
 
-### 🌍 Full-Stack Integration  
-- Seamless communication between Angular frontend and .NET API  
-- RESTful APIs designed for scalability  
+### 📊 Admin Capabilities  
+- Manage users, charities, and campaigns  
+- System-level data control and monitoring  
 
-### 🧪 Testing  
-- Unit testing with **xUnit, Moq, FluentAssertions**  
+### 🌍 API Design  
+- RESTful endpoints with versioning  
+- Consistent response structure using `ApiResponse<T>`  
+- Pagination, filtering, and search support  
 
 ---
 
 ## 🏗️ Tech Stack  
 
-### Frontend  
-- Angular 20 (Standalone Components)  
-- TypeScript, RxJS  
-- Bootstrap 5  
-
-### Backend  
-- .NET 8 Web API (C#)  
-- MediatR (CQRS pattern)  
-- Entity Framework Core  
-- Repository & Unit of Work  
-
-### Database  
-- Azure SQL  
-
-### Cloud & DevOps  
-- Azure App Service  
-- Azure Blob Storage  
-- GitHub  
-
-### Authentication  
-- JWT (Role-based access control)  
+- **Framework:** .NET 8 Web API (C#)  
+- **Architecture:** Clean Architecture  
+- **Patterns:** CQRS (MediatR), Repository, Unit of Work  
+- **Data Access:** Entity Framework Core, Dapper  
+- **Database:** Azure SQL  
+- **Cloud:** Azure App Service, Azure Blob Storage  
+- **Authentication:** JWT (Role-based)  
+- **Testing:** xUnit, Moq, FluentAssertions  
 
 ---
 
-## 🏛️ Architecture  
+## 🏛️ Architecture Overview  
 
-The project follows **Clean Architecture principles**, ensuring separation of concerns and maintainability.
+The project follows **Clean Architecture principles**:
 
-- **Domain Layer** → Core business logic and entities  
-- **Application Layer** → Use cases, DTOs, CQRS handlers  
-- **Infrastructure Layer** → Data access, EF Core, external services  
-- **API Layer** → Controllers, middleware, configuration  
+- **Domain Layer**  
+  Core business entities and interfaces  
 
-CQRS is implemented using **MediatR**, separating read and write operations for better scalability.
+- **Application Layer**  
+  Use cases, DTOs, commands & queries (CQRS with MediatR)  
+
+- **Infrastructure Layer**  
+  EF Core, repositories, database, external services  
+
+- **API Layer**  
+  Controllers, middleware, configuration  
+
+This structure ensures:
+- Separation of concerns  
+- Testability  
+- Long-term maintainability  
 
 ---
 
