@@ -1,33 +1,87 @@
-# 🌍 Charipay – Charity Donation Platform  
+# 🌍 Charipay API – Backend (.NET 8)
 
-A backend-focused .NET Web API for managing charity campaigns, donations, and user roles. The system is designed to support real-world workflows such as secure donation processing, campaign lifecycle management, and role-based access control.
+The backend service for **Charipay**, a full-stack charity donation platform.  
+This API is designed to support real-world workflows such as campaign management, secure donation processing, and role-based access control.
+
+Built with **.NET 8, Clean Architecture, and CQRS**, the system emphasizes scalability, maintainability, and production-ready design.
 
 ---
 
-## 🚀 Features  
-- 🔐 Role-based registration & login (JWT authentication)  
-- 📊 Campaign and donation management workflows  
-- 🛡️ Secure authentication and password hashing
-- 🖼️ Media upload and storage using Azure Blob Storage
-- 🌍 RESTful API endpoints for frontend integration  
-- 🧪 Unit testing with xUnit, Moq, and FluentAssertions
+## 🌐 Live API  
+- 🔗 Swagger: https://charipay-web-api.azurewebsites.net/swagger  
 
+---
+
+## 🚀 Core Features  
+
+### 🔐 Authentication & Authorization  
+- JWT-based authentication  
+- Role-based access control (**Admin, Donor, Volunteer**)  
+- Secure password hashing  
+
+### 🎯 Campaign Management  
+- Create, update, and manage charity campaigns  
+- Featured and active campaign filtering  
+- Campaign progress tracking  
+
+### 💳 Donation Processing  
+- Support for authenticated and anonymous donations  
+- Transaction tracking and validation  
+- Extensible for payment gateway integration  
+
+### 🖼️ Media Handling  
+- Image upload and storage using **Azure Blob Storage**  
+- Public URL generation for frontend consumption  
+
+### 📊 Admin Capabilities  
+- Manage users, charities, and campaigns  
+- System-level data control and monitoring  
+
+### 🌍 API Design  
+- RESTful endpoints with versioning  
+- Consistent response structure using `ApiResponse<T>`  
+- Pagination, filtering, and search support  
 
 ---
 
 ## 🏗️ Tech Stack  
-- **Backend:** .NET 8 Web API, C#  
-- **Database:** Azure SQL
+
+- **Framework:** .NET 8 Web API (C#)  
+- **Architecture:** Clean Architecture  
+- **Patterns:** CQRS (MediatR), Repository, Unit of Work  
+- **Data Access:** Entity Framework Core, Dapper  
+- **Database:** Azure SQL  
 - **Cloud:** Azure App Service, Azure Blob Storage  
-- **Authentication:** JWT, Role-based access  
-- **Data Access:** EF Core (Repository & Unit of Work)  
-- **Architecture:** Layered architecture with MediatR for request handling  
+- **Authentication:** JWT (Role-based)  
 - **Testing:** xUnit, Moq, FluentAssertions  
-- **Deployment:** Azure App Service  
+
+---
+
+## 🏛️ Architecture Overview  
+
+The project follows **Clean Architecture principles**:
+
+- **Domain Layer**  
+  Core business entities and interfaces  
+
+- **Application Layer**  
+  Use cases, DTOs, commands & queries (CQRS with MediatR)  
+
+- **Infrastructure Layer**  
+  EF Core, repositories, database, external services  
+
+- **API Layer**  
+  Controllers, middleware, configuration  
+
+This structure ensures:
+- Separation of concerns  
+- Testability  
+- Long-term maintainability  
 
 ---
 
 ## 📂 Project Structure  
+
 ```bash
 Charipay/
 ├── Charipay.API              # Controllers, Middleware, Configuration
