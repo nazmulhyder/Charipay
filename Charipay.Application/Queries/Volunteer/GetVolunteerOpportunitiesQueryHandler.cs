@@ -41,7 +41,7 @@ namespace Charipay.Application.Queries.Volunteer
                 Location = v.Location,
                 StartDate = v.StartDate,
                 EndDate = v.EndDate,
-
+                Description = v.Description,
                 CampaignId = v.CampaignId,
                 CampaignName = v.Campaign.CampaignName,
 

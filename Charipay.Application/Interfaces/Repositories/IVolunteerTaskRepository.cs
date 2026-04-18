@@ -9,6 +9,6 @@ namespace Charipay.Application.Interfaces.Repositories
 {
     public interface IVolunteerTaskRepository : IRepository<VolunteerTask>
     {
-       Task<(IEnumerable<VolunteerTask>, int TotalCount)> GetPagedVolunteerTaskAsync(int pageNumber, int pageSize, string? search = null);
+        Task<(IEnumerable<VolunteerTask>, int TotalCount)> GetPagedVolunteerTaskAsync(int pageNumber, int pageSize, string? search = null);
     }
 }
