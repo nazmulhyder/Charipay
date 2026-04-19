@@ -18,7 +18,7 @@ namespace Charipay.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<bool> HasUserAlreadyAppliedAsync(Guid userId, Guid volunteerTaskId)
+        public async Task<bool> HasUserAlreadyAppliedAsync(Guid userId, Guid? volunteerTaskId)
         {
             var existingData = await _context.VolunteerUsers.AnyAsync(c=> c.UserId == userId && c.VolunteerTaskId == volunteerTaskId && c.IsActive);
 

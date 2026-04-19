@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using Charipay.Application.Commands.Volunteer;
 using Charipay.Application.Queries.Admin.Volunteer;
 using Charipay.Application.Queries.Volunteer;
 using MediatR;
@@ -25,6 +26,17 @@ namespace Charipay.API.Controllers.v1
             var result = await _mediator.Send(query);
 
             if (result.Message.Contains("exists"))
+                return BadRequest(result);
+
+            return Ok(result);
+        }
+
+        [HttpGet("task/apply")]
+        public async Task<IActionResult> VolunteerTaskApply([FromQuery] ApplyVolunteerTaskCommand query, CancellationToken token)
+        {
+            var result = await _mediator.Send(query);
+
+            if (!result.Success)
                 return BadRequest(result);
 
             return Ok(result);

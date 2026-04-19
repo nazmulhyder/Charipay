@@ -102,6 +102,10 @@ namespace Charipay.Application.Mapping
              opt => opt.MapFrom(src => src.Campaign != null && src.Campaign.Charity != null ? src.Campaign.Charity.Name : string.Empty));
             #endregion
 
+            #region volunteer user
+            CreateMap<VolunteerUser, VolunteerUserDto>().ReverseMap();
+            #endregion
+
         }
     }
 }

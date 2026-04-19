@@ -49,6 +49,7 @@ namespace Charipay.Infrastructure
             services.AddScoped<IJwtTokenService, JwtTokenService>();
             services.AddScoped<IDonationRepository, DonationRepository>();
             services.AddScoped<IVolunteerTaskRepository, VolunteerTaskRepository>();
+            services.AddScoped<IVolunteerUserRepository, VolunteerUserRepository>();
             //services.AddScoped<IFileStorageService, AzureBlobStorageService>();
 
 
