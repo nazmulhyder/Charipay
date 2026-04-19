@@ -3,6 +3,7 @@ using Charipay.Application.Commands.Volunteer;
 using Charipay.Application.Queries.Admin.Volunteer;
 using Charipay.Application.Queries.Volunteer;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Charipay.API.Controllers.v1
@@ -10,6 +11,7 @@ namespace Charipay.API.Controllers.v1
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
+    [Authorize(Roles ="Volunteer")]
     public class VolunteersController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -44,6 +46,17 @@ namespace Charipay.API.Controllers.v1
 
         [HttpGet("application/requests")]
         public async Task<IActionResult> GetAllApplications([FromQuery] GetMyApplicationsQuery query, CancellationToken token)
+        {
+            var result = await _mediator.Send(query);
+
+            if (!result.Success)
+                return BadRequest(result);
+
+            return Ok(result);
+        }
+
+        [HttpPost("application/cancellation")]
+        public async Task<IActionResult> ApplicationCancellationRequest([FromQuery] RequestVolunteerApplicationCancellationCommand query, CancellationToken token)
         {
             var result = await _mediator.Send(query);
 

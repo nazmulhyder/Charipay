@@ -50,6 +50,7 @@ namespace Charipay.Infrastructure
             services.AddScoped<IDonationRepository, DonationRepository>();
             services.AddScoped<IVolunteerTaskRepository, VolunteerTaskRepository>();
             services.AddScoped<IVolunteerUserRepository, VolunteerUserRepository>();
+            services.AddScoped<IVolunteerApplicationHistoryRepository, VolunteerApplicationHistoryRepository>();
             //services.AddScoped<IFileStorageService, AzureBlobStorageService>();
 
 

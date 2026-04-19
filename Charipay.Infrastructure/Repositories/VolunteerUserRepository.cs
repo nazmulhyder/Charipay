@@ -97,5 +97,12 @@ namespace Charipay.Infrastructure.Repositories
             return (items, totalCount);
 
         }
+
+        public async Task<VolunteerUser?> GetByIdAndUserIdAsync(Guid volunteerUserId, Guid userId)
+        {
+            var task = await _context.VolunteerUsers.Where(a=>a.VolunteerUserId ==  volunteerUserId && a.UserId == userId).FirstOrDefaultAsync();
+            
+            return task;
+        }
     }
 }

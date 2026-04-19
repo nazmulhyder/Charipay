@@ -15,6 +15,7 @@ namespace Charipay.Application.Interfaces.Repositories
         IDonationRepository Donations { get; }
         IVolunteerTaskRepository VolunteerTask { get; }
         IVolunteerUserRepository VolunteerUser { get; }
+        IVolunteerApplicationHistoryRepository VolunteerApplicationHistory { get; }
         Task<int> SaveChangesAsync();
     }
 }
