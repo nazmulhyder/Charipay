@@ -1,4 +1,5 @@
-﻿using Charipay.Application.Interfaces.Repositories;
+﻿using Charipay.Application.DTOs.Volunteer;
+using Charipay.Application.Interfaces.Repositories;
 using Charipay.Domain.Entities;
 using Charipay.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,71 @@ namespace Charipay.Infrastructure.Repositories
             var counts = await _context.VolunteerUsers.CountAsync(c=>c.VolunteerTaskId == volunteerTaskId);
 
             return counts == 0 ? 0 : counts;
+        }
+
+        public async Task<(List<MyVolunteerApplicationDto> Items, int TotalCount)> GetMyApplicationsAsync(Guid UserId, int pageNumber, int pageSize, string? search = null)
+        {
+            var query = _context.VolunteerUsers.Where(c => c.UserId == UserId && c.IsActive)
+                .Include(d => d.VolunteerTask)
+                .ThenInclude(e => e.Campaign)
+                .ThenInclude(f => f.Charity)
+                .AsQueryable();
+
+            var totalCount = await query.CountAsync();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                search = search.Trim().ToLower();
+
+                query = query.Where(x =>
+                x.Status.ToLower().Contains(search)
+                || x.VolunteerTask.Title.ToLower().Contains(search)
+                || x.VolunteerTask.Location.ToLower().Contains(search)
+                || x.VolunteerTask.Campaign.CampaignName.ToLower().Contains(search)
+                || x.VolunteerTask.Campaign.Charity.Name.ToLower().Contains(search)
+                );
+
+            }
+
+
+            var items = await query.OrderByDescending(a=>a.SignupDate)
+                .Skip((pageNumber -1) * pageSize)
+                .Take(pageSize)
+                 .Select(vu => new MyVolunteerApplicationDto
+                 {
+                     VolunteerUserId = vu.VolunteerUserId,
+                     VolunteerTaskId = vu.VolunteerTaskId,
+
+                     Title = vu.VolunteerTask.Title,
+                     Description = vu.VolunteerTask.Description,
+                     Location = vu.VolunteerTask.Location,
+
+                     StartDate = vu.VolunteerTask.StartDate,
+                     EndDate = vu.VolunteerTask.EndDate,
+
+                     CampaignId = vu.VolunteerTask.CampaignId,
+                     CampaignName = vu.VolunteerTask.Campaign.CampaignName,
+
+                     CharityId = vu.VolunteerTask.Campaign.CharityId,
+                     CharityName = vu.VolunteerTask.Campaign.Charity.Name,
+
+                     SignupDate = vu.SignupDate,
+                     IsActive = vu.IsActive,
+                     Status = vu.Status ?? string.Empty,
+
+                     VolunteerMessage = vu.VolunteerMessage,
+                     AvailabilityNote = vu.AvailabilityNote,
+                     AdminNote = vu.AdminNote,
+
+                     ReviewedAt = vu.ReviewedAt,
+                     StartedAt = vu.StartedAt,
+                     CompletedAt = vu.CompletedAt
+                 }).ToListAsync();
+
+
+
+            return (items, totalCount);
+
         }
     }
 }

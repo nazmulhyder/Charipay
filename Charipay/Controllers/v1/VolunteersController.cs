@@ -42,5 +42,16 @@ namespace Charipay.API.Controllers.v1
             return Ok(result);
         }
 
+        [HttpGet("application/requests")]
+        public async Task<IActionResult> GetAllApplications([FromQuery] GetMyApplicationsQuery query, CancellationToken token)
+        {
+            var result = await _mediator.Send(query);
+
+            if (!result.Success)
+                return BadRequest(result);
+
+            return Ok(result);
+        }
+
     }
 }
