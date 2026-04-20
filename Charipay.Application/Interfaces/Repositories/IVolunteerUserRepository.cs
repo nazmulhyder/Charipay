@@ -1,4 +1,5 @@
-﻿using Charipay.Application.DTOs.Volunteer;
+﻿using Charipay.Application.DTOs.Admin.Volunteer;
+using Charipay.Application.DTOs.Volunteer;
 using Charipay.Domain.Entities;
 using System;
 using System.Collections.Generic;

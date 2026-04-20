@@ -1,7 +1,9 @@
-﻿using Charipay.Application.Interfaces.Repositories;
+﻿using Charipay.Application.Interfaces.QueryService;
+using Charipay.Application.Interfaces.Repositories;
 using Charipay.Application.Interfaces.Storage;
 using Charipay.Infrastructure.Data;
 using Charipay.Infrastructure.Persistence;
+using Charipay.Infrastructure.QueryService;
 using Charipay.Infrastructure.Repositories;
 using Charipay.Infrastructure.Security;
 using Charipay.Infrastructure.Storage;
@@ -51,6 +53,7 @@ namespace Charipay.Infrastructure
             services.AddScoped<IVolunteerTaskRepository, VolunteerTaskRepository>();
             services.AddScoped<IVolunteerUserRepository, VolunteerUserRepository>();
             services.AddScoped<IVolunteerApplicationHistoryRepository, VolunteerApplicationHistoryRepository>();
+            services.AddScoped<IAdminVolunteerRequestQueryService, AdminVolunteerRequestQueryService>();
             //services.AddScoped<IFileStorageService, AzureBlobStorageService>();
 
 
