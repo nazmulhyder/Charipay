@@ -49,10 +49,10 @@ namespace Charipay.Application.Queries.Volunteer
                 CharityName = v.Campaign.Charity.Name,
 
                 MaxVolunteer = v.MaxVolunteer,
-                AppliedCount = v.VolunteerUsers?.Count(u => u.IsActive) ?? 0,
-                RemainingSlots = v.MaxVolunteer - (v.VolunteerUsers?.Count(u => u.IsActive) ?? 0),
+                AppliedCount = v.VolunteerUsers.Where(a=>a.Status.ToLower() != "pending" && a.Status.ToLower() != "withdrawn")?.Count(u => u.IsActive) ?? 0,
+                RemainingSlots = v.MaxVolunteer - (v.VolunteerUsers.Where(a => a.Status.ToLower() != "pending" && a.Status.ToLower() != "withdrawn")?.Count(u => u.IsActive) ?? 0),
                 IsFull = v.MaxVolunteer - (v.VolunteerUsers?.Count(u => u.IsActive) ?? 0) <= 0,
-                AlreadyApplied = v.VolunteerUsers?.Any(u => u.UserId == currentUserService.UserId && u.IsActive) ?? false
+                AlreadyApplied = v.VolunteerUsers?.Any(u => u.UserId == currentUserService.UserId.Value && u.IsActive) ?? false
             }).ToList();
 
             var result = new PageResult<VolunteerOpportunityDto>(

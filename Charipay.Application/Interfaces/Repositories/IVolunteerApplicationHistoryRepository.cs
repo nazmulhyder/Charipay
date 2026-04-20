@@ -9,6 +9,7 @@ namespace Charipay.Application.Interfaces.Repositories
 {
     public interface IVolunteerApplicationHistoryRepository : IRepository<VolunteerApplicationHistory>
     {
+        Task<bool> IsAlreadyAppliedAsync(Guid TaskId, Guid VolunteerUserId);
 
     }
 }

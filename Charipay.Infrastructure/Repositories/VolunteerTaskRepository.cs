@@ -23,8 +23,9 @@ namespace Charipay.Infrastructure.Repositories
         public async Task<(IEnumerable<VolunteerTask>, int TotalCount)> GetPagedVolunteerTaskAsync(int pageNumber, int pageSize, string? search = null)
         {
             var query = _context.VolunteerTasks
-                .Include(c => c.Campaign)
+                .Include(c => c.Campaign)                
                 .ThenInclude(d => d.Charity)
+                .Include(c=>c.VolunteerUsers)
                 .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(search))

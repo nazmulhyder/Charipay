@@ -33,8 +33,8 @@ namespace Charipay.API.Controllers.v1
             return Ok(result);
         }
 
-        [HttpGet("task/apply")]
-        public async Task<IActionResult> VolunteerTaskApply([FromQuery] ApplyVolunteerTaskCommand query, CancellationToken token)
+        [HttpPost("task/apply")]
+        public async Task<IActionResult> VolunteerTaskApply([FromBody] ApplyVolunteerTaskCommand query, CancellationToken token)
         {
             var result = await _mediator.Send(query);
 
@@ -57,6 +57,17 @@ namespace Charipay.API.Controllers.v1
 
         [HttpPost("application/cancellation")]
         public async Task<IActionResult> ApplicationCancellationRequest([FromQuery] RequestVolunteerApplicationCancellationCommand query, CancellationToken token)
+        {
+            var result = await _mediator.Send(query);
+
+            if (!result.Success)
+                return BadRequest(result);
+
+            return Ok(result);
+        }
+
+        [HttpGet("task/is-applied")]
+        public async Task<IActionResult> TaskIsAlreadyApplied([FromQuery] CheckVolunteerApplicationExistsQuery query, CancellationToken token)
         {
             var result = await _mediator.Send(query);
 

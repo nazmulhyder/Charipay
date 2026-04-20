@@ -17,7 +17,7 @@ namespace Charipay.API.Controllers.v1
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
- //   [Authorize(Roles ="Admin")]
+    [Authorize(Roles ="Admin")]
     public class AdminController : ControllerBase
     {
         private readonly IMediator _mediator;
