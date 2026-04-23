@@ -13,5 +13,6 @@ namespace Charipay.Application.Queries.Volunteer
     public class GetMyApplicationsQuery  : PagedRequest, IRequest<ApiResponse<PageResult<MyVolunteerApplicationDto>>>
     {
         public string? Search {  get; set; }
+        public string? status { get; set; }
     }
 }

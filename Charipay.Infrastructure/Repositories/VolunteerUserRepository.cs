@@ -34,7 +34,7 @@ namespace Charipay.Infrastructure.Repositories
             return counts == 0 ? 0 : counts;
         }
 
-        public async Task<(List<MyVolunteerApplicationDto> Items, int TotalCount)> GetMyApplicationsAsync(Guid UserId, int pageNumber, int pageSize, string? search = null)
+        public async Task<(List<MyVolunteerApplicationDto> Items, int TotalCount)> GetMyApplicationsAsync(Guid UserId, int pageNumber, int pageSize, string? search = null, string? status = null)
         {
             var query = _context.VolunteerUsers.Where(c => c.UserId == UserId && c.IsActive)
                 .Include(d => d.VolunteerTask)
@@ -42,7 +42,7 @@ namespace Charipay.Infrastructure.Repositories
                 .ThenInclude(f => f.Charity)
                 .AsQueryable();
 
-            var totalCount = await query.CountAsync();
+           
 
             if (!string.IsNullOrWhiteSpace(search))
             {
@@ -58,6 +58,12 @@ namespace Charipay.Infrastructure.Repositories
 
             }
 
+            if (!string.IsNullOrWhiteSpace(status))
+            {
+                status = status.Trim().ToLower();
+
+                query = query.Where(x => x.Status != null && x.Status.ToLower() == status);
+            }
 
             var items = await query.OrderByDescending(a=>a.SignupDate)
                 .Skip((pageNumber -1) * pageSize)
@@ -94,7 +100,7 @@ namespace Charipay.Infrastructure.Repositories
                  }).ToListAsync();
 
 
-
+            var totalCount = await query.CountAsync();
             return (items, totalCount);
 
         }

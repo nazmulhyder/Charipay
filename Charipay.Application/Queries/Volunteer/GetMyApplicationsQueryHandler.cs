@@ -28,7 +28,7 @@ namespace Charipay.Application.Queries.Volunteer
         public async Task<ApiResponse<PageResult<MyVolunteerApplicationDto>>> Handle(GetMyApplicationsQuery request, CancellationToken cancellationToken)
         {
 
-            var (applicationRequests, totalCount) = await _unitofWork.VolunteerUser.GetMyApplicationsAsync(_currentUser.UserId.Value, request.PageNumber, request.PageSize, request.Search);
+            var (applicationRequests, totalCount) = await _unitofWork.VolunteerUser.GetMyApplicationsAsync(_currentUser.UserId.Value, request.PageNumber, request.PageSize, request.Search, request.status);
 
 
             var result = new PageResult<MyVolunteerApplicationDto>(

@@ -94,5 +94,13 @@ namespace Charipay.API.Controllers.v1
             return Ok(result);
         }
 
+        [HttpPut("review-volunteer-applications")]
+        public async Task<IActionResult> ReviewVolunteerApplication([FromBody] ReviewVolunteerApplicationCommand request, CancellationToken cancellationToken)
+        {
+            var result = await _mediator.Send(request);
+
+            return Ok(result);
+        }
+
     }
 }
