@@ -11,7 +11,7 @@ namespace Charipay.API.Controllers.v1
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
-    [Authorize(Roles ="Volunteer")]
+    //[Authorize(Roles ="Volunteer")]
     public class VolunteersController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -78,7 +78,7 @@ namespace Charipay.API.Controllers.v1
         }
 
         [HttpPut("update-application-status")]
-        public async Task<IActionResult> StatusUpdate([FromQuery] UpdateVolunteerApplicationStatusCommand query, CancellationToken token)
+        public async Task<IActionResult> StatusUpdate([FromBody] UpdateVolunteerApplicationStatusCommand query, CancellationToken token)
         {
             var result = await _mediator.Send(query);
 

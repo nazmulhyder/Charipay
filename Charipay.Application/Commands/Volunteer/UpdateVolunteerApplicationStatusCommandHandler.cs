@@ -37,7 +37,7 @@ namespace Charipay.Application.Commands.Volunteer
             switch(request.Action)
             {
                 case VolunteerApplicationAction.Started:
-                    if (application.Status.ToLower() != VolunteerApplicationAction.Approved.ToString())
+                    if (application.Status.ToLower() != VolunteerApplicationAction.Approved.ToString().ToLower())
                         return ApiResponse<string>.FailedResponse("Only approved applications can be started");
 
                         application.Status = VolunteerApplicationAction.Started.ToString();

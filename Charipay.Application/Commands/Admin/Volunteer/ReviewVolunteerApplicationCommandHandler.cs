@@ -36,7 +36,7 @@ namespace Charipay.Application.Commands.Admin.Volunteer
             switch (request.Action)
             {
                 case AdminVolunteerApplicationAction.Approve:
-                    if (application.Status != "Pending")
+                    if (application.Status.ToLower() != "pending")
                         return ApiResponse<string>.FailedResponse("Only pending applications can be approved.");
 
                     application.Status = "Approved";
@@ -45,7 +45,7 @@ namespace Charipay.Application.Commands.Admin.Volunteer
                     break;
 
                 case AdminVolunteerApplicationAction.Reject:
-                    if (application.Status != "Pending")
+                    if (application.Status.ToLower() != "pending")
                         return ApiResponse<string>.FailedResponse("Only pending applications can be rejected.");
 
                     application.Status = "Rejected";
@@ -55,7 +55,7 @@ namespace Charipay.Application.Commands.Admin.Volunteer
                     break;
 
                 case AdminVolunteerApplicationAction.Complete:
-                    if (application.Status != "CompletionRequested")
+                    if (application.Status.ToLower() != "completionrequested")
                         return ApiResponse<string>.FailedResponse("Only completion requested applications can be completed.");
 
                     application.Status = "Completed";
