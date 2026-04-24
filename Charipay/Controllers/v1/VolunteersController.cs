@@ -77,5 +77,16 @@ namespace Charipay.API.Controllers.v1
             return Ok(result);
         }
 
+        [HttpPut("update-application-status")]
+        public async Task<IActionResult> StatusUpdate([FromQuery] UpdateVolunteerApplicationStatusCommand query, CancellationToken token)
+        {
+            var result = await _mediator.Send(query);
+
+            if (!result.Success)
+                return BadRequest(result);
+
+            return Ok(result);
+        }
+
     }
 }

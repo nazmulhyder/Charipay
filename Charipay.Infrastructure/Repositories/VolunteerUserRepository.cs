@@ -36,7 +36,7 @@ namespace Charipay.Infrastructure.Repositories
 
         public async Task<(List<MyVolunteerApplicationDto> Items, int TotalCount)> GetMyApplicationsAsync(Guid UserId, int pageNumber, int pageSize, string? search = null, string? status = null)
         {
-            var query = _context.VolunteerUsers.Where(c => c.UserId == UserId && c.IsActive)
+            var query = _context.VolunteerUsers.Where(c => c.UserId == UserId)
                 .Include(d => d.VolunteerTask)
                 .ThenInclude(e => e.Campaign)
                 .ThenInclude(f => f.Charity)

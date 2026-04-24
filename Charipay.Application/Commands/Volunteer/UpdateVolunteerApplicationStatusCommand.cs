@@ -7,12 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Charipay.Application.Commands.Admin.Volunteer
+namespace Charipay.Application.Commands.Volunteer
 {
-    public class ReviewVolunteerApplicationCommand : IRequest<ApiResponse<string>>
+    public class UpdateVolunteerApplicationStatusCommand : IRequest<ApiResponse<string>>
     {
         public Guid VolunteerUserId { get; set; }
-        public AdminVolunteerApplicationAction Action { get; set; }
-        public string? AdminNote { get; set; }
+        public VolunteerApplicationAction Action { get; set; }
+        public string? Message { get; set; }
     }
 }

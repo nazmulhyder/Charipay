@@ -1,6 +1,7 @@
 ﻿using Charipay.Application.Common.Models;
 using Charipay.Application.Interfaces.Common;
 using Charipay.Application.Interfaces.Repositories;
+using Charipay.Domain.Enums;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -22,38 +23,50 @@ namespace Charipay.Application.Commands.Admin.Volunteer
 
         public  async Task<ApiResponse<string>> Handle(ReviewVolunteerApplicationCommand request, CancellationToken cancellationToken)
         {
-            var applicationRequest = await _unitOfWork.VolunteerUser.GetByIdAsync(request.VolunteerUserId, cancellationToken);
+            var userId = _currentUserService.UserId.Value;
 
-            if (applicationRequest == null)
-                return ApiResponse<string>.FailedResponse("Application not found.");
+            if (userId == null)
+                return ApiResponse<string>.FailedResponse("User is not authenticated");
 
-            if (applicationRequest.Status.ToLower() != "pending")
-                return ApiResponse<string>.FailedResponse("Only pending can be reviwed");
+            var application = await _unitOfWork.VolunteerUser.GetByIdAsync(request.VolunteerUserId, cancellationToken);
 
-            if(request.Action.ToLower()=="approve")
+            if (application == null)
+                return ApiResponse<string>.FailedResponse("Application not found!");
+
+            switch (request.Action)
             {
-                applicationRequest.Status = "Approved";
-                applicationRequest.IsActive = true;
-            }
+                case AdminVolunteerApplicationAction.Approve:
+                    if (application.Status != "Pending")
+                        return ApiResponse<string>.FailedResponse("Only pending applications can be approved.");
 
-            else if (request.Action.ToLower() == "reject")
-            {
-                applicationRequest.Status = "Rejected";
-                applicationRequest.IsActive = false;
-            }
+                    application.Status = "Approved";
+                    application.ReviewedAt = DateTime.UtcNow;
+                    application.AdminNote = request.AdminNote;
+                    break;
 
-            else
-            {
-                return ApiResponse<string>.FailedResponse("Invalid Action.");
-            }
+                case AdminVolunteerApplicationAction.Reject:
+                    if (application.Status != "Pending")
+                        return ApiResponse<string>.FailedResponse("Only pending applications can be rejected.");
 
-            applicationRequest.AdminNote = request.AdminNote;
-            applicationRequest.ReviewedAt = DateTime.UtcNow;
-            applicationRequest.ReviewedByAdminId = _currentUserService.UserId.Value;
+                    application.Status = "Rejected";
+                    application.IsActive = false;
+                    application.AdminNote = request.AdminNote;
+                    application.ReviewedAt = DateTime.UtcNow;
+                    break;
+
+                case AdminVolunteerApplicationAction.Complete:
+                    if (application.Status != "CompletionRequested")
+                        return ApiResponse<string>.FailedResponse("Only completion requested applications can be completed.");
+
+                    application.Status = "Completed";
+                    application.CompletedAt = DateTime.UtcNow;
+                    application.AdminNote = request.AdminNote;
+                    break;
+            }
 
             await _unitOfWork.SaveChangesAsync();
 
-            return ApiResponse<string>.SuccessResponse(null, $"Applicaion {request.Action.ToLower()}ed successfully");
+            return ApiResponse<string>.SuccessResponse($"Application {application.Status} successfully");
 
 
         }
