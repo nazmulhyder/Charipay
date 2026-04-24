@@ -7,7 +7,7 @@ using Charipay.Application.DTOs.Admin.Dashboard.Users;
 using Charipay.Application.DTOs.Admin.Volunteer;
 using Charipay.Application.DTOs.Campaigns;
 using Charipay.Application.DTOs.Charities;
-using Charipay.Application.DTOs.Donation;
+using Charipay.Application.DTOs.Donor.Donation;
 using Charipay.Application.DTOs.Users;
 using Charipay.Application.DTOs.Volunteer;
 using Charipay.Domain.Entities;

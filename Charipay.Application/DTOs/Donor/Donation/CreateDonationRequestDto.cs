@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Charipay.Application.DTOs.Donation
+namespace Charipay.Application.DTOs.Donor.Donation
 {
     public class CreateDonationRequestDto
     {

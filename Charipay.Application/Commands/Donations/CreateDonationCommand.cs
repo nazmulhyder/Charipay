@@ -1,5 +1,5 @@
 ﻿using Charipay.Application.Common.Models;
-using Charipay.Application.DTOs.Donation;
+using Charipay.Application.DTOs.Donor.Donation;
 using MediatR;
 using System;
 using System.Collections.Generic;

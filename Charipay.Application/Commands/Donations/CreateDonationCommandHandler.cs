@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Charipay.Application.Common.Models;
-using Charipay.Application.DTOs.Donation;
+using Charipay.Application.DTOs.Donor.Donation;
 using Charipay.Application.Interfaces.Common;
 using Charipay.Application.Interfaces.Repositories;
 using Charipay.Domain.Entities;
