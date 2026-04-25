@@ -23,10 +23,11 @@ namespace Charipay.Infrastructure.Persistence
         public IVolunteerTaskRepository VolunteerTask { get; }
         public IVolunteerUserRepository VolunteerUser { get; }
         public  IVolunteerApplicationHistoryRepository VolunteerApplicationHistory { get; }
+        public IPublicRepository publicStats { get; }
 
         public UnitOfWork(AppDbContext context, IUserRepository userRepository, IUserRoleRepository userRoles,
             ICharityRepository _charities, ICampaignRepository _Campains, IDonationRepository _donations, IVolunteerTaskRepository _volunteerTaskRepository,
-            IVolunteerUserRepository _volunteerUser, IVolunteerApplicationHistoryRepository _volunteerApplicationHistory
+            IVolunteerUserRepository _volunteerUser, IVolunteerApplicationHistoryRepository _volunteerApplicationHistory, IPublicRepository _publicRepository
             )
         {
             _context = context;
@@ -38,6 +39,7 @@ namespace Charipay.Infrastructure.Persistence
             VolunteerTask = _volunteerTaskRepository;
             VolunteerUser = _volunteerUser;
             VolunteerApplicationHistory = _volunteerApplicationHistory;
+            publicStats = _publicRepository;
         }
 
         public async Task<int> SaveChangesAsync()

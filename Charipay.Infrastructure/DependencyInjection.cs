@@ -54,6 +54,7 @@ namespace Charipay.Infrastructure
             services.AddScoped<IVolunteerUserRepository, VolunteerUserRepository>();
             services.AddScoped<IVolunteerApplicationHistoryRepository, VolunteerApplicationHistoryRepository>();
             services.AddScoped<IAdminVolunteerRequestQueryService, AdminVolunteerRequestQueryService>();
+            services.AddScoped<IPublicRepository, PublicRepository>();
             //services.AddScoped<IFileStorageService, AzureBlobStorageService>();
 
 
