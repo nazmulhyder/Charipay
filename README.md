@@ -52,6 +52,39 @@ The system is built with scalability and maintainability in mind using Clean Arc
 
 ---
 
-## 🏗️ Architecture
+## 🏗️ Backend Architecture Structure
 
-The project follows **Clean Architecture** with separation of concerns:
+Charipay backend follows a Clean Architecture style, keeping business logic separate from infrastructure and API concerns.
+
+```bash
+Charipay/
+ ├── Charipay.API/
+ │   ├── Controllers/        # API endpoints
+ │   ├── Middleware/         # Exception handling, request pipeline
+ │   └── Program.cs          # Dependency injection and app configuration
+ │
+ ├── Charipay.Application/
+ │   ├── Features/           # CQRS commands and queries
+ │   ├── DTOs/               # Request/response models
+ │   ├── Interfaces/         # Application contracts
+ │   ├── Validators/         # FluentValidation rules
+ │   └── Behaviors/          # MediatR pipeline behaviours
+ │
+ ├── Charipay.Domain/
+ │   ├── Entities/           # Core business entities
+ │   ├── Enums/              # Domain enums/statuses
+ │   └── Interfaces/         # Domain abstractions
+ │
+ └── Charipay.Infrastructure/
+     ├── Persistence/        # EF Core DbContext and migrations
+     ├── Repositories/       # Repository implementations
+     ├── Services/           # External/internal service implementations
+     └── UnitOfWork/         # Unit of Work implementation
+```
+
+### Layer Responsibilities
+
+- **API Layer** handles HTTP requests, controllers, middleware, and dependency injection.
+- **Application Layer** contains CQRS handlers, DTOs, validation, and business use cases.
+- **Domain Layer** contains core entities, enums, and business rules.
+- **Infrastructure Layer** handles database access, repositories, Azure services, and external integrations.
