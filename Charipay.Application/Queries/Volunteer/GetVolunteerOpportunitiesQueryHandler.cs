@@ -34,25 +34,47 @@ namespace Charipay.Application.Queries.Volunteer
             var (volunteerTasks, totalCount) = await _unitOfWork.VolunteerTask.GetPagedVolunteerTaskAsync(request.PageNumber, request.PageSize, request.Search);
 
 
-            var items = volunteerTasks.Select(v => new VolunteerOpportunityDto
+            var items = volunteerTasks.Select(v =>
             {
-                VolunteerTaskId = v.VolunteerTaskId,
-                Title = v.Title,
-                Location = v.Location,
-                StartDate = v.StartDate,
-                EndDate = v.EndDate,
-                Description = v.Description,
-                CampaignId = v.CampaignId,
-                CampaignName = v.Campaign.CampaignName,
+                var activeApplications = v.VolunteerUsers
+                    .Where(a =>
+                        a.IsActive &&
+                        a.Status.ToLower() != "pending" &&
+                        a.Status.ToLower() != "withdrawn" &&
+                        a.Status.ToLower() != "cancelled" &&
+                        a.Status.ToLower() != "rejected")
+                    .ToList();
 
-                CharityId = v.Campaign.CharityId,
-                CharityName = v.Campaign.Charity.Name,
+                var blockingStatuses = new[] { "pending", "approved", "started", "completed" };
 
-                MaxVolunteer = v.MaxVolunteer,
-                AppliedCount = v.VolunteerUsers.Where(a=>a.Status.ToLower() != "pending" && a.Status.ToLower() != "withdrawn")?.Count(u => u.IsActive) ?? 0,
-                RemainingSlots = v.MaxVolunteer - (v.VolunteerUsers.Where(a => a.Status.ToLower() != "pending" && a.Status.ToLower() != "withdrawn")?.Count(u => u.IsActive) ?? 0),
-                IsFull = v.MaxVolunteer - (v.VolunteerUsers?.Count(u => u.IsActive) ?? 0) <= 0,
-                AlreadyApplied = v.VolunteerUsers?.Any(u => u.UserId == currentUserService.UserId.Value && u.IsActive) ?? false
+                return new VolunteerOpportunityDto
+                {
+                    VolunteerTaskId = v.VolunteerTaskId,
+                    Title = v.Title,
+                    Location = v.Location,
+                    StartDate = v.StartDate,
+                    EndDate = v.EndDate,
+                    Description = v.Description,
+
+                    CampaignId = v.CampaignId,
+                    CampaignName = v.Campaign.CampaignName,
+
+                    CharityId = v.Campaign.CharityId,
+                    CharityName = v.Campaign.Charity.Name,
+
+                    MaxVolunteer = v.MaxVolunteer,
+
+                    AppliedCount = activeApplications.Count,
+
+                    RemainingSlots = v.MaxVolunteer - activeApplications.Count,
+
+                    IsFull = v.MaxVolunteer - activeApplications.Count <= 0,
+
+                    AlreadyApplied = v.VolunteerUsers.Any(u =>
+                        u.UserId == currentUserService.UserId.Value &&
+                        u.IsActive &&
+                        blockingStatuses.Contains(u.Status.ToLower()))
+                };
             }).ToList();
 
             var result = new PageResult<VolunteerOpportunityDto>(
