@@ -1,91 +1,90 @@
-# 🌍 Charipay API – Backend (.NET 8)
+# 🌍 Charipay – Backend API (.NET 8)
 
-The backend service for **Charipay**, a full-stack charity donation platform.  
-This API is designed to support real-world workflows such as campaign management, secure donation processing, and role-based access control.
-
-Built with **.NET 8, Clean Architecture, and CQRS**, the system emphasizes scalability, maintainability, and production-ready design.
+A backend API for managing charity campaigns, donations, and volunteer participation.  
+Charipay is a UK-first platform designed to support real-world workflows such as campaign management, secure donations, and volunteer coordination.
 
 ---
 
-## 🌐 Live API  
-- 🔗 Swagger: https://charipay-web-api.azurewebsites.net/swagger  
+## 🚀 Live Demo
+
+- 🌐 Frontend: https://charipay.azurewebsites.net  
+- 📡 API (Swagger): https://charipay-web-api.azurewebsites.net/swagger/index.html  
 
 ---
 
-## 🚀 Core Features  
+## 🎯 Overview
 
-### 🔐 Authentication & Authorization  
+Charipay provides a structured backend system for:
+
+- Managing charities and campaigns  
+- Supporting anonymous and authenticated donations  
+- Handling volunteer applications and lifecycle  
+- Enforcing role-based access control (Admin, Donor, Volunteer)  
+
+The system is built with scalability and maintainability in mind using Clean Architecture principles.
+
+---
+
+## ✨ Features
+
+### 🔐 Authentication & Authorization
 - JWT-based authentication  
-- Role-based access control (**Admin, Donor, Volunteer**)  
-- Secure password hashing  
+- Role-based access (Admin, Donor, Volunteer)  
+- Secure API endpoints  
 
-### 🎯 Campaign Management  
-- Create, update, and manage charity campaigns  
-- Featured and active campaign filtering  
-- Campaign progress tracking  
+### 💰 Donation System
+- Campaign-based donations  
+- Support for anonymous donations  
+- GBP (£) as base currency  
+- Donation tracking for registered users  
 
-### 💳 Donation Processing  
-- Support for authenticated and anonymous donations  
-- Transaction tracking and validation  
-- Extensible for payment gateway integration  
+### 🙋 Volunteer System
+- View volunteer opportunities  
+- Apply / cancel application  
+- Status tracking (Pending, Approved, Cancelled, Completed)  
+- Reapply support after cancellation/rejection  
 
-### 🖼️ Media Handling  
-- Image upload and storage using **Azure Blob Storage**  
-- Public URL generation for frontend consumption  
-
-### 📊 Admin Capabilities  
-- Manage users, charities, and campaigns  
-- System-level data control and monitoring  
-
-### 🌍 API Design  
-- RESTful endpoints with versioning  
-- Consistent response structure using `ApiResponse<T>`  
-- Pagination, filtering, and search support  
+### 🛠️ Admin Features
+- Charity management  
+- Campaign creation & updates  
+- Volunteer application approval/rejection  
+- User management  
 
 ---
 
-## 🏗️ Tech Stack  
+## 🏗️ Backend Architecture Structure
 
-- **Framework:** .NET 8 Web API (C#)  
-- **Architecture:** Clean Architecture  
-- **Patterns:** CQRS (MediatR), Repository, Unit of Work  
-- **Data Access:** Entity Framework Core, Dapper  
-- **Database:** Azure SQL  
-- **Cloud:** Azure App Service, Azure Blob Storage  
-- **Authentication:** JWT (Role-based)  
-- **Testing:** xUnit, Moq, FluentAssertions  
-
----
-
-## 🏛️ Architecture Overview  
-
-The project follows **Clean Architecture principles**:
-
-- **Domain Layer**  
-  Core business entities and interfaces  
-
-- **Application Layer**  
-  Use cases, DTOs, commands & queries (CQRS with MediatR)  
-
-- **Infrastructure Layer**  
-  EF Core, repositories, database, external services  
-
-- **API Layer**  
-  Controllers, middleware, configuration  
-
-This structure ensures:
-- Separation of concerns  
-- Testability  
-- Long-term maintainability  
-
----
-
-## 📂 Project Structure  
+Charipay backend follows a Clean Architecture style, keeping business logic separate from infrastructure and API concerns.
 
 ```bash
 Charipay/
-├── Charipay.API              # Controllers, Middleware, Configuration
-├── Charipay.Application      # Commands, Queries, DTOs, Handlers
-├── Charipay.Domain           # Entities, Interfaces, Business rules
-├── Charipay.Infrastructure   # Database, Repositories, EF Core
-├── Charipay.Tests            # Unit & integration tests
+ ├── Charipay.API/
+ │   ├── Controllers/        # API endpoints
+ │   ├── Middleware/         # Exception handling, request pipeline
+ │   └── Program.cs          # Dependency injection and app configuration
+ │
+ ├── Charipay.Application/
+ │   ├── Features/           # CQRS commands and queries
+ │   ├── DTOs/               # Request/response models
+ │   ├── Interfaces/         # Application contracts
+ │   ├── Validators/         # FluentValidation rules
+ │   └── Behaviors/          # MediatR pipeline behaviours
+ │
+ ├── Charipay.Domain/
+ │   ├── Entities/           # Core business entities
+ │   ├── Enums/              # Domain enums/statuses
+ │   └── Interfaces/         # Domain abstractions
+ │
+ └── Charipay.Infrastructure/
+     ├── Persistence/        # EF Core DbContext and migrations
+     ├── Repositories/       # Repository implementations
+     ├── Services/           # External/internal service implementations
+     └── UnitOfWork/         # Unit of Work implementation
+```
+
+### Layer Responsibilities
+
+- **API Layer** handles HTTP requests, controllers, middleware, and dependency injection.
+- **Application Layer** contains CQRS handlers, DTOs, validation, and business use cases.
+- **Domain Layer** contains core entities, enums, and business rules.
+- **Infrastructure Layer** handles database access, repositories, Azure services, and external integrations.
