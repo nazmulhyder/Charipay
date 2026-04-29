@@ -25,6 +25,7 @@ namespace Charipay.Infrastructure.Data
         public DbSet<Donation> Donations { get; set; }
         public DbSet<VolunteerUser> VolunteerUsers { get; set; }
         public DbSet<VolunteerProgressUpdate> VolunteerProgressUpdates { get; set; }
+        public DbSet<UserFeedback> UserFeedbacks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -103,10 +104,35 @@ namespace Charipay.Infrastructure.Data
                 .WithOne(d=>d.VolunteerUser)
                 .HasForeignKey(d=>d.VolunteerUserId)
                 .OnDelete(DeleteBehavior.Cascade);
-            
 
 
 
+            modelBuilder.Entity<UserFeedback>(entity =>
+            {
+                entity.HasKey(f => f.UserFeedbackId);
+
+                entity.Property(f => f.Message)
+                      .IsRequired()
+                      .HasMaxLength(1000);
+
+                entity.Property(f => f.PageUrl)
+                      .HasMaxLength(300);
+
+                entity.Property(f => f.AdminNote)
+                      .HasMaxLength(500);
+
+                entity.Property(f => f.Rating)
+                      .IsRequired(false);
+
+                entity.Property(f => f.CreatedAt)
+                      .HasDefaultValueSql("GETUTCDATE()");
+
+                entity.Property(f => f.FeedbackType)
+                      .HasConversion<string>();
+
+                entity.Property(f => f.Status)
+                      .HasConversion<string>();
+            });
 
             #endregion
 
