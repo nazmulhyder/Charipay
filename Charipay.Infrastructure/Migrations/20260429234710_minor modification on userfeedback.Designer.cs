@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Charipay.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260429220130_new table user feedback")]
-    partial class newtableuserfeedback
+    [Migration("20260429234710_minor modification on userfeedback")]
+    partial class minormodificationonuserfeedback
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -248,11 +248,9 @@ namespace Charipay.Infrastructure.Migrations
 
             modelBuilder.Entity("Charipay.Domain.Entities.UserFeedback", b =>
                 {
-                    b.Property<int>("UserFeedbackId")
+                    b.Property<Guid>("UserFeedbackId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserFeedbackId"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AdminNote")
                         .HasMaxLength(500)
@@ -286,8 +284,8 @@ namespace Charipay.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("UserFeedbackId");
 

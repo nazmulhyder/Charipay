@@ -9,9 +9,9 @@ namespace Charipay.Domain.Entities
 {
     public class UserFeedback
     {
-        public int UserFeedbackId { get; set; }
+        public Guid UserFeedbackId { get; set; }
 
-        public string? UserId { get; set; }
+        public Guid? UserId { get; set; }
 
         public int? Rating { get; set; }
 
