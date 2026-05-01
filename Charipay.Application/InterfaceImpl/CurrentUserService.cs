@@ -36,10 +36,21 @@ namespace Charipay.Application.InterfaceImpl
             get
             {
                 var user = _httpContextAccessor.HttpContext?.User;
-                var userId = user?.FindFirst(JwtRegisteredClaimNames.Sub)?.Value ??
-                user?.FindFirst("sub")?.Value ??
-                user?.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-                return userId != null ? Guid.Parse(userId) : (Guid?) null;
+
+                if (user?.Identity?.IsAuthenticated != true)
+                    return null;
+
+                var userId =
+                    user.FindFirst(JwtRegisteredClaimNames.Sub)?.Value ??
+                    user.FindFirst("sub")?.Value ??
+                    user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+                if (string.IsNullOrWhiteSpace(userId))
+                    return null;
+
+                return Guid.TryParse(userId, out var parsedUserId)
+                    ? parsedUserId
+                    : null;
             }
         }
     }

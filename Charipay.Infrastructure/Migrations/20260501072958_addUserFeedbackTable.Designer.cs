@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Charipay.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260429234710_minor modification on userfeedback")]
-    partial class minormodificationonuserfeedback
+    [Migration("20260501072958_addUserFeedbackTable")]
+    partial class addUserFeedbackTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

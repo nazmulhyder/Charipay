@@ -10,7 +10,7 @@ namespace Charipay.API.Controllers.v1
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
-    public class UserFeedbacksController : Controller
+    public class UserFeedbacksController : ControllerBase
     {
         private readonly IMediator _mediator;
         public UserFeedbacksController(IMediator mediator)

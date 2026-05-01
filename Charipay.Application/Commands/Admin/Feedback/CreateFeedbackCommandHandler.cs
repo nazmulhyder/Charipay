@@ -28,30 +28,43 @@ namespace Charipay.Application.Commands.Admin.Feedback
         }
         public async Task<ApiResponse<UserFeedbackDto>> Handle(CreateFeedbackCommand request, CancellationToken cancellationToken)
         {
-
-            var feedback = new Charipay.Domain.Entities.UserFeedback
+            try
             {
-                UserFeedbackId = Guid.NewGuid(),
-                UserId  = _currentUserService.UserId.Value,
-                Rating = request.Rating,
-                FeedbackType = request.FeedbackType,
-                Message = request.Message,
-                PageUrl = request.PageUrl,
-                CreatedAt = DateTime.UtcNow,
-            };
+               
 
-           var result = await _userFeedbackRepository.AddAsync(feedback);
+                var feedback = new Charipay.Domain.Entities.UserFeedback
+                {
+                    UserFeedbackId = Guid.NewGuid(),
+                    UserId = _currentUserService.UserId,
+                    Rating = request.Rating,
+                    FeedbackType = request.FeedbackType,
+                    Message = request.Message,
+                    PageUrl = request.PageUrl,
+                    CreatedAt = DateTime.UtcNow,
+                    Status = Domain.Enums.FeedbackStatus.New
+                };
 
-            var response = new UserFeedbackDto
-            {
-                Id = result.UserFeedbackId,
-                Rating = result.Rating,
-                FeedbackType = result.FeedbackType.ToString(),
-                Message = result.Message,
-                CreatedAt = result.CreatedAt,
-            };
+                var result = await _userFeedbackRepository.AddAsync(feedback);
+                await _unitOfWork.SaveChangesAsync();
 
-            return ApiResponse<UserFeedbackDto>.SuccessResponse(response, "Submitted successfully");
+                var response = new UserFeedbackDto
+                {
+                    Id = result.UserFeedbackId,
+                    Rating = result.Rating,
+                    FeedbackType = result.FeedbackType.ToString(),
+                    Message = result.Message,
+                    CreatedAt = result.CreatedAt,
+                };
+
+                return ApiResponse<UserFeedbackDto>.SuccessResponse(response, "Submitted successfully");
+            }
+            catch (Exception ex) {
+
+                var message = ex.InnerException?.Message ?? ex.Message;
+                return ApiResponse<UserFeedbackDto>.FailedResponse(message);
+
+            }
+
 
         }
     }

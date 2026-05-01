@@ -12,8 +12,6 @@ namespace Charipay.Application.Commands.Admin.UserFeedback
 {
     public class CreateFeedbackCommand : IRequest<ApiResponse<UserFeedbackDto>>
     {
-        public string? UserId { get; set; }
-
         public int? Rating { get; set; }
 
         public FeedbackType FeedbackType { get; set; }

@@ -107,9 +107,14 @@ namespace Charipay.Infrastructure.Data
 
 
 
+
+
             modelBuilder.Entity<UserFeedback>(entity =>
             {
                 entity.HasKey(f => f.UserFeedbackId);
+
+                entity.Property(x => x.UserId)
+         .IsRequired(false);
 
                 entity.Property(f => f.Message)
                       .IsRequired()
