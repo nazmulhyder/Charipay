@@ -27,10 +27,7 @@ namespace Charipay.Application.Commands.Admin.Feedback
 
         }
         public async Task<ApiResponse<UserFeedbackDto>> Handle(CreateFeedbackCommand request, CancellationToken cancellationToken)
-        {
-            try
-            {
-               
+        { 
 
                 var feedback = new Charipay.Domain.Entities.UserFeedback
                 {
@@ -57,14 +54,6 @@ namespace Charipay.Application.Commands.Admin.Feedback
                 };
 
                 return ApiResponse<UserFeedbackDto>.SuccessResponse(response, "Submitted successfully");
-            }
-            catch (Exception ex) {
-
-                var message = ex.InnerException?.Message ?? ex.Message;
-                return ApiResponse<UserFeedbackDto>.FailedResponse(message);
-
-            }
-
 
         }
     }
