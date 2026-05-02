@@ -18,16 +18,21 @@ namespace Charipay.Application.Commands.Donations
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ICurrentUserService _currentUser;
-        public CreateDonationCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ICurrentUserService currentUser)
+        private readonly IDonationRepository _donationRepository;
+        private readonly ICampaignRepository _campaignRepository;
+
+        public CreateDonationCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ICurrentUserService currentUser, IDonationRepository donationRepository, ICampaignRepository campaignRepository)
         {
             _mapper = mapper;
             _currentUser = currentUser;
             _unitOfWork = unitOfWork;
+            _donationRepository = donationRepository;
+            _campaignRepository = campaignRepository;
         }
 
         public async Task<ApiResponse<DonationResponseDto>> Handle(CreateDonationCommand request, CancellationToken cancellationToken)
         {
-            var campaign = await _unitOfWork.Campaigns.GetByIdAsync(request.CampaignId, cancellationToken);
+            var campaign = await _campaignRepository.GetByIdAsync(request.CampaignId, cancellationToken);
 
             if (campaign == null) 
             {
@@ -66,11 +71,11 @@ namespace Charipay.Application.Commands.Donations
 
             try
             {
-                await _unitOfWork.Donations.AddAsync(donation);
+                await _donationRepository.AddAsync(donation);
                 if (donation.PaymentStatus == "Succeeded")
                 {
                     campaign.CurrentAmount += donation.Amount;
-                    _unitOfWork.Campaigns.Update(campaign, cancellationToken);
+                    _campaignRepository.Update(campaign, cancellationToken);
                 }
 
                 await _unitOfWork.SaveChangesAsync();

@@ -16,16 +16,19 @@ namespace Charipay.Application.Queries.Campaigns
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
-        public GetAllPagedCampaignsQueryHandler(IMapper mapper, IUnitOfWork unitOfWork)
+        private readonly ICampaignRepository _campaignRepository;
+
+        public GetAllPagedCampaignsQueryHandler(IMapper mapper, IUnitOfWork unitOfWork, ICampaignRepository campaignRepository)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _campaignRepository = campaignRepository;
         }
 
         public async Task<ApiResponse<PageResult<CampaignDto>>> Handle(GetAllPagedCampaignsQuery request, CancellationToken cancellationToken)
         {
-            var (campaignList, totalCount) = await 
-                _unitOfWork.Campaigns.GetPublicPagedCampaigns(request.PageNumber, request.PageSize, request.IsFeatured, cancellationToken, request.Search);
+            var (campaignList, totalCount) = await
+                _campaignRepository.GetPublicPagedCampaigns(request.PageNumber, request.PageSize, request.IsFeatured, cancellationToken, request.Search);
 
             var resCampaignList = _mapper.Map<List<CampaignDto>>(campaignList);
 

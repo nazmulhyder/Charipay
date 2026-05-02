@@ -18,15 +18,15 @@ namespace Charipay.Application.Commands.Charities
     /// <summary>
     /// 
     /// </summary>
-    public class CreateCharityCommandHandler(IUnitOfWork unitOfWork, ILogger<CreateCharityCommandHandler> logger, IMapper mapper, ICurrentUserService _currentUser)
+    public class CreateCharityCommandHandler(IUnitOfWork unitOfWork, ILogger<CreateCharityCommandHandler> logger, IMapper mapper, ICurrentUserService _currentUser, ICharityRepository charityRepository)
         : IRequestHandler<CreateCharityCommand, ApiResponse<CharityDto>>
     {
         public async Task<ApiResponse<CharityDto>> Handle(CreateCharityCommand request, CancellationToken cancellationToken)
         {
             //DB Rule check (fluent validation already handles the format checks
 
-            var emailExists = await unitOfWork.Charities.GetCharityByContactEmailAsync(request.ContactEmail, cancellationToken);
-            var registrationNoExists = await unitOfWork.Charities.GetCharityByRegistrationNumberAsync(request.RegistrationNumber, cancellationToken);
+            var emailExists = await charityRepository.GetCharityByContactEmailAsync(request.ContactEmail, cancellationToken);
+            var registrationNoExists = await charityRepository.GetCharityByRegistrationNumberAsync(request.RegistrationNumber, cancellationToken);
 
             if (emailExists)
                 return ApiResponse<CharityDto>.FailedResponse("Charity already exists with this Email:" + request.ContactEmail);
@@ -49,7 +49,7 @@ namespace Charipay.Application.Commands.Charities
 
             };
 
-            await unitOfWork.Charities.AddAsync(charity);
+            await charityRepository.AddAsync(charity);
             await unitOfWork.SaveChangesAsync();
 
             var responseDto = mapper.Map<CharityDto>(request);

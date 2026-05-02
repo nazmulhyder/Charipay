@@ -15,14 +15,17 @@ namespace Charipay.Application.Commands.Campaigns
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public UpdateCampaignCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        private readonly ICampaignRepository _campaignRepository;
+
+        public UpdateCampaignCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ICampaignRepository campaignRepository)
         {
-            this._unitOfWork = unitOfWork;
-            this._mapper = mapper;
+             _unitOfWork = unitOfWork;
+             _mapper = mapper;
+             _campaignRepository = campaignRepository;
         }
         public async Task<ApiResponse<CampaignDto>> Handle(UpdateCampaignCommand request, CancellationToken cancellationToken)
         {
-            var existingCampgn = await _unitOfWork.Campaigns.GetByIdAsync(request.CampaignId, cancellationToken);
+            var existingCampgn = await _campaignRepository.GetByIdAsync(request.CampaignId, cancellationToken);
 
             if (existingCampgn == null)
                 return ApiResponse<CampaignDto>.FailedResponse("Data not exists!");
@@ -31,7 +34,7 @@ namespace Charipay.Application.Commands.Campaigns
 
             await _unitOfWork.SaveChangesAsync();
 
-            var updatedCampgn = await _unitOfWork.Campaigns.GetByIdAsync(request.CampaignId, cancellationToken);
+            var updatedCampgn = await _campaignRepository.GetByIdAsync(request.CampaignId, cancellationToken);
 
             var result = _mapper.Map<CampaignDto>(updatedCampgn);
 

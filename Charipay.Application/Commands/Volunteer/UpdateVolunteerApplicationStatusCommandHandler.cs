@@ -16,10 +16,12 @@ namespace Charipay.Application.Commands.Volunteer
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICurrentUserService _currentUserService;
-        public UpdateVolunteerApplicationStatusCommandHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService)
+        private readonly IVolunteerUserRepository volunteerUser;
+        public UpdateVolunteerApplicationStatusCommandHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService, IVolunteerUserRepository _volunteerUser)
         {
             _unitOfWork = unitOfWork;
             _currentUserService = currentUserService;
+            volunteerUser = _volunteerUser;
         }
 
         public async Task<ApiResponse<string>> Handle(UpdateVolunteerApplicationStatusCommand request, CancellationToken cancellationToken)
@@ -29,7 +31,7 @@ namespace Charipay.Application.Commands.Volunteer
             if (userId == null)
                 return ApiResponse<string>.FailedResponse("User is not authenticated");
 
-            var application = await _unitOfWork.VolunteerUser.GetByIdAndUserIdAsync(request.VolunteerUserId, userId);
+            var application = await volunteerUser.GetByIdAndUserIdAsync(request.VolunteerUserId, userId);
 
             if (application == null)
                 return ApiResponse<string>.FailedResponse("Application not found!");

@@ -12,15 +12,17 @@ namespace Charipay.Application.Queries.Volunteer
     public class CheckVolunteerApplicationExistsQueryHandler : IRequestHandler<CheckVolunteerApplicationExistsQuery, ApiResponse<bool>>
     {
 
-        private readonly IUnitOfWork _unitOfWork;
+       
+        private readonly IVolunteerApplicationHistoryRepository _volunteerApplicationHistoryRepository;
         
-        public CheckVolunteerApplicationExistsQueryHandler(IUnitOfWork unitOfWork)
+        public CheckVolunteerApplicationExistsQueryHandler(IUnitOfWork unitOfWork, IVolunteerApplicationHistoryRepository volunteerApplicationHistoryRepository)
         {
-            _unitOfWork = unitOfWork;
+  
+            _volunteerApplicationHistoryRepository = volunteerApplicationHistoryRepository;
         }
         public async Task<ApiResponse<bool>> Handle(CheckVolunteerApplicationExistsQuery request, CancellationToken cancellationToken)
         {
-            var IsApplied = await _unitOfWork.VolunteerApplicationHistory.IsAlreadyAppliedAsync(request.VolunteerTaskId, request.VolunteerUserId);
+            var IsApplied = await _volunteerApplicationHistoryRepository.IsAlreadyAppliedAsync(request.VolunteerTaskId, request.VolunteerUserId);
 
             return ApiResponse<bool>.SuccessResponse(IsApplied, "");
         }

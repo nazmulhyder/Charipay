@@ -8,15 +8,11 @@ namespace Charipay.Application.Interfaces.Repositories
 {
     public interface IUnitOfWork : IDisposable
     {
-        IUserRepository Users { get; }
-        IUserRoleRepository UserRoles { get; }
-        ICharityRepository Charities { get; }
-        ICampaignRepository Campaigns { get; }
-        IDonationRepository Donations { get; }
-        IVolunteerTaskRepository VolunteerTask { get; }
-        IVolunteerUserRepository VolunteerUser { get; }
-        IVolunteerApplicationHistoryRepository VolunteerApplicationHistory { get; }
-        IPublicRepository publicStats { get; }
-        Task<int> SaveChangesAsync();
+        Task BeginTransactionAsync(CancellationToken cancellationToken = default);
+
+        Task CommitTransactionAsync(CancellationToken cancellationToken = default);
+
+        Task RollbackTransactionAsync(CancellationToken cancellationToken = default);
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }

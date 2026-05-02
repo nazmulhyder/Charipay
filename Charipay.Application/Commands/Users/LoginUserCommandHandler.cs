@@ -12,11 +12,13 @@ using System.Threading.Tasks;
 
 namespace Charipay.Application.Commands.Users
 {
-    public class LoginUserCommandHandler(IUnitOfWork _unitOfWork, IPasswordHasher _passwordHasher, ILogger<LoginUserCommandHandler> logger, IJwtTokenService jwtTokenService) : IRequestHandler<LoginUserCommand, ApiResponse<LoginResponseDto>>
+    public class LoginUserCommandHandler(IUnitOfWork _unitOfWork, IPasswordHasher _passwordHasher, ILogger<LoginUserCommandHandler> logger, IJwtTokenService jwtTokenService
+        , IUserRepository userRepository) 
+        : IRequestHandler<LoginUserCommand, ApiResponse<LoginResponseDto>>
     {
         public async Task<ApiResponse<LoginResponseDto>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _unitOfWork.Users.GetByEmailAsync(request.Email);
+            var user = await userRepository.GetByEmailAsync(request.Email);
 
             if (user == null)
             {

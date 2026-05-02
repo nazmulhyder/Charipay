@@ -16,18 +16,28 @@ namespace Charipay.Application.Queries.Dashboard
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public GetDashboardQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        private readonly IUserRepository userRepository;
+        private readonly ICharityRepository charityRepository;
+        private readonly ICampaignRepository campaignRepository;
+        private readonly IDonationRepository donationRepository;
+
+        public GetDashboardQueryHandler(IUnitOfWork unitOfWork, IMapper mapper, IUserRepository _userRepository, ICharityRepository _charityRepository, ICampaignRepository _campaignRepository
+            , IDonationRepository _donationRepository)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            userRepository = _userRepository;
+            charityRepository = _charityRepository;
+            campaignRepository = _campaignRepository;
+            donationRepository = _donationRepository;
         }
 
         public async Task<ApiResponse<DashboardDto>> Handle(GetDashboardQuery request, CancellationToken cancellationToken)
         {
-            var users = await _unitOfWork.Users.GetAllAsync(cancellationToken);
-            var charities = await _unitOfWork.Charities.GetAllAsync(cancellationToken);
-            var campaigns = await _unitOfWork.Campaigns.GetAllAsync(cancellationToken);
-            var donations = await _unitOfWork.Donations.GetAllAsync(cancellationToken);
+            var users = await userRepository.GetAllAsync(cancellationToken);
+            var charities = await charityRepository.GetAllAsync(cancellationToken);
+            var campaigns = await campaignRepository.GetAllAsync(cancellationToken);
+            var donations = await donationRepository.GetAllAsync(cancellationToken);
 
             var totalUsers = users.Count();
             var totalCharities = charities.Count();

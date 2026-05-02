@@ -19,18 +19,20 @@ namespace Charipay.Application.Queries.Donor
         private readonly ICurrentUserService _currentUserService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IDonationRepository donationRepository;
 
-        public GetPagedDonorDonationsQueryHandler(ICurrentUserService currentUserService, IUnitOfWork unitOfWork, IMapper mapper)
+        public GetPagedDonorDonationsQueryHandler(ICurrentUserService currentUserService, IUnitOfWork unitOfWork, IMapper mapper, IDonationRepository _donationRepository)
         {
             _currentUserService = currentUserService;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            donationRepository = _donationRepository;
         }
 
 
         public async Task<ApiResponse<PageResult<DonationResponseDto>>> Handle(GetPagedDonorDonationsQuery request, CancellationToken cancellationToken)
         {
-            var items = await _unitOfWork.Donations.Donations(_currentUserService.UserId.Value, request.PageNumber, request.PageSize, request.search);
+            var items = await donationRepository.Donations(_currentUserService.UserId.Value, request.PageNumber, request.PageSize, request.search);
 
             var response = _mapper.Map<List<DonationResponseDto>>(items);
 

@@ -18,16 +18,18 @@ namespace Charipay.Application.Commands.Campaigns
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ICurrentUserService _currentUser;
-        public CreateCampaignCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ICurrentUserService currentUser)
+        private readonly ICampaignRepository _campaignRepository;
+        public CreateCampaignCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ICurrentUserService currentUser, ICampaignRepository campaignRepository)
         {
             _mapper = mapper;
             _currentUser = currentUser;
             _unitOfWork = unitOfWork;
+            _campaignRepository = campaignRepository;
         }
 
         public async Task<ApiResponse<CampaignDto>> Handle(CreateCampaignCommand request, CancellationToken cancellationToken)
         {
-            var exists = await _unitOfWork.Campaigns.GetCampaignByCharityId(request.CharityId, request.CampaignName, cancellationToken);
+            var exists = await _campaignRepository.GetCampaignByCharityId(request.CharityId, request.CampaignName, cancellationToken);
 
 
             if (exists)
@@ -36,7 +38,7 @@ namespace Charipay.Application.Commands.Campaigns
             request.CreatedById = _currentUser.UserId;
             var data = _mapper.Map<Campaign>(request);
 
-            await _unitOfWork.Campaigns.AddAsync(data);
+            await _campaignRepository.AddAsync(data);
             await _unitOfWork.SaveChangesAsync();
 
             var response = _mapper.Map<CampaignDto>(data);

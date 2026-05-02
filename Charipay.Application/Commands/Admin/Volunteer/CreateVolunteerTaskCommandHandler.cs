@@ -17,16 +17,21 @@ namespace Charipay.Application.Commands.Admin.Volunteer
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ICurrentUserService _currentUser;
-        public CreateVolunteerTaskCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ICurrentUserService currentUser)
+        private readonly ICampaignRepository _campaignRepository;
+        private readonly IVolunteerTaskRepository _volunteerTask;
+        public CreateVolunteerTaskCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ICurrentUserService currentUser, ICampaignRepository campaignRepository,
+             IVolunteerTaskRepository volunteerTask)
         {
             _mapper = mapper;
             _currentUser = currentUser;
             _unitOfWork = unitOfWork;
+            _campaignRepository = campaignRepository;
+            _volunteerTask = volunteerTask;
         }
 
         public async Task<ApiResponse<Guid>> Handle(CreateVolunteerTaskCommand request, CancellationToken cancellationToken)
         {
-            var campaign = await _unitOfWork.Campaigns.GetByIdAsync(request.CampaignId, cancellationToken);
+            var campaign = await _campaignRepository.GetByIdAsync(request.CampaignId, cancellationToken);
 
             if (campaign == null)
             {
@@ -47,7 +52,7 @@ namespace Charipay.Application.Commands.Admin.Volunteer
                 VolunteerUsers = new List<VolunteerUser>()
             };
 
-            await _unitOfWork.VolunteerTask.AddAsync(volunteerTask);
+            await _volunteerTask.AddAsync(volunteerTask);
             await _unitOfWork.SaveChangesAsync();
 
 

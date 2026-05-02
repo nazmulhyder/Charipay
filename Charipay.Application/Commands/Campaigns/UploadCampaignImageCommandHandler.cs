@@ -17,12 +17,14 @@ namespace Charipay.Application.Commands.Campaigns
         private readonly IUnitOfWork _unitofWork;
         private readonly IMapper _mapper;
         private readonly IFileStorageService _fileStorageService;
+        private readonly ICampaignRepository _campaignRepository;
 
-        public UploadCampaignImageCommandHandler(IUnitOfWork unitofWork, IMapper mapper, IFileStorageService fileStorageService)
+        public UploadCampaignImageCommandHandler(IUnitOfWork unitofWork, IMapper mapper, IFileStorageService fileStorageService, ICampaignRepository campaignRepository)
         {
             _mapper = mapper;
             _unitofWork = unitofWork;
             _fileStorageService = fileStorageService;
+            _campaignRepository = campaignRepository;
         }
 
 
@@ -41,7 +43,7 @@ namespace Charipay.Application.Commands.Campaigns
 
             // adjust this line to match your repository method name
 
-            var campaign = await _unitofWork.Campaigns.GetByIdAsync(request.CampaignId, cancellationToken);
+            var campaign = await _campaignRepository.GetByIdAsync(request.CampaignId, cancellationToken);
 
             if(campaign == null)
                 return ApiResponse<string>.FailedResponse("Campaign not fould.");

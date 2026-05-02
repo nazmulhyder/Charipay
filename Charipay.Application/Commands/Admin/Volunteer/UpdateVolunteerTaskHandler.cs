@@ -4,6 +4,7 @@ using Charipay.Application.Common.Models;
 using Charipay.Application.DTOs.Admin.Volunteer;
 using Charipay.Application.DTOs.Campaigns;
 using Charipay.Application.Interfaces.Repositories;
+using Charipay.Domain.Entities;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -17,15 +18,17 @@ namespace Charipay.Application.Commands.Admin.Volunteer
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public UpdateVolunteerTaskHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        private readonly IVolunteerTaskRepository _volunteerTask;
+        public UpdateVolunteerTaskHandler(IUnitOfWork unitOfWork, IMapper mapper, IVolunteerTaskRepository volunteerTask)
         {
             this._unitOfWork = unitOfWork;
             this._mapper = mapper;
+            _volunteerTask = volunteerTask;
         }
     
         public async Task<ApiResponse<VolunteerTaskDto>> Handle(UpdateVolunteerTaskCommand request, CancellationToken cancellationToken)
         {
-            var existingTask = await _unitOfWork.VolunteerTask.GetByIdAsync(request.VolunteerTaskId, cancellationToken);
+            var existingTask = await _volunteerTask.GetByIdAsync(request.VolunteerTaskId, cancellationToken);
 
             if (existingTask == null)
                 return ApiResponse<VolunteerTaskDto>.FailedResponse("Data not exists!");
@@ -34,7 +37,7 @@ namespace Charipay.Application.Commands.Admin.Volunteer
 
             await _unitOfWork.SaveChangesAsync();
 
-            var updatedVolunteerTask = await _unitOfWork.VolunteerTask.GetByIdAsync(request.VolunteerTaskId, cancellationToken);
+            var updatedVolunteerTask = await _volunteerTask.GetByIdAsync(request.VolunteerTaskId, cancellationToken);
 
             var result = _mapper.Map<VolunteerTaskDto>(updatedVolunteerTask);
 

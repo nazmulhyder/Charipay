@@ -17,16 +17,18 @@ namespace Charipay.Application.Queries.Donor
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICurrentUserService _currentUserService;
         private readonly IMapper _mapper;
+        private readonly IDonationRepository donationRepository;
 
-        public GetDonationByIdQueryHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService, IMapper mapper)
+        public GetDonationByIdQueryHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService, IMapper mapper, IDonationRepository _donationRepository)
         {
             _currentUserService = currentUserService;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            donationRepository = _donationRepository;
         }
         public async Task<ApiResponse<DonationResponseDto>> Handle(GetDonationByIdQuery request, CancellationToken cancellationToken)
         {
-            var item = await _unitOfWork.Donations.Donation(request.DonationId, _currentUserService.UserId.Value);
+            var item = await donationRepository.Donation(request.DonationId, _currentUserService.UserId.Value);
 
             var response = _mapper.Map<DonationResponseDto>(item);
 

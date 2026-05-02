@@ -15,21 +15,26 @@ namespace Charipay.Application.Commands.Charities
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public DeleteCharityCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        private readonly ICharityRepository _charityRepository;
+
+        public DeleteCharityCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ICharityRepository charityRepository)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _charityRepository = charityRepository;
         }
+
+ 
         public async Task<ApiResponse<string>> Handle(DeleteCharityCommand request, CancellationToken cancellationToken)
         {
-            var existingCharity = await _unitOfWork.Charities.GetByIdAsync(request.CharityId, cancellationToken);
+            var existingCharity = await _charityRepository.GetByIdAsync(request.CharityId, cancellationToken);
 
             if (existingCharity == null)
                 return ApiResponse<string>.FailedResponse("Data not exists");
 
             var data = _mapper.Map<Charity>(existingCharity);
 
-            _unitOfWork.Charities.Remove(data, cancellationToken);
+            _charityRepository.Remove(data, cancellationToken);
             await _unitOfWork.SaveChangesAsync();
 
             return ApiResponse<string>.SuccessResponse("Data deleted successfully", "Data deleted successfully");

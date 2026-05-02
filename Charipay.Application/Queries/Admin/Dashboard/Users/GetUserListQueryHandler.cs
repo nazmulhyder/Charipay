@@ -17,16 +17,17 @@ namespace Charipay.Application.Queries.Admin.Dashboard.Users
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-    
+        private readonly IUserRepository userRepository;
 
-        public GetUserListQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public GetUserListQueryHandler(IUnitOfWork unitOfWork, IMapper mapper, IUserRepository _userRepository)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            userRepository = _userRepository;
         }
         public async Task<ApiResponse<PageResult<AdminUserListDto>>> Handle(GetUserListQuery request, CancellationToken cancellationToken)
         {
-            var (users, totalCount) = await _unitOfWork.Users.GetPagedUserAsync(request.PageNumber, request.PageSize, request.Search);
+            var (users, totalCount) = await userRepository.GetPagedUserAsync(request.PageNumber, request.PageSize, request.Search);
 
             var mappedUserList = _mapper.Map<List<AdminUserListDto>>(users);
 

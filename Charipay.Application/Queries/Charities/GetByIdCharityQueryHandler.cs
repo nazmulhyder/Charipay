@@ -15,15 +15,17 @@ namespace Charipay.Application.Queries.Charities
     {
         public readonly IMapper _mapper;
         public readonly IUnitOfWork _unitOfWork;
-        public GetByIdCharityQueryHandler(IMapper mapper, IUnitOfWork unitOfWork)
+        private readonly ICharityRepository charityRepository;
+        public GetByIdCharityQueryHandler(IUnitOfWork unitOfWork, IMapper mapper, ICharityRepository _charityRepository)
         {
-            _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
+            charityRepository = _charityRepository;
         }
 
         public async Task<ApiResponse<CharityDto>> Handle(GetByIdCharityQuery request, CancellationToken cancellationToken)
         {
-            var data = await _unitOfWork.Charities.GetByIdAsync(request.id, cancellationToken);
+            var data = await charityRepository.GetByIdAsync(request.id, cancellationToken);
 
             var mapResult = _mapper.Map<CharityDto>(data);
 

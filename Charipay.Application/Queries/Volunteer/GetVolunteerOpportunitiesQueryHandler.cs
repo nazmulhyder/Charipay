@@ -21,17 +21,19 @@ namespace Charipay.Application.Queries.Volunteer
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ICurrentUserService currentUserService;
+        private readonly IVolunteerTaskRepository _volunteerTaskRepository;
 
-        public GetVolunteerOpportunitiesQueryHandler(IUnitOfWork unitOfWork, IMapper mapper, ICurrentUserService _currentUserService)
+        public GetVolunteerOpportunitiesQueryHandler(IUnitOfWork unitOfWork, IMapper mapper, ICurrentUserService _currentUserService, IVolunteerTaskRepository volunteerTaskRepository)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             currentUserService = _currentUserService;
+            _volunteerTaskRepository = volunteerTaskRepository;
         }
 
         public async Task<ApiResponse<PageResult<VolunteerOpportunityDto>>> Handle(GetVolunteerOpportunitiesQuery request, CancellationToken cancellationToken)
         {
-            var (volunteerTasks, totalCount) = await _unitOfWork.VolunteerTask.GetPagedVolunteerTaskAsync(request.PageNumber, request.PageSize, request.Search);
+            var (volunteerTasks, totalCount) = await _volunteerTaskRepository.GetPagedVolunteerTaskAsync(request.PageNumber, request.PageSize, request.Search);
 
 
             var items = volunteerTasks.Select(v =>

@@ -13,15 +13,17 @@ namespace Charipay.Application.Queries.Home
     public class GetHomeStatsQueryHandler : IRequestHandler<GetHomeStatsQuery, ApiResponse<HomeStatsDto>>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IPublicRepository publicRepository;
 
-        public GetHomeStatsQueryHandler(IUnitOfWork unitOfWork)
+        public GetHomeStatsQueryHandler(IUnitOfWork unitOfWork, IPublicRepository _publicRepository)
         {
             _unitOfWork = unitOfWork;
+            publicRepository = _publicRepository;
         }
 
         public async Task<ApiResponse<HomeStatsDto>> Handle(GetHomeStatsQuery request, CancellationToken cancellationToken)
         {
-            var result =  await _unitOfWork.publicStats.GetHomeStatsAsync();
+            var result =  await publicRepository.GetHomeStatsAsync();
 
             return ApiResponse<HomeStatsDto>.SuccessResponse(result,"Success");
 

@@ -18,16 +18,18 @@ namespace Charipay.Application.Commands.Volunteer
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICurrentUserService _currentUserService;
         private readonly IMapper _mapper;
-        public RequestVolunteerApplicationCancellationCommandHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService, IMapper mapper)
+        private readonly IVolunteerUserRepository volunteerUser;
+        public RequestVolunteerApplicationCancellationCommandHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService, IMapper mapper, IVolunteerUserRepository _volunteerUser)
         {
             this._unitOfWork    = unitOfWork;
             this._currentUserService = currentUserService;
             _mapper = mapper;
+            volunteerUser = _volunteerUser;
         }
 
         public async Task<ApiResponse<VolunteerUserDto>> Handle(RequestVolunteerApplicationCancellationCommand request, CancellationToken cancellationToken)
         {
-            var application = await _unitOfWork.VolunteerUser.GetByIdAndUserIdAsync(request.VolunteerUserId, _currentUserService.UserId.Value);
+            var application = await volunteerUser.GetByIdAndUserIdAsync(request.VolunteerUserId, _currentUserService.UserId.Value);
 
 
             var currentStatus = application.Status?.Trim() ?? string.Empty;

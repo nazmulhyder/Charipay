@@ -14,21 +14,23 @@ namespace Charipay.Application.Commands.Campaigns
     {
         private readonly IUnitOfWork _unitofWork;
         private readonly IMapper _mapper;
+        private readonly ICampaignRepository _campaignRepository;
 
-        public DeleteCampaignCommandHandler(IUnitOfWork unitofWork, IMapper mapper)
+        public DeleteCampaignCommandHandler(IUnitOfWork unitofWork, IMapper mapper, ICampaignRepository campaignRepository)
         {
             _mapper = mapper;
             _unitofWork = unitofWork;
+            _campaignRepository = campaignRepository;
         }
 
         public async Task<ApiResponse<string>> Handle(DeleteCampaignCommand request, CancellationToken cancellationToken)
         {
-            var existingData = await _unitofWork.Campaigns.GetByIdAsync(request.CampaignId, cancellationToken);
+            var existingData = await _campaignRepository.GetByIdAsync(request.CampaignId, cancellationToken);
 
             if (existingData == null)
                 return ApiResponse<string>.FailedResponse("Data not exists.");
 
-            _unitofWork.Campaigns.Remove(existingData, cancellationToken);
+            _campaignRepository.Remove(existingData, cancellationToken);
             await _unitofWork.SaveChangesAsync();
 
             return ApiResponse<string>.SuccessResponse("Deleted successfully", "Deleted successfully");

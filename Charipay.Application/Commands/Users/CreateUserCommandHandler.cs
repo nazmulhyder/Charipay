@@ -14,12 +14,14 @@ using System.Threading.Tasks;
 namespace Charipay.Application.Commands.Users
 {
 
-    public class CreateUserCommandHandler(IUnitOfWork _unitOfWork, IPasswordHasher _passwordHasher, ILogger<CreateUserCommandHandler> logger, IMapper mapper) : IRequestHandler<CreateUserCommand, ApiResponse<UserDto>>
+    public class CreateUserCommandHandler(IUnitOfWork _unitOfWork, IPasswordHasher _passwordHasher, ILogger<CreateUserCommandHandler> logger, IMapper mapper, IUserRepository userRepository
+        , IUserRoleRepository userRoleRepository) 
+        : IRequestHandler<CreateUserCommand, ApiResponse<UserDto>>
     {
         public async Task<ApiResponse<UserDto>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
             logger.LogInformation("CreateUserCommand received for email: {Email}", request.Email);
-            var existingUser = await _unitOfWork.Users.GetByEmailAsync(request.Email);
+            var existingUser = await userRepository.GetByEmailAsync(request.Email);
            
             if (existingUser != null)
             {
@@ -38,7 +40,7 @@ namespace Charipay.Application.Commands.Users
             var user = mapper.Map<User>(request);
             user.PasswordHash = _passwordHasher.Hash(request.Password);
 
-            await _unitOfWork.Users.AddAsync(user);
+            await userRepository.AddAsync(user);
             await _unitOfWork.SaveChangesAsync();
 
 
@@ -49,8 +51,8 @@ namespace Charipay.Application.Commands.Users
                 RoleID = request.RoleID  // default "User"
             };
 
-            await _unitOfWork.UserRoles.AddAsync(userRole);
-            await _unitOfWork.SaveChangesAsync();
+            await userRoleRepository.AddAsync(userRole);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
 
             logger.LogInformation("User created successfully with ID: {Id}", user.UserID);

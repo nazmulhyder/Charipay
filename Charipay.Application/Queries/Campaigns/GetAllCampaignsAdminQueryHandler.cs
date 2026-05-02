@@ -16,16 +16,18 @@ namespace Charipay.Application.Queries.Campaigns
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
-        public GetAllCampaignsAdminQueryHandler(IMapper mapper, IUnitOfWork unitOfWork)
+        private readonly ICampaignRepository _campaignRepository;
+        public GetAllCampaignsAdminQueryHandler(IMapper mapper, IUnitOfWork unitOfWork, ICampaignRepository campaignRepository)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _campaignRepository = campaignRepository;
         }
 
         public async Task<ApiResponse<PageResult<CampaignDto>>> Handle(GetAllCampaignsAdminQuery request, CancellationToken cancellationToken)
         {
             var (campaignList, totalCount) = await
-                _unitOfWork.Campaigns.GetAdminPagedCampaigns(request.PageNumber, request.PageSize, request.IsFeatured,request.IsActive ,cancellationToken, request.Search);
+                _campaignRepository.GetAdminPagedCampaigns(request.PageNumber, request.PageSize, request.IsFeatured,request.IsActive ,cancellationToken, request.Search);
 
             var resCampaignList = _mapper.Map<List<CampaignDto>>(campaignList);
 

@@ -15,17 +15,19 @@ namespace Charipay.Application.Queries.Campaigns
     {
         private readonly IUnitOfWork _unitofWork;
         private readonly IMapper _mapper;
+        private readonly ICampaignRepository _campaignRepository;
 
-        public GetByIdCampaignQueryHandler(IUnitOfWork unitofWork, IMapper mapper)
+        public GetByIdCampaignQueryHandler(IUnitOfWork unitofWork, IMapper mapper, ICampaignRepository campaignRepository)
         {
             _mapper = mapper;
             _unitofWork = unitofWork;
+            _campaignRepository = campaignRepository;
         }
 
 
         public async Task<ApiResponse<CampaignDto>> Handle(GetByIdCampaignQuery request, CancellationToken cancellationToken)
         {
-            var result = await _unitofWork.Campaigns.GetByIdAsync(request.CampaignId, cancellationToken);
+            var result = await _campaignRepository.GetByIdAsync(request.CampaignId, cancellationToken);
 
             if (result == null)
                 return ApiResponse<CampaignDto>.FailedResponse("Data not exists!");

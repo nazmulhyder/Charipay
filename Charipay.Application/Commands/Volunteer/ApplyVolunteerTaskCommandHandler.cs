@@ -18,19 +18,24 @@ namespace Charipay.Application.Commands.Volunteer
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICurrentUserService _currentUserService;
+        private readonly IVolunteerTaskRepository _volunteerTaskRepository;
+        private readonly IVolunteerUserRepository volunteerUser;
 
-        public ApplyVolunteerTaskCommandHandler(IMapper mapper, IUnitOfWork unitOfWork, ICurrentUserService currentUserService)
+        public ApplyVolunteerTaskCommandHandler(IMapper mapper, IUnitOfWork unitOfWork, ICurrentUserService currentUserService, IVolunteerTaskRepository volunteerTaskRepository
+            , IVolunteerUserRepository _volunteerUser)
         {
-            _mapper = _mapper;
-            _unitOfWork =  unitOfWork;
+            _mapper = mapper;
+            _unitOfWork =  unitOfWork;  
             _currentUserService = currentUserService;
+            _volunteerTaskRepository = volunteerTaskRepository;
+            volunteerUser = _volunteerUser;
         }
 
         public async Task<ApiResponse<VolunteerUserDto>> Handle(ApplyVolunteerTaskCommand request, CancellationToken cancellationToken)
         {
            
 
-            var task = await _unitOfWork.VolunteerTask.GetByIdAsync(request.VolunteerTaskId, cancellationToken);
+            var task = await _volunteerTaskRepository.GetByIdAsync(request.VolunteerTaskId, cancellationToken);
 
             if (task == null)
                 return ApiResponse<VolunteerUserDto>.FailedResponse("Task does not exists!", null);
@@ -39,11 +44,11 @@ namespace Charipay.Application.Commands.Volunteer
                 return ApiResponse<VolunteerUserDto>.FailedResponse("This volunteer task is no longer active!", null);
 
 
-            var volunteerTaskExists = await _unitOfWork.VolunteerUser.HasUserAlreadyAppliedAsync(request.VolunteerTaskId, _currentUserService.UserId);
+            var volunteerTaskExists = await volunteerUser.HasUserAlreadyAppliedAsync(request.VolunteerTaskId, _currentUserService.UserId);
             if (volunteerTaskExists)
                return ApiResponse<VolunteerUserDto>.FailedResponse("User already applied for this task!", null);
 
-            var activeApplicantCount = await _unitOfWork.VolunteerUser.GetActiveApplicationCountAsync(request.VolunteerTaskId);
+            var activeApplicantCount = await volunteerUser.GetActiveApplicationCountAsync(request.VolunteerTaskId);
 
             if(activeApplicantCount >= task.MaxVolunteer)
                 return ApiResponse<VolunteerUserDto>.FailedResponse("Volunteer reached the maximum level for this task!", null);
@@ -60,7 +65,7 @@ namespace Charipay.Application.Commands.Volunteer
                 AvailabilityNote = request.AvailabilityNote
             };
 
-            await _unitOfWork.VolunteerUser.AddAsync(application);
+            await volunteerUser.AddAsync(application);
             await _unitOfWork.SaveChangesAsync();
 
             var response = new VolunteerUserDto

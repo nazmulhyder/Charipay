@@ -18,17 +18,19 @@ namespace Charipay.Application.Queries.Volunteer
     {
         private readonly IUnitOfWork _unitofWork;
         private readonly ICurrentUserService _currentUser;
+        private readonly IVolunteerUserRepository _volunteerUserRepository;
 
-        public GetMyApplicationsQueryHandler(IUnitOfWork unitofWork, ICurrentUserService currentUser)
+        public GetMyApplicationsQueryHandler(IUnitOfWork unitofWork, ICurrentUserService currentUser, IVolunteerUserRepository volunteerUserRepository)
         {
             _unitofWork = unitofWork;
             _currentUser = currentUser;
+            _volunteerUserRepository = volunteerUserRepository;
         }
 
         public async Task<ApiResponse<PageResult<MyVolunteerApplicationDto>>> Handle(GetMyApplicationsQuery request, CancellationToken cancellationToken)
         {
 
-            var (applicationRequests, totalCount) = await _unitofWork.VolunteerUser.GetMyApplicationsAsync(_currentUser.UserId.Value, request.PageNumber, request.PageSize, request.Search, request.status);
+            var (applicationRequests, totalCount) = await _volunteerUserRepository.GetMyApplicationsAsync(_currentUser.UserId.Value, request.PageNumber, request.PageSize, request.Search, request.status);
 
 
             var result = new PageResult<MyVolunteerApplicationDto>(

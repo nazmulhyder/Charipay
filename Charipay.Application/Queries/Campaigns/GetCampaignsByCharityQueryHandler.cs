@@ -16,16 +16,18 @@ namespace Charipay.Application.Queries.Campaigns
 
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ICampaignRepository _campaignRepository;
 
-        public GetCampaignsByCharityQueryHandler(IMapper mapper, IUnitOfWork unitOfWork)
+        public GetCampaignsByCharityQueryHandler(IMapper mapper, IUnitOfWork unitOfWork, ICampaignRepository campaignRepository)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _campaignRepository = campaignRepository;
         }
 
         public async Task<ApiResponse<List<CampaignDropdownDto>>> Handle(GetCampaignsByCharityQuery request, CancellationToken cancellationToken)
         {
-            var items = await _unitOfWork.Campaigns.GetCampaignsByCharityAsync(request.CharityId);
+            var items = await _campaignRepository.GetCampaignsByCharityAsync(request.CharityId);
 
             var mappedDropdownData = _mapper.Map<List<CampaignDropdownDto>>(items);
 
