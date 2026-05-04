@@ -23,7 +23,10 @@ namespace Charipay.Application
         {
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-            services.AddAutoMapper(typeof(UserProfile).Assembly);
+            services.AddAutoMapper(cfg =>
+            {
+                cfg.AddMaps(typeof(UserProfile).Assembly);
+            });
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             return services;
