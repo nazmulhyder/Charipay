@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Application\Campaigns\Queries\" />
     <Folder Include="Application\Users\Queries\" />
   </ItemGroup>
 
