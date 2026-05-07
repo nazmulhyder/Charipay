@@ -32,5 +32,6 @@ namespace Charipay.Application.Commands.Campaigns
 
 
         }
+
     }
 }
