@@ -26,6 +26,21 @@ namespace Charipay.Tests.Application.Campaigns.Validators
             result.IsValid.Should().BeFalse();
         }
 
+
+        [Fact]
+        public void Should_Fail_When_CharityId_Is_Empty()
+        {
+            // arrange
+            var command = CreateValidCampaignCommand();
+            command.CharityId = Guid.Empty;
+
+            //act
+            var result = _validator.Validate(command);
+
+            //assert
+            result.IsValid.Should().BeFalse();
+        }
+
         [Fact]
         public void Should_Fail_When_CampaignDescription_Is_Empty()
         {
@@ -77,7 +92,39 @@ namespace Charipay.Tests.Application.Campaigns.Validators
           .Contain(x => x.ErrorMessage == "Start date cannot be in the past.");
         }
 
+        [Fact]
+        public void Should_Fail_When_EndDate_Is_In_Past()
+        {
+            // arrange
+            var command = CreateValidCampaignCommand();
+            command.CampaignEndDate = DateTime.UtcNow.Date.AddDays(-1);
 
+            //act
+            var result = _validator.Validate(command);
+
+            //assert
+            result.IsValid.Should().BeFalse();
+
+            result.Errors
+          .Should()
+          .Contain(x => x.ErrorMessage == "End date cannot be in the past.");
+        }
+
+        [Fact]
+        public  void Should_Fail_When_Start_Date_Greater_than_End_Date()
+        {
+            //arrange
+            var command = CreateValidCampaignCommand();
+            command.CampaignStartDate = DateTime.UtcNow.Date.AddDays(30);
+            command.CampaignEndDate = DateTime.UtcNow.Date.AddDays(1);
+
+            //act
+            var result = _validator.Validate(command);
+
+            //assert
+            result.IsValid.Should().BeFalse();
+            result.Errors.Should().Contain(s => s.ErrorMessage == "End date must be greater than start date.");
+        }
 
 
 

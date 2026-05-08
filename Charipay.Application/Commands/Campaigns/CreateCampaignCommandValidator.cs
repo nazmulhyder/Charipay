@@ -25,6 +25,9 @@ namespace Charipay.Application.Commands.Campaigns
                 .GreaterThanOrEqualTo(DateTime.UtcNow.Date).WithMessage("Start date cannot be in the past.");
 
             RuleFor(c => c.CampaignEndDate)
+               .GreaterThanOrEqualTo(DateTime.UtcNow.Date).WithMessage("End date cannot be in the past.");
+
+            RuleFor(c => c.CampaignEndDate)
                 .GreaterThan(c => c.CampaignStartDate).WithMessage("End date must be greater than start date.");
 
             RuleFor(c => c.CharityId)
