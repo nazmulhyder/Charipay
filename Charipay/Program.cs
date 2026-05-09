@@ -9,6 +9,7 @@ using System;
 using System.Text;
 using Asp.Versioning.ApiExplorer;
 using System.Text.Json.Serialization;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -104,9 +105,22 @@ builder.Services.AddCors(options =>
     });
 });
 
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.Console()
+    .WriteTo.File(
+    "Logs/log-.txt",
+    rollingInterval:RollingInterval.Day
+    ).CreateLogger();
+
+builder.Host.UseSerilog();
+
+
 var app = builder.Build();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
+app.UseSerilogRequestLogging();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment() || true)
@@ -116,6 +130,7 @@ if (app.Environment.IsDevelopment() || true)
 }
 
 app.UseCors("AllowAngular");
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

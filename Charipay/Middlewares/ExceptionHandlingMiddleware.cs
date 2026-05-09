@@ -7,10 +7,12 @@ namespace Charipay.API.Middlewares
     public class ExceptionHandlingMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly ILogger<ExceptionHandlingMiddleware> _logger;
 
-        public ExceptionHandlingMiddleware(RequestDelegate next)
+        public ExceptionHandlingMiddleware(RequestDelegate next , ILogger<ExceptionHandlingMiddleware> logger)
         {
             _next = next;
+            _logger = logger;
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -25,7 +27,7 @@ namespace Charipay.API.Middlewares
             }
         }
 
-        private static Task HandleExceptionAsync(HttpContext context, Exception ex)
+        private Task HandleExceptionAsync(HttpContext context, Exception ex)
         {
             // default to 500
             var statusCode = StatusCodes.Status500InternalServerError;
@@ -42,16 +44,30 @@ namespace Charipay.API.Middlewares
                                      .Select(e => e.ErrorMessage)
                                      .Distinct()
                                      .ToList();
+
+                _logger.LogWarning(ex, "Validation exception occured. Path: {Path}, Method: {Method}, TraceId: {TraceId}"
+                    , context.Request.Path, context.Request.Method, context.TraceIdentifier
+                    );
+                
             }
             else if (ex is NotFoundException notFoundEx)
             {
                 statusCode = StatusCodes.Status404NotFound;
                 message = notFoundEx.Message;
+
+                _logger.LogWarning(ex, "Resource not found. Path: {Path}, Method: {Method}, TraceId: {TraceId}"
+                  , context.Request.Path, context.Request.Method, context.TraceIdentifier
+                  );
             }
             else
             {
+
+                _logger.LogWarning(ex, "Unhandled exception occured. Path: {Path}, Method: {Method}, TraceId: {TraceId}"
+                  , context.Request.Path, context.Request.Method, context.TraceIdentifier
+                  );
+
                 // log unexpected errors
-               // _logger.LogError(ex, "Unhandled exception");
+                // _logger.LogError(ex, "Unhandled exception");
                 errors.Add(ex.Message); // in production you might hide this
             }
 

@@ -30,12 +30,16 @@ namespace Charipay.Application.Commands.Users
             var existingUser = await userRepository.GetByEmailAsync(request.Email);
            
             if (existingUser != null)
+            {
+                logger.LogWarning("User registration failed because email already exists. Email: {Email}", request.Email);
                 return ApiResponse<UserDto>.FailedResponse("User already exists");
+            }
                            
 
             var user = mapper.Map<User>(request);
             user.PasswordHash = _passwordHasher.Hash(request.Password);
 
+            logger.LogInformation("User registration started for Email: {Email}", request.Email);
             await userRepository.AddAsync(user);
             await _unitOfWork.SaveChangesAsync();
 
@@ -49,6 +53,8 @@ namespace Charipay.Application.Commands.Users
 
             await userRoleRepository.AddAsync(userRole);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            logger.LogInformation("User created successfully. UserId: {UserId}, Email: {Email}", user.UserID, user.Email);
 
            
             var resultDto =  mapper.Map<UserDto>(user);
