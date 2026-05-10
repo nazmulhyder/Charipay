@@ -18,6 +18,7 @@ namespace Charipay.Application.Commands.Charities
     /// <summary>
     /// 
     /// </summary>
+    /// 
     public class CreateCharityCommandHandler(IUnitOfWork unitOfWork, ILogger<CreateCharityCommandHandler> logger, IMapper mapper, ICurrentUserService _currentUser, ICharityRepository charityRepository)
         : IRequestHandler<CreateCharityCommand, ApiResponse<CharityDto>>
     {
@@ -29,10 +30,16 @@ namespace Charipay.Application.Commands.Charities
             var registrationNoExists = await charityRepository.GetCharityByRegistrationNumberAsync(request.RegistrationNumber, cancellationToken);
 
             if (emailExists)
+            {
+                logger.LogWarning("Charity creation failed. Because, This email already exists.  Email: {email}", request.ContactEmail);
                 return ApiResponse<CharityDto>.FailedResponse("Charity already exists with this Email:" + request.ContactEmail);
+            }
 
             if (registrationNoExists)
+            {
+                logger.LogWarning("Charity creation failed. Because, Another charity already been registered with this registration. Registration no: {registrationNo}", request.RegistrationNumber);
                 return ApiResponse<CharityDto>.FailedResponse("Charity already exists with this Registration number:" + request.RegistrationNumber);
+            }
 
 
             var charity = new Charity()
@@ -49,8 +56,14 @@ namespace Charipay.Application.Commands.Charities
 
             };
 
+            logger.LogInformation("Charity creation started. Charity ID: {charityID}, Registration No: {registrationNo}", charity.CharityId, charity.RegistrationNumber);
+
+
             await charityRepository.AddAsync(charity);
             await unitOfWork.SaveChangesAsync();
+
+            logger.LogInformation("Charity created successfully. Charity ID: {charityID}, Registration No: {registrationNo}", charity.CharityId, charity.RegistrationNumber);
+
 
             var responseDto = mapper.Map<CharityDto>(request);
 
