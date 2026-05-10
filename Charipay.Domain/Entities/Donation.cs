@@ -25,10 +25,10 @@ namespace Charipay.Domain.Entities
         public bool IsAnonymous { get; set; }
 
         //payment Gateway
-        public string PaymentMethod { get; set; }
-        public string TransactionId { get; set; }
-        public string PaymentStatus { get; set; }
-        public string? ReceiptUrl { get; set; }
+        public string PaymentMethod { get; set; } = string.Empty;
+        public string TransactionId { get; set; } = string.Empty;
+        public string PaymentStatus { get; set; } = string.Empty;
+        public string? ReceiptUrl { get; set; } = string.Empty;
 
         // navigation property
         public Guid CampaignId { get; set; }
