@@ -5,6 +5,7 @@ using Charipay.Application.Interfaces.Common;
 using Charipay.Application.Interfaces.Repositories;
 using Charipay.Domain.Entities;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,22 +14,10 @@ using System.Threading.Tasks;
 
 namespace Charipay.Application.Commands.Donations
 {
-    public class CreateDonationCommandHandler : IRequestHandler<CreateDonationCommand, ApiResponse<DonationResponseDto>>
+    public class CreateDonationCommandHandler (IUnitOfWork _unitOfWork, IMapper _mapper, ICurrentUserService _currentUser,  IDonationRepository _donationRepository, ICampaignRepository _campaignRepository, ILogger<CreateDonationCommandHandler> logger)
+        : IRequestHandler<CreateDonationCommand, ApiResponse<DonationResponseDto>>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-        private readonly ICurrentUserService _currentUser;
-        private readonly IDonationRepository _donationRepository;
-        private readonly ICampaignRepository _campaignRepository;
 
-        public CreateDonationCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ICurrentUserService currentUser, IDonationRepository donationRepository, ICampaignRepository campaignRepository)
-        {
-            _mapper = mapper;
-            _currentUser = currentUser;
-            _unitOfWork = unitOfWork;
-            _donationRepository = donationRepository;
-            _campaignRepository = campaignRepository;
-        }
 
         public async Task<ApiResponse<DonationResponseDto>> Handle(CreateDonationCommand request, CancellationToken cancellationToken)
         {
@@ -36,21 +25,25 @@ namespace Charipay.Application.Commands.Donations
 
             if (campaign == null) 
             {
+                logger.LogWarning("Donation creation failed. Because campaign not found. Campaign ID: {campaignID}", request.CampaignId);
                 return ApiResponse<DonationResponseDto>.FailedResponse("Campaign not found.");
             }
 
             if (!campaign.IsActive)
             {
+                logger.LogWarning("Donation creation failed. Because this campaign isn't active. Campaign ID: {campaignID}, campaign name: {campaignName}", request.CampaignId, campaign.CampaignName);
                 return ApiResponse<DonationResponseDto>.FailedResponse("Campaign is not active.");
             }
 
             if (request.Amount <= 0)
             {
+                logger.LogWarning("Donation creation failed. Because this campaign amount is low. Campaign ID: {campaignID}, campaign name: {campaignName}", request.CampaignId, campaign.CampaignName);
                 return ApiResponse<DonationResponseDto>.FailedResponse("Amount must be greater than zero.");
             }
 
             if (_currentUser.UserId == null && !request.IsAnonymous)
             {
+                logger.LogWarning("Donation creation failed. Because donor is not indentified neither anonymous. Campaign ID: {campaignID}, campaign name: {campaignName}", request.CampaignId, campaign.CampaignName);
                 return ApiResponse<DonationResponseDto>.FailedResponse("User id not found.");
             }
 
@@ -69,9 +62,10 @@ namespace Charipay.Application.Commands.Donations
 
             };
 
-            try
-            {
-                await _donationRepository.AddAsync(donation);
+
+            logger.LogWarning("Donation creation started. Campaign ID: {campaignID}, campaign name: {campaignName}", request.CampaignId, campaign.CampaignName);
+
+            await _donationRepository.AddAsync(donation);
                 if (donation.PaymentStatus == "Succeeded")
                 {
                     campaign.CurrentAmount += donation.Amount;
@@ -80,18 +74,16 @@ namespace Charipay.Application.Commands.Donations
 
                 await _unitOfWork.SaveChangesAsync();
 
-                var responseDto = _mapper.Map<DonationResponseDto>(donation);
+            logger.LogWarning("Donation created successfully. Campaign ID: {campaignID}, campaign name: {campaignName}", request.CampaignId, campaign.CampaignName);
+
+
+            var responseDto = _mapper.Map<DonationResponseDto>(donation);
 
 
                 return ApiResponse<DonationResponseDto>.SuccessResponse(responseDto, "Donation successful");
             }
 
-            catch (Exception ex) {
-                return ApiResponse<DonationResponseDto>.FailedResponse(
-     ex.InnerException?.Message ?? ex.Message
- );
-            }
-           
-        }
+         
+        
     }
 }
