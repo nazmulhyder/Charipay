@@ -27,4 +27,8 @@
     <ProjectReference Include="..\Charipay.Infrastructure\Charipay.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include=".github\workflows\backend-ci.yml" />
+  </ItemGroup>
+
 </Project>
