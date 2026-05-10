@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove=".github\**" />
+    <Content Remove=".github\**" />
+    <EmbeddedResource Remove=".github\**" />
+    <None Remove=".github\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.1" />
     <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.19" />
@@ -25,10 +32,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Charipay.Application\Charipay.Application.csproj" />
     <ProjectReference Include="..\Charipay.Infrastructure\Charipay.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include=".github\workflows\backend-ci.yml" />
   </ItemGroup>
 
 </Project>
