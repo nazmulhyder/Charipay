@@ -63,7 +63,7 @@ namespace Charipay.Application.Commands.Donations
             };
 
 
-            logger.LogWarning("Donation creation started. Campaign ID: {campaignID}, campaign name: {campaignName}", request.CampaignId, campaign.CampaignName);
+            logger.LogInformation("Donation creation started. Campaign ID: {campaignID}, campaign name: {campaignName}", request.CampaignId, campaign.CampaignName);
 
             await _donationRepository.AddAsync(donation);
                 if (donation.PaymentStatus == "Succeeded")
@@ -74,7 +74,7 @@ namespace Charipay.Application.Commands.Donations
 
                 await _unitOfWork.SaveChangesAsync();
 
-            logger.LogWarning("Donation created successfully. Campaign ID: {campaignID}, campaign name: {campaignName}", request.CampaignId, campaign.CampaignName);
+            logger.LogInformation("Donation created successfully. Campaign ID: {campaignID}, campaign name: {campaignName}", request.CampaignId, campaign.CampaignName);
 
 
             var responseDto = _mapper.Map<DonationResponseDto>(donation);
