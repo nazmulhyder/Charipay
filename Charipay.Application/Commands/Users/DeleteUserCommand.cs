@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Charipay.Application.Common.Models;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Charipay.Application.Commands.Users
 {
-    public record DeleteUserCommand(Guid UserId) : IRequest<string>;
+    public record DeleteUserCommand(Guid UserId) : IRequest<ApiResponse<string>>;
    
  
 }

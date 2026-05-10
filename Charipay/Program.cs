@@ -1,15 +1,16 @@
 using Asp.Versioning;
+using Asp.Versioning.ApiExplorer;
 using Charipay.API;
 using Charipay.API.Middlewares;
 using Charipay.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Serilog;
+using Serilog.Events;
 using System;
 using System.Text;
-using Asp.Versioning.ApiExplorer;
 using System.Text.Json.Serialization;
-using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -108,10 +109,15 @@ builder.Services.AddCors(options =>
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information()
+    // Keep app logs clean
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+    .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
+    .MinimumLevel.Override("System", LogEventLevel.Warning)
+    .Enrich.FromLogContext()
     .WriteTo.Console()
     .WriteTo.File(
     "Logs/log-.txt",
-    rollingInterval:RollingInterval.Day
+    rollingInterval:RollingInterval.Day,retainedFileCountLimit:14
     ).CreateLogger();
 
 builder.Host.UseSerilog();
