@@ -20,12 +20,12 @@ namespace Charipay.Application.Commands.Users
 
             if (user == null) {
 
-                _logger.LogWarning("User not found. UserID: {UserId}", request.UserId);
+                _logger.LogWarning("User deletion failed. User not found. UserID: {UserId}", request.UserId);
                 return ApiResponse<string>.FailedResponse("User not found!");
             }
 
 
-            _logger.LogInformation("User delete operation started. UserID: {UserId}, Email: {Email}", user?.UserID, user?.Email);
+            _logger.LogInformation("User deletion started. UserID: {UserId}, Email: {Email}", user?.UserID, user?.Email);
 
             userRepository.Remove(user, cancellationToken);
             await  unitOfWork.SaveChangesAsync();

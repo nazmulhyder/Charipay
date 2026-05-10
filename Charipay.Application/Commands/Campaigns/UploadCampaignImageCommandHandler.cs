@@ -3,6 +3,7 @@ using Charipay.Application.Common.Models;
 using Charipay.Application.Interfaces.Repositories;
 using Charipay.Application.Interfaces.Storage;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,42 +12,48 @@ using System.Threading.Tasks;
 
 namespace Charipay.Application.Commands.Campaigns
 {
-    public class UploadCampaignImageCommandHandler : IRequestHandler<UploadCampaignImageCommand, ApiResponse<string>>
+    public class UploadCampaignImageCommandHandler 
+        (IUnitOfWork _unitofWork, IMapper _mapper, IFileStorageService _fileStorageService, ICampaignRepository _campaignRepository, ILogger<UploadCampaignImageCommandHandler> logger)
+        : IRequestHandler<UploadCampaignImageCommand, ApiResponse<string>>
     {
-
-        private readonly IUnitOfWork _unitofWork;
-        private readonly IMapper _mapper;
-        private readonly IFileStorageService _fileStorageService;
-        private readonly ICampaignRepository _campaignRepository;
-
-        public UploadCampaignImageCommandHandler(IUnitOfWork unitofWork, IMapper mapper, IFileStorageService fileStorageService, ICampaignRepository campaignRepository)
-        {
-            _mapper = mapper;
-            _unitofWork = unitofWork;
-            _fileStorageService = fileStorageService;
-            _campaignRepository = campaignRepository;
-        }
 
 
         public async Task<ApiResponse<string>> Handle(UploadCampaignImageCommand request, CancellationToken cancellationToken)
         {
+
+            var campaign = await _campaignRepository.GetByIdAsync(request.CampaignId, cancellationToken);
+
             if (request.File == null || request.File.Length == 0)
+            {
+                logger.LogWarning("No file uploaded for this campaign. Campaign ID: {campaignId}, Campaign Name: {campaignName}", request.CampaignId, campaign?.CampaignName);
                 return ApiResponse<string>.FailedResponse("No file uploaded.");
+            }
 
             var allowed = new HashSet<string> { "image/jpg", "image/jpeg", "image/png", "image/webp."};
 
-            if(!allowed.Contains(request.File.ContentType))
+            if (!allowed.Contains(request.File.ContentType)) 
+            {
+                logger.LogWarning("Invalid file type. Only JPG, PNG, WEBP is allowed for campaign. Campaign ID: {campaignId}, Campaign Name: {campaignName}", request.CampaignId, campaign?.CampaignName);
                 return ApiResponse<string>.FailedResponse("Only JPG, PNG, WEBP is allowed.");
+            }
+               
 
             if(request.File.Length > 5 * 1024 * 1024)
                 return ApiResponse<string>.FailedResponse("Max file size is 5MB.");
 
             // adjust this line to match your repository method name
 
-            var campaign = await _campaignRepository.GetByIdAsync(request.CampaignId, cancellationToken);
 
             if(campaign == null)
-                return ApiResponse<string>.FailedResponse("Campaign not fould.");
+            {
+                logger.LogWarning("Failed to upload image because the campaign does not exist. Campaign ID: {campaignId}"
+                , request.CampaignId);
+                return ApiResponse<string>.FailedResponse("Campaign not found.");
+            }
+
+
+            logger.LogInformation("File upload started for campaign. Campaign ID: {campaignId}, Campaign Name: {campaignName}"
+              , request.CampaignId, campaign.CampaignName);
 
             var oldUrl = campaign.ImageUrl;
 
@@ -62,6 +69,9 @@ namespace Charipay.Application.Commands.Campaigns
             campaign.ImageUrl = imageUrl;
 
             await _unitofWork.SaveChangesAsync();
+
+            logger.LogInformation("File uploaded successfully. Campaign ID: {campaignId}, Campaign Name: {campaignName}"
+          , request.CampaignId, campaign.CampaignName);
 
             return ApiResponse<string>.SuccessResponse(imageUrl, "Campaign Image uploaded.");
 

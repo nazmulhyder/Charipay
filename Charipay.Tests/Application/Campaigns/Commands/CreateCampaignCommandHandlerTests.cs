@@ -5,6 +5,7 @@ using Charipay.Application.Interfaces.Common;
 using Charipay.Application.Interfaces.Repositories;
 using Charipay.Domain.Entities;
 using FluentAssertions;
+using Microsoft.Extensions.Logging;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -16,26 +17,26 @@ namespace Charipay.Tests.Application.Campaigns.Commands
 {
     public class CreateCampaignCommandHandlerTests
     {
-        private readonly Mock<IUnitOfWork> _unitOfWork;
-        private readonly Mock<IMapper> _mapperMock;
-        private readonly Mock<ICurrentUserService> _currentUserMock;
-        private readonly Mock<ICampaignRepository> _campaignRepositoryMock;
+        private readonly Mock<IUnitOfWork> _unitOfWork = new();
+        private readonly Mock<IMapper> _mapperMock = new();
+        private readonly Mock<ILogger<CreateCampaignCommandHandler>> _logger = new();
+        private readonly Mock<ICurrentUserService> _currentUserMock = new();
+        private readonly Mock<ICampaignRepository> _campaignRepositoryMock = new();
+        private readonly Mock<ICharityRepository> _charityRepositoryMock = new();
 
         private readonly CreateCampaignCommandHandler _handler;
 
         public CreateCampaignCommandHandlerTests()
         {
-            _unitOfWork = new Mock<IUnitOfWork>();
-            _mapperMock = new Mock<IMapper>();
-            _currentUserMock = new Mock<ICurrentUserService>();
-            _campaignRepositoryMock = new Mock<ICampaignRepository>();
-
             _handler = new CreateCampaignCommandHandler(
-                _unitOfWork.Object,
-                _mapperMock.Object,
-                _currentUserMock.Object,
-                _campaignRepositoryMock.Object
-            );
+              _unitOfWork.Object,
+              _mapperMock.Object,
+              _currentUserMock.Object,
+              _campaignRepositoryMock.Object,
+              _logger.Object,
+              _charityRepositoryMock.Object
+      );
+
         }
 
         [Fact]
@@ -51,8 +52,8 @@ namespace Charipay.Tests.Application.Campaigns.Commands
 
             //assert
             result.Success.Should().BeFalse();
-            result.Message.Should().Be("Campain already exists with this Charity");
-            result.Errors.Should().Contain("Campain already exists with this Charity");
+            result.Message.Should().Be("Campaign already exists with this Charity");
+            result.Errors.Should().Contain("Campaign already exists with this Charity");
 
             _campaignRepositoryMock.Verify(x => x.AddAsync(It.IsAny<Campaign>()), Times.Never);
             _unitOfWork.Verify(x=>x.SaveChangesAsync(CancellationToken.None), Times.Never);

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Charipay.Domain.Entities;
 using Charipay.Application.Commands.Admin.UserFeedback;
 using Charipay.Application.Interfaces.Common;
+using Microsoft.Extensions.Logging;
 
 namespace Charipay.Application.Commands.Admin.Feedback
 {
@@ -18,12 +19,14 @@ namespace Charipay.Application.Commands.Admin.Feedback
         private readonly IUserFeedbackRepository _userFeedbackRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICurrentUserService _currentUserService;
+        private readonly ILogger<CreateFeedbackCommandHandler> _logger;
 
-        public CreateFeedbackCommandHandler(IUnitOfWork unitOfWork, IUserFeedbackRepository userFeedbackRepository, ICurrentUserService currentUserService)
+        public CreateFeedbackCommandHandler(IUnitOfWork unitOfWork, IUserFeedbackRepository userFeedbackRepository, ICurrentUserService currentUserService , ILogger<CreateFeedbackCommandHandler> logger)
         {
             _unitOfWork = unitOfWork;
             _userFeedbackRepository = userFeedbackRepository;
             _currentUserService = currentUserService;
+            _logger = logger;
 
         }
         public async Task<ApiResponse<UserFeedbackDto>> Handle(CreateFeedbackCommand request, CancellationToken cancellationToken)
@@ -41,10 +44,17 @@ namespace Charipay.Application.Commands.Admin.Feedback
                     Status = Domain.Enums.FeedbackStatus.New
                 };
 
+
+            _logger.LogInformation("User feedback has been requested. Feedback Type: {FeedbackType}", feedback.FeedbackType.ToString());
+
                 var result = await _userFeedbackRepository.AddAsync(feedback);
                 await _unitOfWork.SaveChangesAsync();
 
-                var response = new UserFeedbackDto
+
+            _logger.LogInformation("A user feedback has been created. Feedback Type: {FeedbackType}", feedback.FeedbackType.ToString());
+
+
+            var response = new UserFeedbackDto
                 {
                     Id = result.UserFeedbackId,
                     Rating = result.Rating,
