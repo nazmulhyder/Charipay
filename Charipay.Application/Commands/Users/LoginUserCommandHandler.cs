@@ -36,7 +36,8 @@ namespace Charipay.Application.Commands.Users
             }
 
             if(!_passwordHasher.Verify(user.PasswordHash, request.Password))
-
+            {
+                logger.LogWarning("Invalid User Password. Email: {Email} ", request.Email);
                 return new ApiResponse<LoginResponseDto>()
                 {
                     Success = false,
@@ -45,10 +46,14 @@ namespace Charipay.Application.Commands.Users
                     Errors = new List<string>() { "User not found!" }
 
                 };
+            }
 
             var roles = user.UserRoles.Select(x => x.Role.Name).ToList();
 
             var token = jwtTokenService.GenerateToken(user, roles);
+
+            logger.LogInformation("A successful login attempt. UserId: {userId}, Email:{email} ", user.UserID, user.Email);
+
 
             var dto = new LoginResponseDto
             {
