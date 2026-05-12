@@ -21,7 +21,7 @@ namespace Charipay.Domain.Entities
         public DateTime CreatedAt { get; set; }
 
         //navigationKey
-        public User CreatedByUser { get; set; }
-        public ICollection<Campaign> Campaigns { get; set; }
+        public User CreatedByUser { get; set; } = new();
+        public ICollection<Campaign> Campaigns { get; set; } = new List<Campaign>();
     }
 }

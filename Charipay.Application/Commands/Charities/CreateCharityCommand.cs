@@ -12,11 +12,11 @@ namespace Charipay.Application.Commands.Charities
     public class CreateCharityCommand : IRequest<ApiResponse<CharityDto>>
     {
 
-        public string Name { get; set; }
-        public string RegistrationNumber { get; set; }
-        public string Description { get; set; }
-        public string Website { get; set; }
-        public string ContactEmail { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string RegistrationNumber { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string Website { get; set; } = string.Empty;
+        public string ContactEmail { get; set; } = string.Empty;
         public bool IsApproved { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace Charipay.API.Controllers.v1
     [ApiController] // ✅ Tells ASP.NET Core this is an API controller
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")] // ✅ Base route will be api/users
-    [Authorize(Roles ="Admin")]
+   // [Authorize(Roles ="Admin")]
     public class CharitiesController : ControllerBase
     {
         private readonly IMediator _mediator;

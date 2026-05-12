@@ -9,6 +9,7 @@ namespace Charipay.Application.Commands.Charities
 {
     public class CreateCharityCommandValidator : AbstractValidator<CreateCharityCommand>
     {
+
         public CreateCharityCommandValidator()
         {
             RuleFor(c => c.Name)
@@ -25,6 +26,18 @@ namespace Charipay.Application.Commands.Charities
                 .NotEmpty().WithMessage("Contact Email is required.")
                 .EmailAddress().WithMessage("Invalid email address.");
 
+            RuleFor(c => c.Website)
+                .NotEmpty().WithMessage("Website is required.")
+                .Must(BeAValidUrl)
+                .WithMessage("Invalid website url.");
+
+        }
+
+        private static bool BeAValidUrl(string? website)
+        {
+            return Uri.TryCreate(website, UriKind.Absolute, out var uriResult)
+                   && (uriResult.Scheme == Uri.UriSchemeHttp ||
+                       uriResult.Scheme == Uri.UriSchemeHttps);
         }
     }
 }

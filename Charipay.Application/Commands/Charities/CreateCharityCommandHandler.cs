@@ -32,7 +32,7 @@ namespace Charipay.Application.Commands.Charities
             if (emailExists)
             {
                 logger.LogWarning("Charity creation failed. Because, This email already exists.  Email: {email}", request.ContactEmail);
-                return ApiResponse<CharityDto>.FailedResponse("Charity already exists with this Email:" + request.ContactEmail);
+                return ApiResponse<CharityDto>.FailedResponse("Charity already exists with this Email:" +request.ContactEmail);
             }
 
             if (registrationNoExists)
@@ -65,7 +65,7 @@ namespace Charipay.Application.Commands.Charities
             logger.LogInformation("Charity created successfully. Charity ID: {charityID}, Registration No: {registrationNo}", charity.CharityId, charity.RegistrationNumber);
 
 
-            var responseDto = mapper.Map<CharityDto>(request);
+            var responseDto = mapper.Map<CharityDto>(charity);
 
             return ApiResponse<CharityDto>.SuccessResponse(responseDto, "Charity Created Successfully.");
         }

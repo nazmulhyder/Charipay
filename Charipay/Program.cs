@@ -110,26 +110,22 @@ builder.Services.AddCors(options =>
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information()
-    // Keep app logs clean
     .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-    .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
-    .MinimumLevel.Override("System", LogEventLevel.Warning)
     .Enrich.FromLogContext()
     .WriteTo.Console()
+    // ADD THIS LINE BELOW (requires Serilog.Sinks.AzureAppPackage)
+    .WriteTo.Trace()
     .WriteTo.File(
-    "Logs/log-.txt",
-    rollingInterval:RollingInterval.Day,retainedFileCountLimit:14
+        "Logs/log-.txt",
+        rollingInterval: RollingInterval.Day,
+        retainedFileCountLimit: 14
     ).CreateLogger();
 
 builder.Host.UseSerilog();
-builder.Logging.ClearProviders();
-builder.Logging.AddConsole();
-builder.Logging.AddDebug();
 
 var app = builder.Build();
 
-app.Logger.LogInformation("Charipay API started successfully");
-
+Log.Information("Charipay API started successfully");
 
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();

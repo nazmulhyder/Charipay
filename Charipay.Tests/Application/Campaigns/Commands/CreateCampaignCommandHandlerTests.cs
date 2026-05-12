@@ -44,7 +44,10 @@ namespace Charipay.Tests.Application.Campaigns.Commands
         {
             //arrange
             var command = CreateValidCommand();
-            _campaignRepositoryMock.Setup(x => x.GetCampaignByCharityId(command.CharityId, command.CampaignName,  It.IsAny<CancellationToken>())).ReturnsAsync(true);
+            _campaignRepositoryMock
+                .Setup(x => x
+                .GetCampaignByCharityId(command.CharityId, command.CampaignName,  It.IsAny<CancellationToken>()))
+                .ReturnsAsync(true);
 
             //act
 
