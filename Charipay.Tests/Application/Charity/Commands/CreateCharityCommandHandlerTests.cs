@@ -79,84 +79,91 @@ namespace Charipay.Tests.Application.Charity.Commands
 
         }
 
-        //[Fact]
-        //public async Task Handler_Should_Create_Chatiry_When_Request_Is_Valid()
-        //{
-        //    //arrange
-        //    var userId = Guid.NewGuid();
-        //    var command = CreateValidCharityCommand();
+        [Fact]
+        public async Task Handler_Should_Create_Chatiry_When_Request_Is_Valid()
+        {
+            //arrange
+            var userId = Guid.NewGuid();
+            var command = CreateValidCharityCommand();
 
-        //    var charity = new Domain.Entities.Charity
-        //    {
-        //        CharityId = Guid.NewGuid(),
-        //        Name = command.Name,
-        //        RegistrationNumber = command.RegistrationNumber,
-        //        Description = command.Description,
-        //        Website = command.Website,
-        //        ContactEmail = command.ContactEmail,
-        //        CreatedByUserId = Guid.NewGuid(),
-        //        CreatedAt = DateTime.UtcNow,
-        //        IsApproved = true
-        //    };
+            var charity = new Domain.Entities.Charity
+            {
+                CharityId = Guid.NewGuid(),
+                Name = command.Name,
+                RegistrationNumber = command.RegistrationNumber,
+                Description = command.Description,
+                Website = command.Website,
+                ContactEmail = command.ContactEmail,
+                CreatedByUserId = Guid.NewGuid(),
+                CreatedAt = DateTime.UtcNow,
+                IsApproved = true
+            };
 
-        //    var charityDto = new CharityDto
-        //    {
-        //        CharityId = Guid.NewGuid(),
-        //        Name = command.Name,
-        //        RegistrationNumber = command.RegistrationNumber,
-        //        Description = command.Description,
-        //        Website = command.Website,
-        //        ContactEmail = command.ContactEmail,
-        //        CreatedByUserId = Guid.NewGuid(),
-        //        CreatedAt = DateTime.UtcNow,
-        //        IsApproved = true
-        //    };
-
-
-        //    mockCharityRepository.Setup(x => x
-        //    .GetCharityByContactEmailAsync(command.ContactEmail, It.IsAny<CancellationToken>())).ReturnsAsync(false);
+            var charityDto = new CharityDto
+            {
+                CharityId = Guid.NewGuid(),
+                Name = command.Name,
+                RegistrationNumber = command.RegistrationNumber,
+                Description = command.Description,
+                Website = command.Website,
+                ContactEmail = command.ContactEmail,
+                CreatedByUserId = Guid.NewGuid(),
+                CreatedAt = DateTime.UtcNow,
+                IsApproved = true
+            };
 
 
-        //    mockCharityRepository.Setup(x => x
-        //   .GetCharityByRegistrationNumberAsync(command.RegistrationNumber, It.IsAny<CancellationToken>())).ReturnsAsync(false);
-
-        //    // mockMapper.Setup(x => x.Map<Domain.Entities.Charity>(command)).Returns(charity);
+            mockCharityRepository.Setup(x => x
+            .GetCharityByContactEmailAsync(command.ContactEmail, It.IsAny<CancellationToken>())).ReturnsAsync(false);
 
 
+            mockCharityRepository.Setup(x => x
+           .GetCharityByRegistrationNumberAsync(command.RegistrationNumber, It.IsAny<CancellationToken>())).ReturnsAsync(false);
 
-        //    mockCurrentUser.Setup(x=>x.UserId).Returns(userId);
+            // mockMapper.Setup(x => x.Map<Domain.Entities.Charity>(command)).Returns(charity);
 
-        //    mockCharityRepository.Setup(x => x
-        //    .AddAsync(It.IsAny<Domain.Entities.Charity>())
-        //    ).ReturnsAsync(charity);
 
-        //    mockUnitOfWork.Setup(x =>
-        //    x.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(1);
+
+            mockCurrentUser.Setup(x=>x.UserId).Returns(userId);
+
+            mockCharityRepository.Setup(x => x
+            .AddAsync(It.IsAny<Domain.Entities.Charity>())
+            ).ReturnsAsync(charity);
+
+            mockUnitOfWork.Setup(x =>
+            x.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(1);
             
 
-        //    mockMapper.Setup(x => x
-        //    .Map<CharityDto>(command)).Returns(charityDto);
+            mockMapper.Setup(x => x
+            .Map<CharityDto>(It.IsAny<Domain.Entities.Charity>())).Returns(charityDto);
 
 
-        //    //act
-        //    var result = await _handler.Handle(command, CancellationToken.None);
+            //act
+            var result = await _handler.Handle(command, CancellationToken.None);
 
-        //    //assert
-        //    result.Success.Should().BeTrue();
-        //    result.Message.Should().Contain("Charity Created Successfully.");
-        //    result.Data.Should().NotBeNull();
-        //    result.Data!.Name.Should().Be(command.Name);
-        //    result.Data!.RegistrationNumber.Should().Be(command.RegistrationNumber);
+            //assert
+            result.Success.Should().BeTrue();
+            result.Message.Should().Contain("Charity Created Successfully.");
+            result.Data.Should().NotBeNull();
+            result.Data!.Name.Should().Be(command.Name);
+            result.Data!.RegistrationNumber.Should().Be(command.RegistrationNumber);
 
 
-        //    mockCharityRepository.Verify(x=>x
-        //    .AddAsync(charity), Times.Once
-        //    );
+            mockCharityRepository.Verify(x=>x
+            .AddAsync(It.Is<Domain.Entities.Charity>(c=>
+              c.Name == command.Name &&
+              c.ContactEmail == command.ContactEmail &&
+              c.RegistrationNumber == command.RegistrationNumber &&
+              c.IsApproved == command.IsApproved &&
+              c.Website == command.Website
 
-        //    mockUnitOfWork.Verify(x => x
-        //  .SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once
-        //  );
-        //}
+            )), Times.Once
+            );
+
+            mockUnitOfWork.Verify(x => x
+          .SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once
+          );
+        }
 
 
 
