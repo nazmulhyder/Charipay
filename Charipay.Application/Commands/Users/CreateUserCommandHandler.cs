@@ -43,6 +43,9 @@ namespace Charipay.Application.Commands.Users
             await userRepository.AddAsync(user);
             await _unitOfWork.SaveChangesAsync();
 
+            
+            if (request.RoleID == 1)
+                return ApiResponse<UserDto>.FailedResponse("Invalid role selected.");
 
             // Assign default role (User = 1)
             var userRole = new UserRole
