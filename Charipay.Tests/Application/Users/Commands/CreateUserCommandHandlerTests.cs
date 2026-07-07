@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Charipay.Application.Commands.Campaigns;
 using Charipay.Application.Commands.Users;
 using Charipay.Application.DTOs.Users;
 using Charipay.Application.Interfaces.Repositories;
@@ -8,9 +7,6 @@ using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Charipay.Tests.Application.Users.Commands
@@ -156,11 +152,7 @@ namespace Charipay.Tests.Application.Users.Commands
             var command = CreateValidCommand();
             var user = new User { UserID = Guid.NewGuid() };
 
-            _userRepositoryMock.Setup(x => x.GetByEmailAsync(command.Email))
-                .ReturnsAsync((User?)null);
-
-            _mapperMock.Setup(x=>x.Map<User>(command)).Returns(user);
-            _mapperMock.Setup(x=>x.Map<UserDto>(user)).Returns(new UserDto());
+            SetupUserDoesNotExistAndMapping(command, user);
 
             var handler = CreateHandler();
 
@@ -172,14 +164,62 @@ namespace Charipay.Tests.Application.Users.Commands
 
         }
 
-        //[Fact]
-        //public async Task Handle_ShouldSaveChanges_WhenUserCreated() { }
+        [Fact]
+        public async Task Handle_ShouldSaveChanges_WhenUserCreated()
+        {
+            // arrange
+            var command = CreateValidCommand();
+            var user = new User { UserID = Guid.NewGuid(), Email = command.Email };
 
-        //[Fact]
-        //public async Task Handle_ShouldMapCommandToUser() { }
+            SetupUserDoesNotExistAndMapping(command, user);
 
-        //[Fact]
-        //public async Task Handle_ShouldMapUserToUserDto() { }
+            var handler = CreateHandler();
+
+            // act
+            var result = await handler.Handle(command, CancellationToken.None);
+
+            // assert
+            result.Success.Should().BeTrue();
+            _unitOfWorkMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Exactly(2));
+        }
+
+        [Fact]
+        public async Task Handle_ShouldMapCommandToUser()
+        {
+            // arrange
+            var command = CreateValidCommand();
+            var user = new User { UserID = Guid.NewGuid(), Email = command.Email };
+
+            SetupUserDoesNotExistAndMapping(command, user);
+
+            var handler = CreateHandler();
+
+            // act
+            var result = await handler.Handle(command, CancellationToken.None);
+
+            // assert
+            result.Success.Should().BeTrue();
+            _mapperMock.Verify(x => x.Map<User>(It.Is<CreateUserCommand>(c => c == command)), Times.Once);
+        }
+
+        [Fact]
+        public async Task Handle_ShouldMapUserToUserDto()
+        {
+            // arrange
+            var command = CreateValidCommand();
+            var user = new User { UserID = Guid.NewGuid(), Email = command.Email };
+
+            SetupUserDoesNotExistAndMapping(command, user);
+
+            var handler = CreateHandler();
+
+            // act
+            var result = await handler.Handle(command, CancellationToken.None);
+
+            // assert
+            result.Success.Should().BeTrue();
+            _mapperMock.Verify(x => x.Map<UserDto>(It.Is<User>(u => u == user)), Times.Once);
+        }
 
         [Fact]
         public async Task Handle_ShouldAssignRequestedRole_WhenUserCreated()
@@ -188,11 +228,7 @@ namespace Charipay.Tests.Application.Users.Commands
             var command = CreateValidCommand();
             var user = new User { UserID = Guid.NewGuid() };
 
-            _userRepositoryMock.Setup(x=>x.GetByEmailAsync(command.Email))
-                .ReturnsAsync((User?)null);
-            
-            _mapperMock.Setup(x=> x.Map<User>(command)).Returns(user);
-            _mapperMock.Setup(x => x.Map<UserDto>(user)).Returns(new UserDto());
+            SetupUserDoesNotExistAndMapping(command, user);
 
             var handler = CreateHandler();
 
@@ -222,6 +258,15 @@ namespace Charipay.Tests.Application.Users.Commands
                 DOB = new DateTime(1995, 1, 1),
                 RoleID = 2 
             };
+        }
+
+        private void SetupUserDoesNotExistAndMapping(CreateUserCommand command, User user)
+        {
+            _userRepositoryMock.Setup(x => x.GetByEmailAsync(command.Email))
+                .ReturnsAsync((User?)null);
+
+            _mapperMock.Setup(x => x.Map<User>(command)).Returns(user);
+            _mapperMock.Setup(x => x.Map<UserDto>(user)).Returns(new UserDto());
         }
     }
 }
